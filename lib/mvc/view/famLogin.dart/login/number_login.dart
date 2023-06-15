@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:famlynk_version1/mvc/view/famLogin.dart/register.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/register/register.dart';
 import 'package:famlynk_version1/services/firebase/loginservices.dart';
-import 'package:famlynk_version1/mvc/model/loginModel.dart';
+import 'package:famlynk_version1/mvc/model/login_model/loginModel.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import '../FamilyTimeLine/navigationBar/navBar.dart';
+import '../../FamilyTimeLine/navigationBar/navBar.dart';
 
 class FamLogin extends StatefulWidget {
   const FamLogin({

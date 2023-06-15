@@ -1,8 +1,8 @@
-import 'package:famlynk_version1/mvc/view/famLogin.dart/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/login/EmailLogin.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'mvc/view/famLogin.dart/register.dart';
+import 'mvc/view/famLogin.dart/register/register.dart';
 
 void main() {
   runApp(const MyApp());

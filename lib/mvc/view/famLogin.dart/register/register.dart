@@ -1,24 +1,21 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
-import 'package:famlynk_version1/mvc/model/registerModel.dart';
-import 'package:famlynk_version1/mvc/view/FamilyTimeLine/profile/profile.dart';
-import 'package:famlynk_version1/mvc/view/famLogin.dart/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/model/login_model/registerModel.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/login/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/otp/verifyOtp.dart';
 import 'package:famlynk_version1/services/registerService.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
-import '../../../model/updateRegisterModel.dart';
-
-class UpdateRegister extends StatefulWidget {
-  // UpdateRegisterModel? updateRegisterModel;
+class RegisterPage extends StatefulWidget {
   @override
-  _UpdateRegisterState createState() => _UpdateRegisterState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _UpdateRegisterState extends State<UpdateRegister> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
 
+  MyProperties myProperties = MyProperties();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phnController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
@@ -51,32 +48,10 @@ class _UpdateRegisterState extends State<UpdateRegister> {
   String _password = '';
   String _confirmPassword = '';
 
-  // String? profilBase64;
-  // File? _imageFile;
-  // final ImagePicker _picker = ImagePicker();
-
-  // void _pickImageBase64() async {
-  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  //   if (image == null) return;
-
-  //   List<int> imagebyte = await image.readAsBytes();
-
-  //   profilBase64 = base64.encode(imagebyte);
-
-  //   final imagetemppath = File(image.path);
-  //   setState(() {
-  //     this._imageFile = imagetemppath;
-  //   });
-  // }
-
+ 
   @override
   void initState() {
-    // _nameController.text = widget.updateRegisterModel!.name.toString();
-    // _phnController.text = widget.updateRegisterModel!.phoneNumber.toString();
-    // _dateinput.text = widget.updateRegisterModel!.dateOfBirth.toString();
-    // _passwordController.text = widget.updateRegisterModel!.password.toString();
-    // _emailController.text = widget.updateRegisterModel!.email.toString();
-    // _dateinput.text = "";
+    _dateinput.text = "";
     super.initState();
   }
 
@@ -86,6 +61,18 @@ class _UpdateRegisterState extends State<UpdateRegister> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
+            },
+          ),
           title: Text(
             'Registration',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -123,7 +110,7 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
-                          fillColor: Colors.grey.shade200,
+                          fillColor: myProperties.fillColor,
                           filled: true,
                           hintText: 'Enter Your Name',
                           hintStyle: TextStyle(color: Colors.grey[500])),
@@ -175,7 +162,7 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                                 ),
                                 SizedBox(height: 6),
                                 Text("Female"),
-                              ]
+                              ],
                             ),
                             Row(
                               children: [
@@ -208,7 +195,7 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
-                          fillColor: Colors.grey.shade200,
+                          fillColor: myProperties.fillColor,
                           filled: true,
                           hintText: 'Date Of Birth',
                           hintStyle: TextStyle(color: Colors.grey[500])),
@@ -236,30 +223,33 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                     ),
                     SizedBox(height: 15),
                     TextFormField(
-                      controller: _phnController,
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.phone),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          hintText: 'Mobile Number',
-                          hintStyle: TextStyle(color: Colors.grey[500])),
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "*mobile number is required";
-                        }
-                        if (value.length != 10) {
-                          return "*mobile number must be 10";
-                        }
-                        return null;
-                      },
-                    ),
+                        controller: _phnController,
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.phone),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade400),
+                            ),
+                            fillColor: myProperties.fillColor,
+                            filled: true,
+                            hintText: 'Mobile Number',
+                            hintStyle: TextStyle(color: Colors.grey[500])),
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "*mobile number is required";
+                          }
+                          if (value.length < 10) {
+                            return "*mobile number must be 10";
+                          }
+                          if (value.length > 10) {
+                            return "*mobile number must be 10";
+                          }
+                          return null;
+                        }),
                     SizedBox(height: 15),
                     TextFormField(
                       controller: _emailController,
@@ -271,7 +261,7 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
-                          fillColor: Colors.grey.shade200,
+                          fillColor: myProperties.fillColor,
                           filled: true,
                           hintText: 'Email',
                           hintStyle: TextStyle(color: Colors.grey[500])),
@@ -298,7 +288,7 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.grey.shade400),
                         ),
-                        fillColor: Colors.grey.shade200,
+                        fillColor: myProperties.fillColor,
                         filled: true,
                         hintText: 'Password',
                         hintStyle: TextStyle(color: Colors.grey[500]),
@@ -340,7 +330,7 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
-                          fillColor: Colors.grey.shade200,
+                          fillColor: myProperties.fillColor,
                           filled: true,
                           hintText: 'Confirm Password',
                           hintStyle: TextStyle(color: Colors.grey[500]),
@@ -377,7 +367,6 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                         ),
                         onPressed: () {
                           RegisterService registerService = RegisterService();
-                        
                           if (_formKey.currentState!.validate()) {
                             RegisterModel registerModel = RegisterModel(
                               name: _nameController.text,
@@ -390,12 +379,11 @@ class _UpdateRegisterState extends State<UpdateRegister> {
                             );
                             registerService.AddPostMethod(registerModel);
                             print(registerModel.dateOfBirth);
-                            print(registerModel.phoneNumber);
-                            // print(registerModel);
+                            print(registerModel);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
+                                    builder: (context) => OTPPage()));
                           }
                         },
                         child: Text(
@@ -417,72 +405,4 @@ class _UpdateRegisterState extends State<UpdateRegister> {
       ),
     );
   }
-
-  // Widget imageprofile(File? imageFile) {
-  //   return Center(
-  //     child: Stack(
-  //       children: <Widget>[
-  //         Container(
-  //           width: 130,
-  //           height: 130,
-  //           child: GestureDetector(
-  //               onTap: () {
-  //                 showModalBottomSheet(
-  //                   context: context,
-  //                   builder: ((builder) => bottomSheet()),
-  //                 );
-  //               },
-  //               child: ClipOval(
-  //                 child: _imageFile == null
-  //                     ? Center(
-  //                         child: Icon(
-  //                         Icons.account_circle,
-  //                         color: Color.fromARGB(255, 124, 124, 124),
-  //                         size: 140,
-  //                       ))
-  //                     : Image.file(
-  //                         _imageFile!,
-  //                         fit: BoxFit.cover,
-  //                       ),
-  //               )),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // Widget bottomSheet() {
-  //   return Container(
-  //     height: 100,
-  //     width: MediaQuery.of(context).size.width,
-  //     margin: EdgeInsets.symmetric(
-  //       horizontal: 20,
-  //       vertical: 20,
-  //     ),
-  //     child: Column(
-  //       children: <Widget>[
-  //         Text(
-  //           "Choose profile photo",
-  //           style: TextStyle(
-  //             fontSize: 20.0,
-  //           ),
-  //         ),
-  //         SizedBox(
-  //           height: 20,
-  //         ),
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceAround,
-  //           children: <Widget>[
-  //             IconButton(
-  //               onPressed: () {
-  //                 _pickImageBase64();
-  //               },
-  //               icon: Icon(Icons.image),
-  //             ),
-  //           ],
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 }

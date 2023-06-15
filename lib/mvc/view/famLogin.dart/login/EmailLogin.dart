@@ -1,8 +1,8 @@
 import 'package:famlynk_version1/constants/constVariables.dart';
-import 'package:famlynk_version1/mvc/model/mailLoginModel.dart';
+import 'package:famlynk_version1/mvc/model/login_model/mailLoginModel.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/navigationBar/navBar.dart';
-import 'package:famlynk_version1/mvc/view/famLogin.dart/frgtPswd.dart';
-import 'package:famlynk_version1/mvc/view/famLogin.dart/register.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/forgetpassword/frgtPswd.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/register/register.dart';
 import 'package:famlynk_version1/services/mailLoginService.dart';
 import 'package:flutter/material.dart';
 

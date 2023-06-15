@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:famlynk_version1/mvc/model/registerModel.dart';
+import 'package:famlynk_version1/mvc/model/login_model/registerModel.dart';
 import 'package:http/http.dart' as http;
 import '../utils/utils.dart';
 

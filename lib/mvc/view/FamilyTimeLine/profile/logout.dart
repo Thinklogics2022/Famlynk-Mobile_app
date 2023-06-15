@@ -138,7 +138,7 @@
 
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/navigationBar/navBar.dart';
-import 'package:famlynk_version1/mvc/view/famLogin.dart/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/login/EmailLogin.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
