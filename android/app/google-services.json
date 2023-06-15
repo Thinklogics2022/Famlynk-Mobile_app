@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "704652533161",
+    "project_id": "flutter-famlynk",
+    "storage_bucket": "flutter-famlynk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704652533161:android:cb6ded1356bb65e33278b8",
+        "android_client_info": {
+          "package_name": "com.example.famlynk_version1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "704652533161-6klahpu2l8d20fas3r10ehc4dkqgrnel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.famlynk_version1",
+            "certificate_hash": "e7c2856a323b991c812335657cbd168fc1289e11"
+          }
+        },
+        {
+          "client_id": "704652533161-snedebdiqflgtrrmujplm9maq0fj64mp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNFJ4ZcHq0c_UoaZOMnsxdjf64J8_bs2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "704652533161-snedebdiqflgtrrmujplm9maq0fj64mp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
