@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
-import 'package:famlynk_version1/mvc/model/addMemberModel.dart';
+import 'package:famlynk_version1/mvc/model/addmember_model/addMemberModel.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';

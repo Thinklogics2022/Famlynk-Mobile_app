@@ -1,6 +1,6 @@
-import 'package:famlynk_version1/mvc/model/verifyOtpModel.dart';
-import 'package:famlynk_version1/mvc/view/famLogin.dart/EmailLogin.dart';
-import 'package:famlynk_version1/mvc/view/famLogin.dart/register.dart';
+import 'package:famlynk_version1/mvc/model/login_model/verifyOtpModel.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/login/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/view/famLogin.dart/register/register.dart';
 import 'package:famlynk_version1/services/verifyOtpService.dart';
 import 'package:flutter/material.dart';
 

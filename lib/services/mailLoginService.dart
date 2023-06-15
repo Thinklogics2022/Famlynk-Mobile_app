@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:famlynk_version1/mvc/model/mailLoginModel.dart';
+import 'package:famlynk_version1/mvc/model/login_model/mailLoginModel.dart';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';

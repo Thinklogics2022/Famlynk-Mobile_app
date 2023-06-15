@@ -1,5 +1,5 @@
 import 'package:famlynk_version1/mvc/model/suggestionModel.dart';
-import 'package:famlynk_version1/mvc/view/FamilyTimeLine/profile/addMember.dart';
+import 'package:famlynk_version1/mvc/view/FamilyTimeLine/addmember/addMember.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
