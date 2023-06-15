@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/view/FamilyTimeLine/suggestion/suggestion.dart';
 import 'package:famlynk_version1/mvc/view/famLogin.dart/login/EmailLogin.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF0097A0)),
       ),
-      home: LoginPage(),
+      home: SuggestionScreen(),
 
       // FutureBuilder<bool>(
       //   future: isLoggedIn(),
