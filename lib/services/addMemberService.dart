@@ -33,7 +33,6 @@ class AddMemberService {
 
       if (response.statusCode == 200 || response.statusCode==201) {
         print('POST request successful');
-        print(response.body);
         return response.body;
       } else {
         print('POST request failed with status: ${response.statusCode}');
