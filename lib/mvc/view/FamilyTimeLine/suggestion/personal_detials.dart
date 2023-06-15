@@ -1,22 +1,42 @@
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/model/suggestionModel.dart';
 
 import 'package:flutter/material.dart';
 
 class UserDetailsPage extends StatefulWidget {
+  UserDetailsPage({
+    super.key,
+    this.name,
+    this.gender,
+    this.dateOfBirth,
+    this.email,
+    this.maritalStatus,
+    this.hometown,
+    this.profileImage,
+    this.address,
+    this.uniqueUserId,
+  });
+  final String? name;
+  final String? gender;
+  final String? dateOfBirth;
+  final String? email;
+  final String? maritalStatus;
+  final String? hometown;
+  final String? profileImage;
+  final String? address;
+  final String? uniqueUserId;
   @override
   _UserDetailsPageState createState() => _UserDetailsPageState();
 }
 
 class _UserDetailsPageState extends State<UserDetailsPage> {
+  final _formKey = GlobalKey<FormState>();
   String dropdownValue1 = 'Select Relation';
-  late String selectedCity;
-  Map<String, dynamic> userDetails = {};
 
   @override
   void initState() {
     super.initState();
-    // fetchUserDetails();
   }
 
   @override
@@ -43,42 +63,42 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
             ),
             SizedBox(height: 70),
             Text(
-              'Name: ',
+              'Name: ${widget.name}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 8.0),
             Divider(thickness: 2),
             SizedBox(height: 8.0),
             Text(
-              'Gender: ',
+              'Gender: ${widget.gender}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 8.0),
             Divider(thickness: 2),
             SizedBox(height: 8.0),
             Text(
-              'Date of Birth: ',
+              'Date of Birth: ${widget.dateOfBirth}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 8.0),
             Divider(thickness: 2),
             SizedBox(height: 8.0),
             Text(
-              'Email: ',
+              'Email: ${widget.email}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 8.0),
             Divider(thickness: 2),
             SizedBox(height: 8.0),
             Text(
-              'Address: ',
+              'Address: ${widget.address}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 8.0),
             Divider(thickness: 2),
             SizedBox(height: 8.0),
             Text(
-              'HomeTown: ',
+              'HomeTown: ${widget.hometown}',
               style: TextStyle(fontSize: 20),
             ),
             SizedBox(height: 8.0),
@@ -87,10 +107,6 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
             Container(
               child: DropdownButtonFormField(
                 decoration: InputDecoration(
-                    // icon: Icon(Icons.people),
-                    // enabledBorder: const OutlineInputBorder(
-                    //   borderSide: BorderSide(color: Colors.white),
-                    // ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey.shade400),
                     ),

@@ -12,8 +12,6 @@ class SuggestionScreen extends StatefulWidget {
 }
 
 class _SuggestionScreenState extends State<SuggestionScreen> {
-  List<Suggestion> suggestions = [];
-  late List<SuggestionService> suggestionService = [];
   late List<Suggestion>? suggestionlist = [];
   var isLoaded = false;
   String currentQuery = '';
@@ -91,7 +89,26 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                       title: Text(suggestion.name.toString()),
                     );
                   },
-                  onSuggestionSelected: (suggestion) {},
+                  onSuggestionSelected: (suggestion) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UserDetailsPage(
+                                  name: suggestion.name.toString(),
+                                  gender: suggestion.gender.toString(),
+                                  address: suggestion.address.toString(),
+                                  dateOfBirth:
+                                      suggestion.dateOfBirth.toString(),
+                                  email: suggestion.email.toString(),
+                                  hometown: suggestion.hometown.toString(),
+                                  maritalStatus:
+                                      suggestion.maritalStatus.toString(),
+                                  profileImage:
+                                      suggestion.profileImage.toString(),
+                                  uniqueUserId:
+                                      suggestion.uniqueUserId.toString(),
+                                )));
+                  },
                 ),
               ),
               Expanded(
@@ -104,7 +121,26 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                         ? suggestionlist![index]
                         : filteredSuggestions[index];
                     return InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UserDetailsPage(
+                                      name: suggestion.name.toString(),
+                                      gender: suggestion.gender.toString(),
+                                      address: suggestion.address.toString(),
+                                      dateOfBirth:
+                                          suggestion.dateOfBirth.toString(),
+                                      email: suggestion.email.toString(),
+                                      hometown: suggestion.hometown.toString(),
+                                      maritalStatus:
+                                          suggestion.maritalStatus.toString(),
+                                      profileImage:
+                                          suggestion.profileImage.toString(),
+                                      uniqueUserId:
+                                          suggestion.uniqueUserId.toString(),
+                                    )));
+                      },
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundImage:
