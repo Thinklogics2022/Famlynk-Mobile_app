@@ -11,4 +11,5 @@ class FamlynkServiceUrl {
   static const String getFamilyMember =
       baseUrl + "/familymembers/retrievefamilymembersbyuseridss/";
   static const String searchAddMember = baseUrl + "/familymembers/addfamily/";    
+  static const String deleteFamilyMember = baseUrl + "/familymembers/deletefamilymember/";
 }
