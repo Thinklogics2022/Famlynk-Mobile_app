@@ -31,6 +31,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           leadingWidth: 30,
           actions: [
             PopupMenuButton<int>(
@@ -188,7 +189,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
           ),
         ),
         body: TabBarView(controller: _tabController, children: <Widget>[
-          NewsFeedFirstPage(),
+          FreshNewsFeed(),
           FamilyList(),
           Home(),
           CircleAvatarLayout(),

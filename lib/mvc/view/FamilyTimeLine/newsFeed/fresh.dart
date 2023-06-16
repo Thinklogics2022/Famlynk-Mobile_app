@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
-import 'package:famlynk_version1/mvc/view/FamilyTimeLine/newsFeed/news.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class FreshNewsFeed extends StatefulWidget {
   const FreshNewsFeed({Key? key}) : super(key: key);
@@ -12,6 +12,9 @@ class FreshNewsFeed extends StatefulWidget {
 }
 
 class _FreshNewsFeedState extends State<FreshNewsFeed> {
+  PlatformFile? pickedFile;
+  UploadTask? uploadTask;
+
   bool isLiked = false;
   int likeCount = 0;
   List<String> comments = [];
@@ -19,18 +22,34 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
   bool showLikeCommentSection = false;
   bool showAllComments = false; // New variable to track comment visibility
 
-  TextEditingController _textFieldController =
-      TextEditingController(); // Added text field controller
+  TextEditingController _textFieldController = TextEditingController();
 
-  Future<void> _pickFiles() async {
-    final pickedFiles =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
+  Future _pickFiles() async {
+    final result = await FilePicker.platform.pickFiles();
+
+    if (result == null) return;
 
     setState(() {
-      if (pickedFiles != null) {
-        _images = pickedFiles.paths.map((path) => File(path!)).toList();
-        showLikeCommentSection = true;
-      }
+      pickedFile = result.files.first;
+    });
+  }
+
+  void _sendPost() async {
+    final path = 'files/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    setState(() {
+      uploadTask = ref.putFile(file);
+    });
+
+    final snapshot = await uploadTask!.whenComplete(() {});
+
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    print('Download Link: $urlDownload');
+
+    setState(() {
+      uploadTask = null;
     });
   }
 
@@ -51,39 +70,6 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
     });
   }
 
-  void _sendPost() {
-    String postText = _textFieldController.text;
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Post Content'),
-        content: Container(
-          height: 200.0,
-          child: ListView(
-            children: [
-              if (postText.isNotEmpty)
-                ListTile(
-                  title: Text(postText),
-                ),
-              ..._images.map((image) => Image.file(image)).toList(),
-            ],
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // Navigator.pop(context);
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewsFeedFirstPage()));
-            },
-            child: Text('Click To Post'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     MyProperties myProperties = MyProperties();
@@ -95,203 +81,228 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
             children: [
               Container(
                 color: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
+                padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Expanded(
-                      child: TextField(
-                        controller:
-                            _textFieldController, // Set the text field controller
-                        decoration: InputDecoration(
-                          hintText: 'What\'s on your mind?',
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.only(
+                                left: 8.0, right: 8.0, top: 4.0, bottom: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: TextFormField(
+                              controller: _textFieldController,
+                              decoration: InputDecoration(
+                                hintText: 'What\'s on your mind?',
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
                         ),
+                        SizedBox(width: 8.0),
+                        IconButton(
+                          color: myProperties.buttonColor,
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: _pickFiles,
+                        ),
+                        IconButton(
+                          color: myProperties.buttonColor,
+                          icon: Icon(Icons.send),
+                          onPressed: _sendPost,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ListTile(
+                      leading: CircleAvatar(
+                        radius: 20.0,
+                        backgroundImage: AssetImage('assets/images/FL02.png'),
+                      ),
+                      title: Text(
+                        'jaipandi',
+                        style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
-                    IconButton(
-                      color: myProperties.buttonColor,
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: () {
-                        _pickFiles();
+                    if (pickedFile != null)
+                      SizedBox(
+                        height: 200.0,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.file(
+                            File(pickedFile!.path!),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    if (_images.isNotEmpty)
+                      Column(
+                        children:
+                            _images.map((image) => Image.file(image)).toList(),
+                      ),
+                    if (showLikeCommentSection)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextButton.icon(
+                              onPressed: onLikeButtonPressed,
+                              icon: Icon(
+                                isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isLiked ? Colors.red : null,
+                              ),
+                              label: Text(
+                                likeCount.toString(),
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: TextButton.icon(
+                              onPressed: () {
+                                setState(() {
+                                  showAllComments = !showAllComments;
+                                });
+                              },
+                              icon: Icon(
+                                Icons.mode_comment,
+                                color: Colors.grey,
+                              ),
+                              label: Text(
+                                comments.length.toString(),
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    if (showAllComments ||
+                        (comments.isNotEmpty && comments.length <= 2))
+                      ...comments
+                          .asMap()
+                          .entries
+                          .map(
+                            (entry) => ListTile(
+                              leading: CircleAvatar(
+                                radius: 20.0,
+                                backgroundImage:
+                                    AssetImage('assets/images/nature.jpg'),
+                              ),
+                              title: Text('itsme'),
+                              subtitle: Text(entry.value),
+                            ),
+                          )
+                          .toList(),
+                    if (comments.isNotEmpty &&
+                        comments.length > 2 &&
+                        !showAllComments)
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            showAllComments = true;
+                          });
+                        },
+                        child: Text(
+                          'View all comments',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ),
+                    if (showAllComments ||
+                        (comments.isNotEmpty && comments.length <= 2))
+                      Divider(
+                        color: Colors.grey,
+                      ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: Text('Add a Comment'),
+                            content: TextField(
+                              controller: _textFieldController,
+                              onChanged: (value) {},
+                              onSubmitted: (value) {
+                                addComment(value);
+                                Navigator.pop(context);
+                              },
+                              decoration: InputDecoration(
+                                hintText: 'Write your comment...',
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  String comment =
+                                      _textFieldController.text.trim();
+                                  addComment(comment);
+                                  _textFieldController.clear();
+                                  Navigator.pop(context);
+                                },
+                                child: Text('Add'),
+                              ),
+                            ],
+                          ),
+                        );
                       },
-                    ),
-                    IconButton(
-                      color: myProperties.buttonColor,
-                      icon: Icon(Icons.send),
-                      onPressed: _sendPost,
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.mode_comment,
+                            color: Colors.grey,
+                            size: 18.0,
+                          ),
+                          SizedBox(width: 5.0),
+                          Text(
+                            'Comments',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
-              Container(
-                color: Color.fromARGB(255, 255, 255, 255),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: _images.isNotEmpty
-                            ? CircleAvatar(
-                                radius: 20.0,
-                                backgroundImage:
-                                    AssetImage('assets/images/FL02.png'),
-                              )
-                            : null,
-                        title: _images.isNotEmpty
-                            ? Text(
-                                'jaipandi',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            : null,
-                        contentPadding: EdgeInsets.all(0.0),
-                      ),
-                      Container(
-                        child: Column(
-                          children: _images
-                              .map((image) => Image.file(image))
-                              .toList(),
-                        ),
-                      ),
-                      if (showLikeCommentSection)
-                        Container(
-                          margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                          child: Row(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  GestureDetector(
-                                    onTap: onLikeButtonPressed,
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          isLiked
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          size: 20.0,
-                                          color: isLiked
-                                              ? const Color.fromARGB(
-                                                  255, 206, 0, 0)
-                                              : null,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(likeCount.toString()),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 100),
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        showAllComments = !showAllComments;
-                                      });
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Text(comments.length.toString()),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: Text('Add a Comment'),
-                                      content: TextField(
-                                        controller: _textFieldController,
-                                        onChanged: (value) {},
-                                        onSubmitted: (value) {
-                                          addComment(value);
-                                          Navigator.pop(context);
-                                        },
-                                        decoration: InputDecoration(
-                                          hintText: 'Write your comment...',
-                                        ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text('Cancel'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            String comment = _textFieldController
-                                                .text
-                                                .trim(); // Get the comment from the text field
-                                            addComment(comment);
-                                            _textFieldController.clear();
-                                            Navigator.pop(
-                                                context); // Close the dialog
-                                          },
-                                          child: Text('Add'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.mode_comment,
-                                      size: 18.0,
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text('Comments'),
-                                    if (comments.isNotEmpty)
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      if (showAllComments)
-                        ...comments.asMap().entries.map(
-                              (entry) => ListTile(
-                                leading: CircleAvatar(
-                                  radius: 20.0,
-                                  backgroundImage:
-                                      AssetImage('assets/images/nature.jpg'),
-                                ),
-                                title: Text('itsme'),
-                                subtitle: Text(entry.value),
-                              ),
-                            )
-                      else if (comments.isNotEmpty &&
-                          comments.length <=
-                              2) // Show "View all comments" only if there are comments
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              showAllComments = true;
-                            });
-                          },
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.mode_comment,
-                                size: 18.0,
-                              ),
-                              SizedBox(width: 5),
-                              Text('View all comments'),
-                            ],
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
+              buildProgress(),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget buildProgress() => StreamBuilder<TaskSnapshot>(
+        stream: uploadTask?.snapshotEvents,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.data!;
+            double progress = data.bytesTransferred / data.totalBytes;
+            return LinearProgressIndicator(value: progress);
+          } else {
+            return Container();
+          }
+        },
+      );
 }

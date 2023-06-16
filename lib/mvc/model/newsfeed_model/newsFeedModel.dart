@@ -11,8 +11,7 @@ class NewsFeedModel {
     String photo;
     String like;
     String description;
-    String profilePicture;
-    String name;
+    
 
     NewsFeedModel({
         required this.userId,
@@ -20,8 +19,7 @@ class NewsFeedModel {
         required this.photo,
         required this.like,
         required this.description,
-        required this.profilePicture,
-        required this.name,
+        
     });
 
     factory NewsFeedModel.fromJson(Map<String, dynamic> json) => NewsFeedModel(
@@ -30,8 +28,7 @@ class NewsFeedModel {
         photo: json["photo"],
         like: json["like"],
         description: json["description"],
-        profilePicture: json["profilePicture"],
-        name: json["name"],
+        
     );
 
     Map<String, dynamic> toJson() => {
@@ -40,7 +37,6 @@ class NewsFeedModel {
         "photo": photo,
         "like": like,
         "description": description,
-        "profilePicture": profilePicture,
-        "name": name,
+        
     };
 }
