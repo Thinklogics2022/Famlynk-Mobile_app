@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF0097A0)),
       ),
-      home: SuggestionScreen(),
+      home: LoginPage(),
 
       // FutureBuilder<bool>(
       //   future: isLoggedIn(),

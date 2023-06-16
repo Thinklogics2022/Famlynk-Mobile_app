@@ -1,8 +1,7 @@
-import 'package:famlynk_version1/services/famlistService.dart';
+import 'package:famlynk_version1/mvc/model/famlistModelss.dart';
+import 'package:famlynk_version1/services/famlistServicess.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../services/famListService.dart';
-import '../../../model/famListModel.dart';
 
 class FamilyList extends StatefulWidget {
   @override
@@ -21,8 +20,8 @@ class _FamilyListState extends State<FamilyList> {
   }
 
   Future<void> fetchFamilyMembers() async {
-    PostListOfFamilyMemberService _familyMemberService =
-        PostListOfFamilyMemberService();
+    ShowFamilyMemberService _familyMemberService =
+        ShowFamilyMemberService();
     if (familyList!.isEmpty) {
       try {
         familyList = await _familyMemberService.getFamilyList();
