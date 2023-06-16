@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/view/FamilyTimeLine/familyList/famList.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/suggestion/suggestion.dart';
 import 'package:famlynk_version1/mvc/view/famLogin.dart/login/EmailLogin.dart';
 import 'package:responsive_framework/responsive_framework.dart';
