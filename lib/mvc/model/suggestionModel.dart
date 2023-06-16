@@ -14,39 +14,43 @@ class Suggestion {
   String? profileImage;
   String? address;
   String? uniqueUserId;
+  String? mobileNo;
   Suggestion({
-    this.name,
-    this.gender,
-    this.dateOfBirth,
-    this.email,
-    this.maritalStatus,
-    this.hometown,
-    this.profileImage,
-    this.address,
-    this.uniqueUserId,
+    required this.name,
+    required this.gender,
+    required this.dateOfBirth,
+    required this.email,
+    required this.maritalStatus,
+    required this.hometown,
+    required this.profileImage,
+    required this.address,
+    required this.uniqueUserId,
+    required this.mobileNo,
   });
   factory Suggestion.fromJson(Map<String, dynamic> json) {
     return Suggestion(
       name: json["name"],
       gender: json["gender"],
-      dateOfBirth:json["dateOfBirth"],
+      dateOfBirth: json["dateOfBirth"],
       email: json["email"],
       maritalStatus: json["maritalStatus"],
       hometown: json["hometown"],
       profileImage: json["profileImage"],
       address: json["address"],
       uniqueUserId: json["uniqueUserID"],
+      mobileNo: json["mobileNo"],
     );
   }
   Map<String, dynamic> toJson() => {
         "name": name,
         "gender": gender,
-        "dateOfBirth":dateOfBirth,
+        "dateOfBirth": dateOfBirth,
         "email": email,
         "maritalStatus": maritalStatus,
         "hometown": hometown,
         "profileImage": profileImage,
         "address": address,
         "uniqueUserID": uniqueUserId,
+        "mobileNo": mobileNo
       };
 }
