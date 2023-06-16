@@ -1,32 +1,46 @@
 import 'dart:convert';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../mvc/model/newsfeed_model/newsFeedModel.dart';
 
 class NewsFeedService {
+  String userId = '';
 
-  List<NewsFeedModel> _posts = [];
+  Future<dynamic> postNewsFeed(NewsFeedModel newsFeedModel) async {
+    var url = FamlynkServiceUrl.newsFeed;
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId') ?? '';
 
-  List<NewsFeedModel> get posts => _posts;
+    Map<String, dynamic> obj = {
+      "userId": newsFeedModel.userId,
+      "vedio": newsFeedModel.vedio,
+      "photo": newsFeedModel.photo,
+      "like": newsFeedModel.like,
+      "description": newsFeedModel.description
+    };
 
-  Future<void> fetchPosts() async {
-    final response = await http.get(Uri.parse(FamlynkServiceUrl.addMember));
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      _posts = jsonData.map((data) => NewsFeedModel.fromJson(data)).toList();
-    } else {
-      throw Exception('Failed to fetch posts');
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        body: jsonEncode(obj),
+        headers: {"Content-Type": "application/json"},
+      );
+      if (response.statusCode == 200) {
+        print('object');
+        print(response.body);
+        return response.body;
+      } else {
+        print('post request failed status:${response.statusCode}');
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
-  void addPost(NewsFeedModel post) {
-    _posts.add(post);
-  }
-
-  void deletePost(int index) {
-    if (index >= 0 && index < _posts.length) {
-      _posts.removeAt(index);
-    }
-  }
+  // void deletePost(int index) {
+  //   if (index >= 0 && index < _posts.length) {
+  //     _posts.removeAt(index);
+  //   }
+  // }
 }
-
