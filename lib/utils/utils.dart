@@ -8,4 +8,6 @@ class FamlynkServiceUrl {
   static const String addMember =
       baseUrl + "/familymembers/createfamilymembers/";
   static const String allUser = baseUrl + "/register/retrieveregister";
+  static const String getFamilyMember =
+      baseUrl + "/familymembers/retrievefamilymembersbyuseridss/";
 }
