@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:http/http.dart' as http;
-import '../mvc/model/newsFeedModel.dart';
+import '../mvc/model/newsfeed_model/newsFeedModel.dart';
 
 class NewsFeedService {
 

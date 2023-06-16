@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:famlynk_version1/mvc/model/verifyOtpModel.dart';
+import 'package:famlynk_version1/mvc/model/login_model/verifyOtpModel.dart';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

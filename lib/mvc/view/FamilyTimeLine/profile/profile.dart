@@ -1,10 +1,9 @@
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/profile/logout.dart';
-import 'package:famlynk_version1/mvc/view/FamilyTimeLine/profile/updateRegister.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constants/constVariables.dart';
-import 'addMember.dart';
-import 'gallery.dart';
+import '../addmember/addMember.dart';
+import '../gallery/gallery.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -98,22 +97,6 @@ class _ProfileState extends State<Profile> {
                                   );
                                 },
                                 child: Text("Add family member",
-                                    style: TextStyle(fontSize: 16))),
-                            SizedBox(width: 40),
-                            
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => UpdateRegister()),
-                                  );
-                                },
-                                child: Text("Edit register details",
                                     style: TextStyle(fontSize: 16))),
                             SizedBox(width: 40),
                             

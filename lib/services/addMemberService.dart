@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:famlynk_version1/mvc/model/addMemberModel.dart';
+import 'package:famlynk_version1/mvc/model/addmember_model/addMemberModel.dart';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

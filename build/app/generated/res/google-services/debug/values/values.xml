@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">704652533161-snedebdiqflgtrrmujplm9maq0fj64mp.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">704652533161</string>
+    <string name="google_api_key" translatable="false">AIzaSyBNFJ4ZcHq0c_UoaZOMnsxdjf64J8_bs2k</string>
+    <string name="google_app_id" translatable="false">1:704652533161:android:cb6ded1356bb65e33278b8</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBNFJ4ZcHq0c_UoaZOMnsxdjf64J8_bs2k</string>
+    <string name="google_storage_bucket" translatable="false">flutter-famlynk.appspot.com</string>
+    <string name="project_id" translatable="false">flutter-famlynk</string>
+</resources>
