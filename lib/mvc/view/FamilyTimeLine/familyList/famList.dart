@@ -1,73 +1,86 @@
-import 'package:famlynk_version1/constants/constVariables.dart';
+import 'package:famlynk_version1/services/famlistService.dart';
 import 'package:flutter/material.dart';
 
-class FamilyList extends StatefulWidget {
-  const FamilyList({super.key});
+import '../../../../services/famListService.dart';
+import '../../../model/famListModel.dart';
 
+class FamilyList extends StatefulWidget {
   @override
-  State<FamilyList> createState() => _FamilyListState();
+  _FamilyListState createState() => _FamilyListState();
 }
 
 class _FamilyListState extends State<FamilyList> {
-  MyProperties myProperties = new MyProperties();
+  var isLoaded = false;
+  // List<FamListModel> _familyMembers = [];
+  late List<FamListModel> familyList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFamilyMembers();
+  }
+
+  Future<void> fetchFamilyMembers() async {
+    PostListOfFamilyMemberService _familyMemberService =
+        PostListOfFamilyMemberService();
+    if (familyList!.isEmpty) {
+      try {
+        familyList = await _familyMemberService.getFamilyList();
+        setState(() {
+          isLoaded = true;
+        });
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        
-        child: Column(
-          children: [
-            Card(
-              margin: EdgeInsets.all(10),
-              color: const Color.fromARGB(255, 189, 192, 193),
-              shadowColor: Colors.blueGrey,
-              elevation: 6,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ListTile(
-                      leading: Image.network(
-                          'https://www.newidea.com.au/media/104672/untitled-design-16.jpg?width=720&center=0.0,0.0'),
-                      title: Text('Pandiiii',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold)),
-                      subtitle: Text('Brother', style: TextStyle(fontSize: 13)),
+      body: FutureBuilder(
+          future: fetchFamilyMembers(),
+          builder: (context, data) {
+            return ListView.builder(
+              itemCount: familyList.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: Container(
+                    margin: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: Color.fromARGB(255, 192, 189, 189),
+                    ),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(width: 55),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      'Name : ${familyList[index].name.toString()}',
+                                      style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            Card(
-              margin: EdgeInsets.all(10),
-              color: const Color.fromARGB(255, 189, 192, 193),
-              shadowColor: Colors.blueGrey,
-              elevation: 6,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ListTile(
-                      leading: Image.network(
-                          'https://www.whatsappimages.in/wp-content/uploads/2022/08/aesthetic-girl-wallpaper.jpg'),
-                      title: Text('Sneha',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.bold)),
-                      subtitle: Text('Friend', style: TextStyle(fontSize: 13)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+                );
+              },
+            );
+          }),
     );
   }
 }
