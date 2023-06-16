@@ -12,7 +12,7 @@ class SuggestionScreen extends StatefulWidget {
 }
 
 class _SuggestionScreenState extends State<SuggestionScreen> {
-  late List<Suggestion>? suggestionlist = [];
+  late List<Suggestion> suggestionlist = [];
   var isLoaded = false;
   String currentQuery = '';
   List<Suggestion> filteredSuggestions = [];
@@ -25,7 +25,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
 
   Future<void> fetchSuggestions() async {
     SuggestionService suggestionService = SuggestionService();
-    if (suggestionlist!.isEmpty) {
+    if (suggestionlist.isEmpty) {
       try {
         suggestionlist = await suggestionService.getSuggestions();
         setState(() {
@@ -55,7 +55,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                       onChanged: (value) {
                         setState(() {
                           currentQuery = value;
-                          filteredSuggestions = suggestionlist!
+                          filteredSuggestions = suggestionlist
                               .where((suggestion) => suggestion.name
                                   .toString()
                                   .toLowerCase()
@@ -73,7 +73,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                             borderSide: BorderSide(),
                           ))),
                   suggestionsCallback: (pattern) async {
-                    return suggestionlist!
+                    return suggestionlist
                         .where((suggestion) => suggestion.name
                             .toString()
                             .toLowerCase()
@@ -103,10 +103,11 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                                   hometown: suggestion.hometown.toString(),
                                   maritalStatus:
                                       suggestion.maritalStatus.toString(),
-                                  profileImage:
-                                      suggestion.profileImage.toString(),
+                                  // profileImage:
+                                  //     suggestion.profileImage.toString(),
                                   uniqueUserId:
                                       suggestion.uniqueUserId.toString(),
+                                  mobileNo: suggestion.mobileNo.toString(),
                                 )));
                   },
                 ),
@@ -114,11 +115,11 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
               Expanded(
                 child: ListView.builder(
                   itemCount: currentQuery.isEmpty
-                      ? suggestionlist!.length
+                      ? suggestionlist.length
                       : filteredSuggestions.length,
                   itemBuilder: (context, index) {
                     final suggestion = currentQuery.isEmpty
-                        ? suggestionlist![index]
+                        ? suggestionlist[index]
                         : filteredSuggestions[index];
                     return InkWell(
                       onTap: () {
@@ -135,10 +136,11 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                                       hometown: suggestion.hometown.toString(),
                                       maritalStatus:
                                           suggestion.maritalStatus.toString(),
-                                      profileImage:
-                                          suggestion.profileImage.toString(),
+                                      // profileImage:
+                                      //     suggestion.profileImage.toString(),
                                       uniqueUserId:
                                           suggestion.uniqueUserId.toString(),
+                                      mobileNo: suggestion.mobileNo.toString(),
                                     )));
                       },
                       child: ListTile(
