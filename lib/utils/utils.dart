@@ -1,5 +1,5 @@
 class FamlynkServiceUrl {
-  static const String baseUrl = "http://192.168.1.20:8080";
+  static const String baseUrl = "http://192.168.1.18:8080";
   static const String createUser = baseUrl + "/register/createregister";
   static const String login = baseUrl + "/authenticate/login";
   static const String updateRegister =
