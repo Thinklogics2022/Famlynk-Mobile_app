@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-FamListModel famListModelFromJson(String str) =>
-    FamListModel.fromJson(json.decode(str));
+UpdateFamMemberModel UpdateFamMemberModelFromJson(String str) =>
+    UpdateFamMemberModel.fromJson(json.decode(str));
 
-String famListModelToJson(FamListModel data) => json.encode(data.toJson());
+String UpdateFamMemberModelToJson(UpdateFamMemberModel data) => json.encode(data.toJson());
 
-class FamListModel {
+class UpdateFamMemberModel {
   String? famid;
   String? userId;
   String? name;
@@ -17,7 +17,7 @@ class FamListModel {
   String? email;
   String? uniqueUserId;
 
-  FamListModel({
+  UpdateFamMemberModel({
     this.famid,
     this.userId,
     this.name,
@@ -30,7 +30,7 @@ class FamListModel {
     this.uniqueUserId,
   });
 
-  factory FamListModel.fromJson(Map<String, dynamic> json) => FamListModel(
+  factory UpdateFamMemberModel.fromJson(Map<String, dynamic> json) => UpdateFamMemberModel(
         famid: json["famid"],
         userId: json["userId"],
         name: json["name"],

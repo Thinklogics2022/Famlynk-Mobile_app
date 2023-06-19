@@ -1,22 +1,25 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
-import 'package:famlynk_version1/mvc/model/addmember_model/addMemberModel.dart';
+import 'package:famlynk_version1/mvc/model/updateFamMember.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/familyList/famList.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../services/addMemberService.dart';
 import '../../../controller/dropDown.dart';
 
-class AddMember extends StatefulWidget {
+class UpdateFamMember extends StatefulWidget {
+  const UpdateFamMember({super.key, required this.updateMember});
+
+  final UpdateFamMemberModel updateMember;
+
   @override
-  _AddMemberState createState() => _AddMemberState();
+  _UpdateFamMemberState createState() => _UpdateFamMemberState();
 }
 
-class _AddMemberState extends State<AddMember> {
+class _UpdateFamMemberState extends State<UpdateFamMember> {
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
@@ -63,6 +66,8 @@ class _AddMemberState extends State<AddMember> {
   @override
   void initState() {
     super.initState();
+
+    
     fetchData();
   }
 
@@ -297,27 +302,7 @@ class _AddMemberState extends State<AddMember> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                          onPressed: () {
-                            AddMemberService addMemberService =
-                                AddMemberService();
-                            if (_formKey.currentState!.validate()) {
-                              AddMemberModel addMemberModel = AddMemberModel(
-                                  name: _name.text,
-                                  userId: userId,
-                                  gender: _selectedGender,
-                                  mobileNo: _phNumber.text,
-                                  email: _email.text,
-                                  dob: _dateinput.text,
-                                  relation: dropdownValue1,
-                                  image: profilBase64 ?? "");
-                              addMemberService.addMemberPost(addMemberModel);
-                            }
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FamilyList()));
-                          },
-                          child: Text("Submit")),
+                          onPressed: () {}, child: Text("Submit")),
                     )
                   ],
                 ),
