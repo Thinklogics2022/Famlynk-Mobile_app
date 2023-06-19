@@ -1,4 +1,5 @@
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/familyTree/famTree.dart';
+import 'package:famlynk_version1/mvc/view/FamilyTimeLine/newsFeed/fresh.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/newsFeed/news.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/profile/profile.dart';
