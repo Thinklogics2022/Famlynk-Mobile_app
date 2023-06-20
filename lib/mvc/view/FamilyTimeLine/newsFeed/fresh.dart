@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeedModel.dart';
+import 'package:famlynk_version1/services/newsFeedService.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FreshNewsFeed extends StatefulWidget {
   const FreshNewsFeed({Key? key}) : super(key: key);
@@ -12,6 +15,9 @@ class FreshNewsFeed extends StatefulWidget {
 }
 
 class _FreshNewsFeedState extends State<FreshNewsFeed> {
+  String userId = "";
+  
+
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
 
@@ -19,6 +25,7 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
   int likeCount = 0;
   List<String> comments = [];
   List<File> _images = [];
+
   bool showLikeCommentSection = false;
   bool showAllComments = false; // New variable to track comment visibility
 
@@ -35,22 +42,50 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
   }
 
   void _sendPost() async {
-    final path = 'files/${pickedFile!.name}';
-    final file = File(pickedFile!.path!);
+    try {
+      final path = 'files/${pickedFile!.name}';
+      final file = File(pickedFile!.path!);
 
-    final ref = FirebaseStorage.instance.ref().child(path);
+      final ref = FirebaseStorage.instance.ref().child(path);
+      setState(() {
+        uploadTask = ref.putFile(file);
+      });
+
+      final snapshot = await uploadTask!.whenComplete(() {});
+
+      final urlDownload = await snapshot.ref.getDownloadURL();
+      print('Download Link: $urlDownload');
+
+      NewsFeedService newsFeedService = NewsFeedService();
+      NewsFeedModel newsFeedModel = NewsFeedModel(
+          userId: userId,
+          photo: urlDownload,
+          vedio: 'asdffjklwrtrter',
+          like: likeCount,
+          description: 'lkjtdrsdzfurydyunxbae');
+
+      await newsFeedService.postNewsFeed(newsFeedModel);
+      // setState(() {
+      //   userId = prefs.getString('userId') ?? '';
+
+      //   uploadTask = null;
+      // });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
     setState(() {
-      uploadTask = ref.putFile(file);
+      userId = prefs.getString('userId') ?? '';
     });
+  }
 
-    final snapshot = await uploadTask!.whenComplete(() {});
-
-    final urlDownload = await snapshot.ref.getDownloadURL();
-    print('Download Link: $urlDownload');
-
-    setState(() {
-      uploadTask = null;
-    });
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
   }
 
   void onLikeButtonPressed() {
@@ -113,7 +148,13 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
                         IconButton(
                           color: myProperties.buttonColor,
                           icon: Icon(Icons.send),
-                          onPressed: _sendPost,
+                          onPressed: () {
+                            _sendPost();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FreshNewsFeed()));
+                          },
                         ),
                       ],
                     ),
@@ -132,7 +173,7 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
                     ),
                     if (pickedFile != null)
                       SizedBox(
-                        height: 200.0,
+                        height: 300.0,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.0),
                           child: Image.file(
@@ -159,36 +200,32 @@ class _FreshNewsFeedState extends State<FreshNewsFeed> {
                     if (showLikeCommentSection)
                       Row(
                         children: [
-                          Expanded(
-                            child: TextButton.icon(
-                              onPressed: onLikeButtonPressed,
-                              icon: Icon(
-                                isLiked
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: isLiked ? Colors.red : null,
-                              ),
-                              label: Text(
-                                likeCount.toString(),
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                          TextButton.icon(
+                            onPressed: onLikeButtonPressed,
+                            icon: Icon(
+                              isLiked
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: isLiked ? Colors.red : null,
+                            ),
+                            label: Text(
+                              likeCount.toString(),
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ),
-                          Expanded(
-                            child: TextButton.icon(
-                              onPressed: () {
-                                setState(() {
-                                  showAllComments = !showAllComments;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.mode_comment,
-                                color: Colors.grey,
-                              ),
-                              label: Text(
-                                comments.length.toString(),
-                                style: TextStyle(color: Colors.grey),
-                              ),
+                          TextButton.icon(
+                            onPressed: () {
+                              setState(() {
+                                showAllComments = !showAllComments;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.mode_comment,
+                              color: Colors.grey,
+                            ),
+                            label: Text(
+                              comments.length.toString(),
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ),
                         ],

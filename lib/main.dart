@@ -1,14 +1,18 @@
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/view/FamilyTimeLine/newsFeed/fresh.dart';
 import 'package:famlynk_version1/mvc/view/FamilyTimeLine/suggestion/suggestion.dart';
 import 'package:famlynk_version1/mvc/view/famLogin.dart/login/EmailLogin.dart';
+import 'package:famlynk_version1/utils/default_option.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main()async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
   runApp(const MyApp());
 }
 
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF0097A0)),
       ),
-      home: LoginPage(),
+      home: FreshNewsFeed(),
 
       // FutureBuilder<bool>(
       //   future: isLoggedIn(),

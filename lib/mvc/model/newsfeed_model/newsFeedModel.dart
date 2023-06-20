@@ -6,19 +6,19 @@ NewsFeedModel newsFeedModelFromJson(String str) => NewsFeedModel.fromJson(json.d
 String newsFeedModelToJson(NewsFeedModel data) => json.encode(data.toJson());
 
 class NewsFeedModel {
-    String userId;
-    String vedio;
-    String photo;
-    String like;
-    String description;
+    String? userId;
+    String? vedio;
+    String? photo;
+    int? like;
+    String? description;
     
 
     NewsFeedModel({
-        required this.userId,
-        required this.vedio,
-        required this.photo,
-        required this.like,
-        required this.description,
+         this.userId,
+         this.vedio,
+         this.photo,
+         this.like,
+         this.description,
         
     });
 
