@@ -6,11 +6,13 @@ import '../mvc/model/newsfeed_model/newsFeedModel.dart';
 
 class NewsFeedService {
   String userId = '';
+  String token = '';
 
   Future<dynamic> postNewsFeed(NewsFeedModel newsFeedModel) async {
     var url = FamlynkServiceUrl.newsFeed;
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';
+    token = prefs.getString('token') ?? '';
 
     Map<String, dynamic> obj = {
       "userId": newsFeedModel.userId,
@@ -24,8 +26,10 @@ class NewsFeedService {
       final response = await http.post(
         Uri.parse(url),
         body: jsonEncode(obj),
-        headers: {"Content-Type": "application/json"},
+        headers: {'Authorization': 'Bearer $token'},
+        
       );
+      print(token);
       if (response.statusCode == 200) {
         print('object');
         print(response.body);
