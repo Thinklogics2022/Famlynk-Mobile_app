@@ -1,6 +1,6 @@
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/familyTree/famTree.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/fresh.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/newsFeed.dart';
 import 'package:famlynk_version1/mvc/view/profile/profile.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/suggestion.dart';
 import 'package:famlynk_version1/mvc/view/watsApp_message/message.dart';
@@ -197,7 +197,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
           ),
         ),
         body: TabBarView(controller: _tabController, children: <Widget>[
-          FreshNewsFeed(),
+          FamlynkNewsFeed(),
           // FamilyList(),
           Home(),
           CircleAvatarLayout(),
