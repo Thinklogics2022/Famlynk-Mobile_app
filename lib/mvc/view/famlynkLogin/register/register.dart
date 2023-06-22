@@ -137,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             Row(
                               children: [
                                 Radio(
-                                  value: 'Male',
+                                  value: 'male',
                                   groupValue: _selectedGender,
                                   onChanged: (value) {
                                     setState(() {
@@ -377,7 +377,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               phoneNumber: _phnController.text,
                               // profileImage: profilBase64 ?? ""
                             );
-                            registerService.AddPostMethod(registerModel);
+                            registerService.addRegister(registerModel);
                             print(registerModel.dateOfBirth);
                             print(registerModel);
                             Navigator.push(

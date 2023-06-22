@@ -2,23 +2,27 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
+import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
+
 import 'package:famlynk_version1/mvc/model/updateFamMember_model.dart';
+import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+
+import 'package:famlynk_version1/services/updateFamList_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class UpdateFamList extends StatefulWidget {
+  UpdateFamList({super.key, required this.updateMember});
 
-class UpdateFamMember extends StatefulWidget {
-  const UpdateFamMember({super.key, required this.updateMember});
-
-  final UpdateFamMemberModel updateMember;
+  FamListModel? updateMember;
 
   @override
-  _UpdateFamMemberState createState() => _UpdateFamMemberState();
+  _UpdateFamListState createState() => _UpdateFamListState();
 }
 
-class _UpdateFamMemberState extends State<UpdateFamMember> {
+class _UpdateFamListState extends State<UpdateFamList> {
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
@@ -65,8 +69,14 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
   @override
   void initState() {
     super.initState();
-
-    
+    _name.text = widget.updateMember!.name.toString();
+    _phNumber.text = widget.updateMember!.mobileNo.toString();
+    _email.text = widget.updateMember!.email.toString();
+    _dateinput.text = widget.updateMember!.dob.toString();
+    profilBase64 = widget.updateMember!.image.toString();
+    _selectedGender = widget.updateMember!.gender.toString();
+    dropdownValue1 = widget.updateMember!.relation.toString();
+    UpdateFamListService();
     fetchData();
   }
 
@@ -76,7 +86,7 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Add Member',
+            'Update Family Member',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
@@ -105,15 +115,8 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
                           ),
                           fillColor: Colors.grey.shade200,
                           filled: true,
-                          hintText: 'Enter Name',
+                          hintText: '${widget.updateMember!.name.toString()}',
                           hintStyle: TextStyle(color: Colors.grey[500])),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '*name is required';
-                        } else {
-                          return null;
-                        }
-                      },
                     ),
                     SizedBox(height: 15),
                     Column(
@@ -189,7 +192,7 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
                           ),
                           fillColor: myProperties.fillColor,
                           filled: true,
-                          hintText: 'Date Of Birth',
+                          hintText: '${widget.updateMember!.dob.toString()}',
                           hintStyle: TextStyle(color: Colors.grey[500])),
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
@@ -203,13 +206,6 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
                           setState(() {
                             _dateinput.text = formattedDate;
                           });
-                        }
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '*dob is required';
-                        } else {
-                          return null;
                         }
                       },
                     ),
@@ -226,15 +222,9 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
                           ),
                           fillColor: Colors.grey.shade200,
                           filled: true,
-                          hintText: 'Enter Mobile Number',
+                          hintText:
+                              '${widget.updateMember!.mobileNo.toString()}',
                           hintStyle: TextStyle(color: Colors.grey[500])),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '*mobile number is required';
-                        } else {
-                          return null;
-                        }
-                      },
                       keyboardType: TextInputType.phone,
                     ),
                     SizedBox(height: 15),
@@ -250,18 +240,9 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
                           ),
                           fillColor: Colors.grey.shade200,
                           filled: true,
-                          hintText: 'Enter Email',
+                          hintText: '${widget.updateMember!.email.toString()}',
                           hintStyle: TextStyle(color: Colors.grey[500])),
                       keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "*email is required";
-                        }
-                        if (validateEmail(value)) {
-                          return "*valid email is required";
-                        }
-                        return null;
-                      },
                     ),
                     SizedBox(height: 15),
                     Container(
@@ -277,7 +258,8 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
                             ),
                             fillColor: Colors.grey.shade200,
                             filled: true,
-                            // labelText: 'Select Relation',
+                            hintText:
+                                '${widget.updateMember!.relation.toString()}',
                             hintStyle: TextStyle(color: Colors.grey[500])),
                         dropdownColor: Color.fromARGB(255, 255, 255, 255),
                         value: dropdownValue1,
@@ -301,7 +283,30 @@ class _UpdateFamMemberState extends State<UpdateFamMember> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                          onPressed: () {}, child: Text("Submit")),
+                          onPressed: () {
+                            UpdateFamListService updateFamListService =
+                                UpdateFamListService();
+                            UpdateFamMemberModel updateFamMemberModel =
+                                UpdateFamMemberModel(
+                                    name: _name.text,
+                                    dob: _dateinput.text,
+                                    gender: _selectedGender,
+                                    mobileNo: _phNumber.text,
+                                    famid: widget.updateMember!.famid,
+                                    email: _email.text,
+                                    relation: dropdownValue1,
+                                    image: profilBase64 ?? "");
+
+                            updateFamListService
+                                .putMethod(updateFamMemberModel);
+                            print(updateFamMemberModel.name);
+                            print(updateFamMemberModel.famid);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FamilyList()));
+                          },
+                          child: Text("Update")),
                     )
                   ],
                 ),

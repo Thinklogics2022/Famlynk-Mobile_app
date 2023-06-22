@@ -1,8 +1,7 @@
-import 'package:famlynk_version1/mvc/controller/commonWidgets.dart';
 import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/view/familyList/updateFamList.dart';
 import 'package:famlynk_version1/services/dltFamList_service.dart';
 import 'package:famlynk_version1/services/famlist_servicess.dart';
-import 'package:famlynk_version1/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class FamilyList extends StatefulWidget {
@@ -19,6 +18,7 @@ class _FamilyListState extends State<FamilyList> {
   void initState() {
     super.initState();
     fetchFamilyMembers();
+    ShowFamilyMemberService();
   }
 
   Future<void> fetchFamilyMembers() async {
@@ -39,7 +39,6 @@ class _FamilyListState extends State<FamilyList> {
     try {
       await dltMemberService.deleteFamilyMember(userId, uniqueUserId);
       setState(() {
-        // Update the familyList by removing the deleted member
         familyList.removeWhere((member) =>
             member.userId.toString() == userId &&
             member.uniqueUserId.toString() == uniqueUserId);
@@ -52,6 +51,10 @@ class _FamilyListState extends State<FamilyList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Family List"),
+    automaticallyImplyLeading: false
+      ),
       body: isLoaded
           ? ListView.builder(
               itemCount: familyList.length,
@@ -66,12 +69,12 @@ class _FamilyListState extends State<FamilyList> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: CommonWidget.getImage(
-                            base64String: familyList[index].image.toString(),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8),
+                        //   child: CommonWidget.getImage(
+                        //     base64String: familyList[index].image.toString(),
+                        //   ),
+                        // ),
                         SizedBox(width: 20),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -93,14 +96,13 @@ class _FamilyListState extends State<FamilyList> {
                               PopupMenuItem(
                                 child: TextButton(
                                   onPressed: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             UpdateFamMember(
-                                    //               updateMember:
-                                    //                   familyList[index],
-                                    //             )));
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => UpdateFamList(
+                                                  updateMember:
+                                                      familyList[index],
+                                                )));
                                   },
                                   child: Text("edit"),
                                 ),

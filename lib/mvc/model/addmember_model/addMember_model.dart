@@ -1,4 +1,3 @@
-
 class AddMemberModel {
   AddMemberModel(
       {required this.userId,
@@ -18,7 +17,6 @@ class AddMemberModel {
   String gender;
   String mobileNo;
   String email;
-
   factory AddMemberModel.fromJson(Map<String, dynamic> json) => AddMemberModel(
       userId: json["userId"],
       name: json["name"],
@@ -29,7 +27,6 @@ class AddMemberModel {
       mobileNo: json["mobileNo"],
       email: json["email"],
       );
-
   Map<String, dynamic> toJson() => {
         "userId": userId,
         "name": name,
@@ -41,3 +38,4 @@ class AddMemberModel {
         "email": email
       };
 }
+

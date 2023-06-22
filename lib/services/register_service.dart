@@ -5,7 +5,7 @@ import '../utils/utils.dart';
 
 class RegisterService {
 
-  Future<dynamic> AddPostMethod(RegisterModel registerModel) async {
+  Future<dynamic> addRegister(RegisterModel registerModel) async {
     Map<String, dynamic> obj1 = {
       "name": registerModel.name,
       "gender": registerModel.gender,
@@ -22,7 +22,6 @@ class RegisterService {
         body: jsonEncode(obj1),
         headers: {"Content-Type": "application/json ; charset=UTF-8"},
       );
-      // print(response.body);
       return response.body;
     } catch (e) {
       print(e);
