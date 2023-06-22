@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:famlynk_version1/mvc/model/login_model/loginModel.dart';
+import 'package:famlynk_version1/mvc/model/login_model/login_model.dart';
 import 'package:http/http.dart' as http;
 
 class LoginServices {
