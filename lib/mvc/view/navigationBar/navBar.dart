@@ -20,7 +20,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 5, vsync: this, initialIndex: 0)
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 0)
       ..addListener(() {
         setState(() {});
       });
@@ -40,7 +40,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                   value: 1,
                   child: Row(
                     children: [
-                       Text(
+                      Text(
                         "add member",
                         style: TextStyle(color: Colors.black),
                       ),
@@ -58,7 +58,6 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                       SizedBox(
                         width: 10,
                       ),
-
                     ],
                   ),
                 ),
@@ -66,7 +65,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                   value: 2,
                   child: Row(
                     children: [
-                       Text(
+                      Text(
                         "notifications",
                         style: TextStyle(color: Colors.black),
                       ),
@@ -77,15 +76,14 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                       SizedBox(
                         width: 10,
                       ),
-
                     ],
                   ),
                 ),
                 PopupMenuItem(
-                  value: 2,
+                  value: 3,
                   child: Row(
                     children: [
-                       Text(
+                      Text(
                         "search",
                         style: TextStyle(color: Colors.black),
                       ),
@@ -103,7 +101,31 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                       SizedBox(
                         width: 10,
                       ),
-
+                    ],
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 4,
+                  child: Row(
+                    children: [
+                      Text(
+                        "FamilyList",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FamilyList()));
+                          },
+                          icon: Icon(
+                            Icons.search,
+                            color: Colors.black,
+                          )),
+                      SizedBox(
+                        width: 10,
+                      ),
                     ],
                   ),
                 ),
@@ -144,13 +166,13 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
                   size: 25.0,
                 ),
               ),
-              Tab(
-                icon: Icon(
-                  FontAwesomeIcons.peopleGroup,
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  size: 25.0,
-                ),
-              ),
+              // Tab(
+              //   icon: Icon(
+              //     FontAwesomeIcons.peopleGroup,
+              //     color: Color.fromARGB(255, 255, 255, 255),
+              //     size: 25.0,
+              //   ),
+              // ),
               Tab(
                 icon: Icon(
                   FontAwesomeIcons.whatsapp,
@@ -176,7 +198,7 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
         ),
         body: TabBarView(controller: _tabController, children: <Widget>[
           FreshNewsFeed(),
-          FamilyList(),
+          // FamilyList(),
           Home(),
           CircleAvatarLayout(),
           Profile(),
@@ -185,4 +207,3 @@ class _NavBarState extends State<NavBar> with SingleTickerProviderStateMixin {
     );
   }
 }
-

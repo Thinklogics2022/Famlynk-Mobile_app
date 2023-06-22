@@ -1,15 +1,17 @@
+
 import 'dart:convert';
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/addmember_model/addMember_model.dart';
 import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:famlynk_version1/services/addMember_service.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../services/addMember_service.dart';
 
 class AddMember extends StatefulWidget {
   @override
@@ -226,10 +228,12 @@ class _AddMemberState extends State<AddMember> {
                           hintStyle: TextStyle(color: Colors.grey[500])),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return '*mobile number is required';
-                        } else {
-                          return null;
+                          return "*mobile number is required";
                         }
+                        if (value.length != 10) {
+                          return "Mobile number must be 10 digits";
+                        }
+                        return null;
                       },
                       keyboardType: TextInputType.phone,
                     ),
@@ -297,28 +301,36 @@ class _AddMemberState extends State<AddMember> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                          onPressed: () {
-                            AddMemberService addMemberService =
-                                AddMemberService();
-                            if (_formKey.currentState!.validate()) {
-                              AddMemberModel addMemberModel = AddMemberModel(
-                                  name: _name.text,
-                                  userId: userId,
-                                  gender: _selectedGender,
-                                  mobileNo: _phNumber.text,
-                                  email: _email.text,
-                                  dob: _dateinput.text,
-                                  relation: dropdownValue1,
-                                  image: profilBase64 ?? "");
-                              addMemberService.addMemberPost(addMemberModel);
-                            }
+                        onPressed: () {
+                          AddMemberService addMemberService =
+                              AddMemberService();
+                          if (_formKey.currentState!.validate()) {
+                            AddMemberModel addMemberModel = AddMemberModel(
+                                name: _name.text,
+                                gender: _selectedGender,
+                                relation: dropdownValue1,
+                                dob: _dateinput.text,
+                                userId: userId,
+                                email: _email.text,
+                                mobileNo: _phNumber.text,
+                                image: profilBase64 ?? "");
+                            addMemberService.addMemberPost(addMemberModel);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => FamilyList()));
-                          },
-                          child: Text("Submit")),
-                    )
+                          }
+                        },
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
