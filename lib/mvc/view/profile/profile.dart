@@ -5,6 +5,7 @@ import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
 import 'package:famlynk_version1/mvc/view/gallery/gallery.dart';
 import 'package:famlynk_version1/mvc/view/profile/edit.dart';
 import 'package:famlynk_version1/mvc/view/profile/logout.dart';
+import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -194,6 +195,24 @@ class _ProfileState extends State<Profile> {
                           color: Colors.grey,
                         ),
                         InkWell(
+                          onTap: () {
+                           Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserDetailsPage(
+                  User(
+                    name: 'John Doe',
+                    dob: DateTime(1990, 6, 15),
+                    gender: 'Male',
+                    email: 'johndoe@example.com',
+                    phone: '1234567890',
+                    address: '123 Street, City',
+                    image: 'https://example.com/profile_image.jpg',
+                  ),
+                ),
+              ),
+            );
+                          },
                           child: CustomListTile(
                               icon: Icons.account_circle_rounded,
                               text: "User Details"),
@@ -212,18 +231,19 @@ class _ProfileState extends State<Profile> {
                   // crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => FamlynkLogout()));
-                        },
-                        child: Text(
-                          "Logout",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        )),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => FamlynkLogout()));
+                      },
+                      child: Text(
+                        "Logout",
+                        style: TextStyle(
+                          fontSize: 20.0,
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],

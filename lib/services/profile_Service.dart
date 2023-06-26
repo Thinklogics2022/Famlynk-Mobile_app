@@ -1,4 +1,4 @@
-import 'package:famlynk_version1/mvc/model/profile_model.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
 
 class ProfileService {
   Future<User> fetchUserProfile(String userId) async {
