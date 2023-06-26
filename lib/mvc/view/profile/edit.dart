@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:famlynk_version1/constants/constVariables.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -24,8 +22,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String _selectedGender = '';
 
   List<File> _imagesFile = [];
-  PlatformFile? pickedFile;
-  UploadTask? uploadTask;
 
   @override
   void dispose() {
@@ -40,6 +36,22 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.initState();
     nameController.text = "Dor Alex";
     _selectedGender = "male";
+  }
+
+  Future<void> uploadImageToFirebaseStorage(File imageFile) async {
+    String fileName = path.basename(imageFile.path);
+    firebase_storage.Reference storageReference = firebase_storage
+        .FirebaseStorage.instance
+        .ref()
+        .child('profile_images')
+        .child(fileName);
+
+    firebase_storage.UploadTask uploadTask =
+        storageReference.putFile(imageFile);
+
+    String downloadURL = await (await uploadTask).ref.getDownloadURL();
+
+    print('Download URL: $downloadURL');
   }
 
   @override
@@ -181,6 +193,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 String email = emailController.text;
                 print(fullName);
                 print(email);
+                if (_imagesFile.isNotEmpty) {
+                  // Upload the image to Firebase Storage
+                  uploadImageToFirebaseStorage(_imagesFile.first);
+                } else {
+                  // No image selected
+                }
+
                 // Perform save operation using the entered values
               },
               style: ElevatedButton.styleFrom(

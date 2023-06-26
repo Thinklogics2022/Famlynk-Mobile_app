@@ -53,7 +53,7 @@ class _FamilyListState extends State<FamilyList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Family List"),
-    automaticallyImplyLeading: false
+        // automaticallyImplyLeading: false
       ),
       body: isLoaded
           ? ListView.builder(

@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
@@ -6,12 +5,12 @@ import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/addmember_model/addMember_model.dart';
 import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
 import 'package:famlynk_version1/services/addMember_service.dart';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AddMember extends StatefulWidget {
   @override
@@ -19,6 +18,10 @@ class AddMember extends StatefulWidget {
 }
 
 class _AddMemberState extends State<AddMember> {
+  final firebase_storage.Reference storageRef =
+      firebase_storage.FirebaseStorage.instance.ref();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  File? imageFile;
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
@@ -30,7 +33,7 @@ class _AddMemberState extends State<AddMember> {
   String _selectedGender = '';
   String dropdownValue1 = 'Select Relation';
   String? profilBase64;
-  File? _imageFile;
+
   String userId = "";
 
   bool validateEmail(String value) {
@@ -39,26 +42,10 @@ class _AddMemberState extends State<AddMember> {
     return !regex.hasMatch(value);
   }
 
-  final ImagePicker _picker = ImagePicker();
-
   Future<void> fetchData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = prefs.getString('userId') ?? '';
-    });
-  }
-
-  void _pickImageBase64() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image == null) return;
-
-    List<int> imagebyte = await image.readAsBytes();
-
-    profilBase64 = base64.encode(imagebyte);
-
-    final imagetemppath = File(image.path);
-    setState(() {
-      this._imageFile = imagetemppath;
     });
   }
 
@@ -87,7 +74,7 @@ class _AddMemberState extends State<AddMember> {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    imageprofile(_imageFile),
+                    imageprofile(),
                     SizedBox(
                       height: 20,
                     ),
@@ -301,11 +288,19 @@ class _AddMemberState extends State<AddMember> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                        onPressed: () {
-                          AddMemberService addMemberService =
-                              AddMemberService();
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            AddMemberModel addMemberModel = AddMemberModel(
+                            // Upload image to Firebase Storage
+                            if (imageFile != null) {
+                              final storageResult = await storageRef
+                                  .child('profile_images/${_name.text}')
+                                  .putFile(imageFile!);
+                              final imageUrl =
+                                  await storageResult.ref.getDownloadURL();
+
+                              AddMemberService addMemberService =
+                                  AddMemberService();
+                              AddMemberModel addMemberModel = AddMemberModel(
                                 name: _name.text,
                                 gender: _selectedGender,
                                 relation: dropdownValue1,
@@ -313,12 +308,19 @@ class _AddMemberState extends State<AddMember> {
                                 userId: userId,
                                 email: _email.text,
                                 mobileNo: _phNumber.text,
-                                image: profilBase64 ?? "");
-                            addMemberService.addMemberPost(addMemberModel);
-                            Navigator.push(
+                                image: imageUrl,
+                              );
+                              addMemberService.addMemberPost(addMemberModel);
+                              // Save AddMemberModel to Firestore
+                              // await firestore.collection('members').add(addMemberModel.toMap());
+
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => FamilyList()));
+                                  builder: (context) => FamilyList(),
+                                ),
+                              );
+                            }
                           }
                         },
                         child: Text(
@@ -341,7 +343,7 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 
-  Widget imageprofile(File? imageFile) {
+  Widget imageprofile() {
     return Center(
       child: Stack(
         children: <Widget>[
@@ -349,25 +351,27 @@ class _AddMemberState extends State<AddMember> {
             width: 130,
             height: 130,
             child: GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: ((builder) => bottomSheet()),
-                  );
-                },
-                child: ClipOval(
-                  child: _imageFile == null
-                      ? Center(
-                          child: Icon(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: ((builder) => bottomSheet()),
+                );
+              },
+              child: ClipOval(
+                child: imageFile == null
+                    ? Center(
+                        child: Icon(
                           Icons.account_circle,
                           color: Color.fromARGB(255, 124, 124, 124),
                           size: 140,
-                        ))
-                      : Image.file(
-                          _imageFile!,
-                          fit: BoxFit.cover,
                         ),
-                )),
+                      )
+                    : Image.file(
+                        imageFile!,
+                        fit: BoxFit.cover,
+                      ),
+              ),
+            ),
           ),
         ],
       ),
@@ -397,8 +401,15 @@ class _AddMemberState extends State<AddMember> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               IconButton(
-                onPressed: () {
-                  _pickImageBase64();
+                onPressed: () async {
+                  final picker = ImagePicker();
+                  final pickedImage =
+                      await picker.pickImage(source: ImageSource.gallery);
+                  if (pickedImage != null) {
+                    setState(() {
+                      imageFile = File(pickedImage.path);
+                    });
+                  }
                 },
                 icon: Icon(Icons.image),
               ),

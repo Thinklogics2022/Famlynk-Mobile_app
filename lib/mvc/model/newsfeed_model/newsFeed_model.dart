@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final newsFeedModel = newsFeedModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -9,26 +6,26 @@ NewsFeedModel newsFeedModelFromJson(String str) => NewsFeedModel.fromJson(json.d
 String newsFeedModelToJson(NewsFeedModel data) => json.encode(data.toJson());
 
 class NewsFeedModel {
-    String name;
-    String newsFeedId;
-    String profilePicture;
-    String userId;
-    String vedio;
-    String photo;
-    int like;
-    String description;
-    String createdOn;
+    String? name;
+    String? newsFeedId;
+    String? profilePicture;
+    String? userId;
+    String? vedio;
+    String? photo;
+    int? like;
+    String? description;
+    String? createdOn;
 
     NewsFeedModel({
-        required this.name,
-        required this.newsFeedId,
-        required this.profilePicture,
-        required this.userId,
-        required this.vedio,
-        required this.photo,
-        required this.like,
-        required this.description,
-        required this.createdOn,
+         this.name,
+         this.newsFeedId,
+         this.profilePicture,
+         this.userId,
+         this.vedio,
+         this.photo,
+         this.like,
+         this.description,
+         this.createdOn,
     });
 
     factory NewsFeedModel.fromJson(Map<String, dynamic> json) => NewsFeedModel(

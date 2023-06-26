@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'addImage.dart';
@@ -10,6 +11,10 @@ class FamlynkNewsFeed extends StatefulWidget {
 }
 
 class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
+    String name ='';
+    
+  List<String> downloadedImageUrls = [];
+
   Future<void> deleteImage(String docId) async {
     try {
       await FirebaseFirestore.instance
@@ -24,15 +29,20 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
 
   @override
   Widget build(BuildContext context) {
+    
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
+        
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (context) => AddImage()));
         },
       ),
-      body: Container(
+      body: 
+      Container(
+        
         child: StreamBuilder<QuerySnapshot>(
           stream:
               FirebaseFirestore.instance.collection('imageURLs').snapshots(),
@@ -47,16 +57,23 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
               );
             } else {
               final documents = snapshot.data!.docs;
+              downloadedImageUrls = documents.map((doc) => doc.get('url') as String).toList();
+              for (String url in downloadedImageUrls) {
+              print(url);
+            }
               return ListView.builder(
+                
                 itemCount: documents.length,
                 itemBuilder: (context, index) {
                   final imageUrl = documents[index].get('url') as String;
+                  
                   return Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
+                            
                             CircleAvatar(),
                             SizedBox(
                               width: 10,
@@ -64,8 +81,8 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('jaipandi'),
-                                Text('02:20-22-06-2023'),
+                                Text('jai'),
+                                Text('05:20-26-06-2023'),
                               ],
                             ),
                             Spacer(),

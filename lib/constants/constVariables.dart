@@ -1,9 +1,40 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+
+
 
 class MyProperties {
-  Color backgroundColor = Color(0xFF0097A0);
-  Color buttonColor = Color(0xFF0097A0);
+  Color backgroundColor = Color.fromARGB(255, 15, 99, 104);
+  Color buttonColor = Color.fromARGB(255, 15, 99, 104);
   double fontSize = 18.0;
-  Color textColor = Color(0xFF0097A0);
+  Color textColor = Color.fromARGB(255, 15, 99, 104);
   Color fillColor = Colors.grey.shade200;
+}
+
+
+class FirebaseUtils {
+  static firebase_storage.Reference storageRef =
+      firebase_storage.FirebaseStorage.instance.ref();
+
+  static Future<File?> getImageFile(String imagePath) async {
+    try {
+      final String downloadUrl = await storageRef.child(imagePath).getDownloadURL();
+      final HttpClient httpClient = HttpClient();
+      final HttpClientRequest request = await httpClient.getUrl(Uri.parse(downloadUrl));
+      final HttpClientResponse response = await request.close();
+      if (response.statusCode == 200) {
+        final bytes = await consolidateHttpClientResponseBytes(response);
+        final tempDir = await getTemporaryDirectory();
+        final File file = File('${tempDir.path}/temp_image.jpg');
+        await file.writeAsBytes(bytes);
+        return file;
+      }
+    } catch (e) {
+      print('Error getting image from Firebase: $e');
+    }
+    return null;
+  }
 }
