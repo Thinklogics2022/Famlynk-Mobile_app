@@ -5,12 +5,10 @@ import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
 class EditProfilePage extends StatefulWidget {
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
-
 class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -20,24 +18,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController maritalStatusController = TextEditingController();
   TextEditingController _dateinput = TextEditingController();
   String _selectedGender = '';
-
   List<File> _imagesFile = [];
-
   @override
   void dispose() {
     nameController.dispose();
     emailController.dispose();
-
     super.dispose();
   }
-
   @override
   void initState() {
     super.initState();
     nameController.text = "Dor Alex";
     _selectedGender = "male";
   }
-
   Future<void> uploadImageToFirebaseStorage(File imageFile) async {
     String fileName = path.basename(imageFile.path);
     firebase_storage.Reference storageReference = firebase_storage
@@ -45,15 +38,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         .ref()
         .child('profile_images')
         .child(fileName);
-
     firebase_storage.UploadTask uploadTask =
         storageReference.putFile(imageFile);
-
     String downloadURL = await (await uploadTask).ref.getDownloadURL();
-
     print('Download URL: $downloadURL');
   }
-
   @override
   Widget build(BuildContext context) {
     MyProperties myProperties = MyProperties();
@@ -199,7 +188,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 } else {
                   // No image selected
                 }
-
                 // Perform save operation using the entered values
               },
               style: ElevatedButton.styleFrom(
@@ -220,7 +208,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-
   Widget buildTextField(String labelText, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
@@ -243,7 +230,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-
   Widget imageprofile() {
     return Center(
       child: Stack(
@@ -308,7 +294,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-
   Widget bottomSheet() {
     return Container(
       height: 100,
@@ -353,7 +338,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       ),
     );
   }
-
   void takePhoto(ImageSource source) async {
     final ImagePicker _picker = ImagePicker();
     final pickedFile = await _picker.pickImage(source: source);
