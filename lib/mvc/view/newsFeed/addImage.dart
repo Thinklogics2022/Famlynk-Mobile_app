@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
+import 'package:famlynk_version1/services/newsFeed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as Path;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddImage extends StatefulWidget {
   @override
@@ -11,6 +14,9 @@ class AddImage extends StatefulWidget {
 }
 
 class _AddImageState extends State<AddImage> {
+  late String uploadedImageUrl;
+  String userId = '';
+  String name ='';
   bool uploading = false;
   double val = 0;
   late CollectionReference imgRef;
@@ -44,7 +50,27 @@ class _AddImageState extends State<AddImage> {
               setState(() {
                 uploading = true;
               });
-              uploadFile().whenComplete(() => Navigator.of(context).pop());
+              uploadFile().whenComplete(() async {
+                final prefs = await SharedPreferences.getInstance();
+                userId = prefs.getString('userId') ?? '';
+                name = prefs.getString('name')??'';
+                NewsFeedService newsFeedService = NewsFeedService();
+                final newsFeedModel = NewsFeedModel(
+                  userId: userId.toString(),
+                  name: name.toString(),
+                  newsFeedId: '',
+                  profilePicture: '',
+                  createdOn: '',
+                  vedio: '',
+                  photo: uploadedImageUrl.toString(),
+                  like: 0,
+                  description: _descriptionController.text.toString(),
+                );
+
+                newsFeedService.postNewsFeed(newsFeedModel);
+
+                Navigator.of(context).pop();
+              });
             },
             child: Text(
               'Upload',
@@ -143,7 +169,11 @@ class _AddImageState extends State<AddImage> {
           .child('images/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
-          imgRef.add({'url': value, 'description': description});
+          imgRef.add({'url': value, 'description': description}).then((docRef) {
+            setState(() {
+              uploadedImageUrl = value;
+            });
+          });
           i++;
         });
       });
