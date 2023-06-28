@@ -204,6 +204,7 @@ class _NavBarState extends State<NavBar> {
               ),
               label: 'Home',
             ),
+            
             BottomNavigationBarItem(
               icon: Icon(
                 FontAwesomeIcons.whatsapp,

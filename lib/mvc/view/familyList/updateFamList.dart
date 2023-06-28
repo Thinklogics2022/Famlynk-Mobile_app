@@ -6,6 +6,8 @@ import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
 
 import 'package:famlynk_version1/mvc/model/updateFamMember_model.dart';
 import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:famlynk_version1/services/updateFamList_service.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,10 @@ class UpdateFamList extends StatefulWidget {
 }
 
 class _UpdateFamListState extends State<UpdateFamList> {
+  final firebase_storage.Reference storageRef =
+      firebase_storage.FirebaseStorage.instance.ref();
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
@@ -34,7 +40,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
   String _selectedGender = '';
   String dropdownValue1 = 'Select Relation';
   String? profilBase64;
-  File? _imageFile;
+  File? imageFile;
   String userId = "";
 
   bool validateEmail(String value) {
@@ -62,7 +68,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
 
     final imagetemppath = File(image.path);
     setState(() {
-      this._imageFile = imagetemppath;
+      this.imageFile = imagetemppath;
     });
   }
 
@@ -76,7 +82,6 @@ class _UpdateFamListState extends State<UpdateFamList> {
     profilBase64 = widget.updateMember!.image.toString();
     _selectedGender = widget.updateMember!.gender.toString();
     dropdownValue1 = widget.updateMember!.relation.toString();
-    UpdateFamListService();
     fetchData();
   }
 
@@ -99,7 +104,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    imageprofile(_imageFile),
+                    imageprofile(imageFile),
                     SizedBox(
                       height: 20,
                     ),
@@ -283,30 +288,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                          onPressed: () {
-                            UpdateFamListService updateFamListService =
-                                UpdateFamListService();
-                            UpdateFamMemberModel updateFamMemberModel =
-                                UpdateFamMemberModel(
-                                    name: _name.text,
-                                    dob: _dateinput.text,
-                                    gender: _selectedGender,
-                                    mobileNo: _phNumber.text,
-                                    famid: widget.updateMember!.famid,
-                                    email: _email.text,
-                                    relation: dropdownValue1,
-                                    image: profilBase64 ?? "");
-
-                            updateFamListService
-                                .putMethod(updateFamMemberModel);
-                            print(updateFamMemberModel.name);
-                            print(updateFamMemberModel.famid);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FamilyList()));
-                          },
-                          child: Text("Update")),
+                          onPressed: _submitForm, child: Text("Update")),
                     )
                   ],
                 ),
@@ -316,6 +298,34 @@ class _UpdateFamListState extends State<UpdateFamList> {
         ),
       ),
     );
+  }
+
+  void _submitForm() async {
+    if (imageFile != null) {
+      final storageResult = await storageRef
+          .child('profile_images/${_name.text}')
+          .putFile(imageFile!);
+      final imageUrl = await storageResult.ref.getDownloadURL();
+
+      UpdateFamListService updateFamListService = UpdateFamListService();
+      UpdateFamMemberModel updateFamMemberModel = UpdateFamMemberModel(
+          name: _name.text,
+          dob: _dateinput.text,
+          gender: _selectedGender,
+          mobileNo: _phNumber.text,
+          famid: widget.updateMember!.famid,
+          email: _email.text,
+          userId: widget.updateMember!.userId,
+          uniqueUserID: widget.updateMember!.uniqueUserId,
+          relation: dropdownValue1,
+          image: imageUrl);
+
+      updateFamListService.updateFamMember(updateFamMemberModel);
+      print(updateFamMemberModel.name);
+      print(updateFamMemberModel.famid);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => FamilyList()));
+    }
   }
 
   Widget imageprofile(File? imageFile) {
@@ -333,15 +343,14 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   );
                 },
                 child: ClipOval(
-                  child: _imageFile == null
-                      ? Center(
-                          child: Icon(
-                          Icons.account_circle,
-                          color: Color.fromARGB(255, 124, 124, 124),
-                          size: 140,
-                        ))
+                  child: imageFile == null
+                      ? CircleAvatar(
+                          radius: 35,
+                          backgroundImage: NetworkImage(
+                              widget.updateMember!.image.toString()),
+                        )
                       : Image.file(
-                          _imageFile!,
+                          imageFile,
                           fit: BoxFit.cover,
                         ),
                 )),

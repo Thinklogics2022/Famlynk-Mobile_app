@@ -17,4 +17,6 @@ class FamlynkServiceUrl {
   static const String newsFeed = baseUrl + "/newsfeed/createnewsfeed";
   static const String updateFamilyMember =
       baseUrl + "/familymembers/updatefamilymembers/";
+  static const String updatePassword =
+      baseUrl + "/register/updatepasswordbyemail/";
 }

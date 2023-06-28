@@ -56,10 +56,20 @@ class _AddMemberState extends State<AddMember> {
   }
 
   @override
+  void dispose() {
+    _name.dispose();
+    _dateinput.dispose();
+    _phNumber.dispose();
+    _email.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             'Add Member',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -288,41 +298,7 @@ class _AddMemberState extends State<AddMember> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            // Upload image to Firebase Storage
-                            if (imageFile != null) {
-                              final storageResult = await storageRef
-                                  .child('profile_images/${_name.text}')
-                                  .putFile(imageFile!);
-                              final imageUrl =
-                                  await storageResult.ref.getDownloadURL();
-
-                              AddMemberService addMemberService =
-                                  AddMemberService();
-                              AddMemberModel addMemberModel = AddMemberModel(
-                                name: _name.text,
-                                gender: _selectedGender,
-                                relation: dropdownValue1,
-                                dob: _dateinput.text,
-                                userId: userId,
-                                email: _email.text,
-                                mobileNo: _phNumber.text,
-                                image: imageUrl,
-                              );
-                              addMemberService.addMemberPost(addMemberModel);
-                              // Save AddMemberModel to Firestore
-                              // await firestore.collection('members').add(addMemberModel.toMap());
-
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FamilyList(),
-                                ),
-                              );
-                            }
-                          }
-                        },
+                        onPressed: _submitForm,
                         child: Text(
                           'Submit',
                           style: TextStyle(
@@ -332,7 +308,7 @@ class _AddMemberState extends State<AddMember> {
                           ),
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -343,6 +319,41 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 
+
+void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      // Upload image to Firebase Storage
+      if (imageFile != null) {
+        final storageResult = await storageRef
+            .child('profile_images/${_name.text}')
+            .putFile(imageFile!);
+        final imageUrl = await storageResult.ref.getDownloadURL();
+
+        AddMemberService addMemberService = AddMemberService();
+        AddMemberModel addMemberModel = AddMemberModel(
+          name: _name.text,
+          gender: _selectedGender,
+          relation: dropdownValue1,
+          dob: _dateinput.text,
+          userId: userId,
+          email: _email.text,
+          mobileNo: _phNumber.text,
+          image: imageUrl,
+        );
+        addMemberService.addMemberPost(addMemberModel);
+        // Save AddMemberModel to Firestore
+        // await firestore.collection('members').add(addMemberModel.toMap());
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FamilyList(),
+          ),
+        );
+      }
+    }
+  }
+  
   Widget imageprofile() {
     return Center(
       child: Stack(
@@ -377,6 +388,8 @@ class _AddMemberState extends State<AddMember> {
       ),
     );
   }
+
+  
 
   Widget bottomSheet() {
     return Container(
