@@ -3,7 +3,8 @@ import 'dart:convert';
 UpdateFamMemberModel UpdateFamMemberModelFromJson(String str) =>
     UpdateFamMemberModel.fromJson(json.decode(str));
 
-String UpdateFamMemberModelToJson(UpdateFamMemberModel data) => json.encode(data.toJson());
+String UpdateFamMemberModelToJson(UpdateFamMemberModel data) =>
+    json.encode(data.toJson());
 
 class UpdateFamMemberModel {
   String? famid;
@@ -15,7 +16,7 @@ class UpdateFamMemberModel {
   String? gender;
   String? mobileNo;
   String? email;
-  String? uniqueUserId;
+  String? uniqueUserID;
 
   UpdateFamMemberModel({
     this.famid,
@@ -27,10 +28,11 @@ class UpdateFamMemberModel {
     this.gender,
     this.mobileNo,
     this.email,
-    this.uniqueUserId,
+    this.uniqueUserID,
   });
 
-  factory UpdateFamMemberModel.fromJson(Map<String, dynamic> json) => UpdateFamMemberModel(
+  factory UpdateFamMemberModel.fromJson(Map<String, dynamic> json) =>
+      UpdateFamMemberModel(
         famid: json["famid"],
         userId: json["userId"],
         name: json["name"],
@@ -40,7 +42,7 @@ class UpdateFamMemberModel {
         gender: json["gender"],
         mobileNo: json["mobileNo"],
         email: json["email"],
-        uniqueUserId: json["uniqueUserID"],
+        uniqueUserID: json["uniqueUserID"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -53,6 +55,6 @@ class UpdateFamMemberModel {
         "gender": gender,
         "mobileNo": mobileNo,
         "email": email,
-        "uniqueUserID": uniqueUserId,
+        "uniqueUserID": uniqueUserID,
       };
 }

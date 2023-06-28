@@ -7,6 +7,7 @@ class DltMemberService {
       "userId": userId,
       "uniqueUserId": uniqueUserId
     };
+    print(mapObj);
 
     try {
       var response = await http.delete(
@@ -18,6 +19,8 @@ class DltMemberService {
       );
 
       print("Deleted sucessfuly");
+      print(response.body);
+      print(response.statusCode);
       return response.body;
     } catch (e) {
       print("Member not deleted ");

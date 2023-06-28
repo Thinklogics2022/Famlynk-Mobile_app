@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class UpdateFamListService {
   String token = "";
-  Future<dynamic> putMethod(UpdateFamMemberModel data) async {
+  Future<dynamic> updateFamMember(UpdateFamMemberModel data) async {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token') ?? '';
     Map<String, dynamic> updatefam = {
@@ -18,7 +18,8 @@ class UpdateFamListService {
       "relation": data.relation,
       "dob": data.dob,
       "image": data.image,
-      "famid": data.famid
+      "famid": data.famid,
+      "userId": data.userId
     };
 
     try {
@@ -30,12 +31,9 @@ class UpdateFamListService {
           "Authorization": "Bearer $token",
         },
       );
-      print(token);
 
       if (response.statusCode == 200 || response.statusCode == 202) {
-        print('updated sucessfully');
-        print(response.request);
-        return response;
+        return response.body;
       } else {
         print("Update request failed with : ${response.statusCode}");
       }

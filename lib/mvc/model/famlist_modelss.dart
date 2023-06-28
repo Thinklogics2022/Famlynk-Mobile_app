@@ -16,6 +16,7 @@ class FamListModel {
   String? mobileNo;
   String? email;
   String? uniqueUserId;
+  
 
   FamListModel({
     this.famid,
@@ -30,7 +31,7 @@ class FamListModel {
     this.uniqueUserId,
   });
 
-  factory FamListModel.fromJson(Map<String, dynamic> json) => FamListModel(
+  factory FamListModel.fromJson(Map<String, dynamic>  json) => FamListModel(
         famid: json["famid"],
         userId: json["userId"],
         name: json["name"],

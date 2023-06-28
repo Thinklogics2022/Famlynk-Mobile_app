@@ -13,16 +13,16 @@ class _FamilyListState extends State<FamilyList> {
   var isLoaded = false;
   List<FamListModel> familyList = [];
   DltMemberService dltMemberService = DltMemberService();
+  ShowFamilyMemberService _familyMemberService = ShowFamilyMemberService();
 
   @override
   void initState() {
     super.initState();
+
     fetchFamilyMembers();
-    ShowFamilyMemberService();
   }
 
   Future<void> fetchFamilyMembers() async {
-    ShowFamilyMemberService _familyMemberService = ShowFamilyMemberService();
     if (familyList.isEmpty) {
       try {
         familyList = await _familyMemberService.getFamilyList();
@@ -51,10 +51,8 @@ class _FamilyListState extends State<FamilyList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Family List"),
-        // automaticallyImplyLeading: false
-      ),
+      appBar:
+          AppBar(title: Text("Family List"), automaticallyImplyLeading: false),
       body: isLoaded
           ? ListView.builder(
               itemCount: familyList.length,
@@ -69,24 +67,24 @@ class _FamilyListState extends State<FamilyList> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.all(8),
-                        //   child: CommonWidget.getImage(
-                        //     base64String: familyList[index].image.toString(),
-                        //   ),
-                        // ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            radius: 35,
+                            backgroundImage: NetworkImage(
+                                familyList[index].image.toString()),
+                          ),
+                        ),
                         SizedBox(width: 20),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              'Name  : ${familyList[index].name.toString()}',
-                              style: TextStyle(fontSize: 17),
+                              familyList[index].name.toString(),
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                              'Relation : ${familyList[index].relation.toString()}',
-                              style: TextStyle(fontSize: 17),
-                            ),
+                            Text(familyList[index].relation.toString())
                           ],
                         ),
                         Spacer(),
