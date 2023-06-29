@@ -1,36 +1,100 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/services/newsFeed_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:path/path.dart' as Path;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AddImage extends StatefulWidget {
+class AddImagePage extends StatefulWidget {
   @override
-  _AddImageState createState() => _AddImageState();
+  _AddImagePageState createState() => _AddImagePageState();
 }
 
-class _AddImageState extends State<AddImage> {
-  late String uploadedImageUrl;
+class _AddImagePageState extends State<AddImagePage> {
+  final TextEditingController _descriptionController = TextEditingController();
   String userId = '';
-  String name ='';
+  String name = '';
+  String uniqueUserID = '';
   bool uploading = false;
-  double val = 0;
   late CollectionReference imgRef;
-  late firebase_storage.Reference ref;
+  List<File> _imagesFile = [];
+  late Reference ref;
 
-  List<File> _image = [];
   final picker = ImagePicker();
-  late TextEditingController _descriptionController;
 
   @override
   void initState() {
-    super.initState();
     imgRef = FirebaseFirestore.instance.collection('imageURLs');
-    _descriptionController = TextEditingController();
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId') ?? '';
+      name = prefs.getString('name') ?? '';
+      uniqueUserID = prefs.getString('uniqueUserID') ?? '';
+    });
+  }
+
+  void _postNewsFeed() async {
+    
+
+      String photo = '';
+
+    if (_imagesFile.isNotEmpty) {
+      final imageFile = _imagesFile.first;
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('profile_images/$fileName');
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      photo = await taskSnapshot.ref.getDownloadURL();
+    }
+      String profilePicture = 'assets/images/FL03.png';
+      String vedio = '';
+      int like = 0.toInt();
+      String description = _descriptionController.text;
+      List<String> userLikes = [];
+
+      if (description.isNotEmpty) {
+      NewsFeedModel newsFeedModel = NewsFeedModel(
+        userId: userId,
+        name: name,
+        profilePicture: profilePicture,
+        vedio: vedio,
+        photo: photo,
+        like: like,
+        description: description,
+        uniqueUserID: uniqueUserID,
+        userLikes: userLikes,
+      );
+      NewsFeedService newsFeedService = NewsFeedService();
+      newsFeedService.postNewsFeed(newsFeedModel);
+      Navigator.pop(context);
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Please enter a description.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -44,138 +108,117 @@ class _AddImageState extends State<AddImage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Image'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              setState(() {
-                uploading = true;
-              });
-              uploadFile().whenComplete(() async {
-                final prefs = await SharedPreferences.getInstance();
-                userId = prefs.getString('userId') ?? '';
-                name = prefs.getString('name')??'';
-                NewsFeedService newsFeedService = NewsFeedService();
-                final newsFeedModel = NewsFeedModel(
-                  userId: userId.toString(),
-                  name: name.toString(),
-                  newsFeedId: '',
-                  profilePicture: '',
-                  createdOn: '',
-                  vedio: '',
-                  photo: uploadedImageUrl.toString(),
-                  like: 0,
-                  description: _descriptionController.text.toString(),
-                );
-
-                newsFeedService.postNewsFeed(newsFeedModel);
-
-                Navigator.of(context).pop();
-              });
-            },
-            child: Text(
-              'Upload',
-              style: TextStyle(color: Colors.white),
-            ),
-          )
-        ],
       ),
-      body: Stack(
-        children: [
-          Container(
-            padding: EdgeInsets.all(4),
-            child: Column(
+      body: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: _image.length + 1,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
-                  itemBuilder: (context, index) {
-                    return index == 0
-                        ? Center(
-                            child: IconButton(
-                              icon: Icon(Icons.camera_alt),
-                              onPressed: () =>
-                                  !uploading ? chooseImage() : null,
-                            ),
-                          )
-                        : Container(
-                            margin: EdgeInsets.all(3),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: FileImage(_image[index - 1]),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                  },
+                CircleAvatar(
+                  radius: 30,
                 ),
-                SizedBox(height: 10),
-                TextField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    labelText: 'Description',
+                SizedBox(width: 10),
+                Text("${name}"),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _descriptionController,
+                    decoration: InputDecoration(hintText: 'Description'),
                   ),
+                ),
+                SizedBox(width: 20),
+                InkWell(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: ((builder) => bottomSheet()),
+                    );
+                  },
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 4,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                      ),
+                      color: Colors.green,
+                    ),
+                    child: Icon(
+                      Icons.camera_alt,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 20),
+                GestureDetector(
+                  onTap: _postNewsFeed,
+                  child: Icon(Icons.send_sharp),
                 ),
               ],
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: <Widget>[
+          Text(
+            'Choose Profile Photo',
+            style: TextStyle(
+              fontSize: 20,
+            ),
           ),
-          uploading
-              ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        child: Text(
-                          'Uploading...',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      CircularProgressIndicator(
-                        value: val,
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
-                      ),
-                    ],
-                  ),
-                )
-              : Container(),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton.icon(
+                icon: Icon(Icons.camera),
+                onPressed: () {
+                  takePhoto(ImageSource.camera);
+                  Navigator.pop(context);
+                },
+                label: Text('Camera'),
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.image),
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                  Navigator.pop(context);
+                },
+                label: Text('Gallery'),
+              ),
+            ],
+          ),
         ],
       ),
     );
   }
 
-  chooseImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
-        _image.add(File(pickedFile.path));
-      });
-    }
-  }
-
-  Future uploadFile() async {
-    int i = 1;
-    final description = _descriptionController.text;
-
-    for (var img in _image) {
-      setState(() {
-        val = i / _image.length;
-      });
-      ref = firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('images/${Path.basename(img.path)}');
-      await ref.putFile(img).whenComplete(() async {
-        await ref.getDownloadURL().then((value) {
-          imgRef.add({'url': value, 'description': description}).then((docRef) {
-            setState(() {
-              uploadedImageUrl = value;
-            });
-          });
-          i++;
-        });
+        _imagesFile.clear();
+        _imagesFile.add(File(pickedFile.path));
       });
     }
   }

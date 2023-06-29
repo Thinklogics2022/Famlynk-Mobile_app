@@ -14,9 +14,15 @@ class FamlynkServiceUrl {
   static const String searchAddMember = baseUrl + "/familymembers/addfamily";
   static const String deleteFamilyMember =
       baseUrl + "/familymembers/deletefamilymember/";
-  static const String newsFeed = baseUrl + "/newsfeed/createnewsfeed";
+  static const String postNewsFeed = baseUrl + "/newsfeed/createnewsfeed";
+  static const String getNewsFeed =
+      baseUrl + "/newsfeed/retrievenewsfeedbyuserid/{userId}";
+  static const String like = baseUrl + "/newsfeed/likes/{userId}/{newsFeedId}";
+  static const String postComment = baseUrl + "/comment/createcomment";
+  static const String getComment = baseUrl + "/comment/retrievecommentbyid/{newsFeedId}";
   static const String updateFamilyMember =
       baseUrl + "/familymembers/updatefamilymembers/";
   static const String updatePassword =
       baseUrl + "/register/updatepasswordbyemail/";
+  static const String gallery = baseUrl + "/retrieveusernewsfeed/";
 }

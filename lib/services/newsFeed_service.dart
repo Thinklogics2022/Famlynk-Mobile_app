@@ -1,45 +1,33 @@
 import 'dart:convert';
+
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/utils/utils.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../mvc/model/newsfeed_model/newsFeed_model.dart';
+import 'package:http/http.dart' as http;
 
 class NewsFeedService {
   String token = '';
 
-  Future<dynamic> postNewsFeed(NewsFeedModel newsFeedModel) async {
-    var url = FamlynkServiceUrl.newsFeed;
+  Future<void> postNewsFeed(NewsFeedModel newsFeedModel) async {
+    var postNewsFeedUrl = FamlynkServiceUrl.postNewsFeed;
     final prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token') ?? '';
-
-    Map<String, dynamic> obj = {
-      "userId": newsFeedModel.userId,
-      "name": newsFeedModel.name,
-      "newsFeedId": newsFeedModel.newsFeedId,
-      "profilePicture": newsFeedModel.profilePicture,
-      "createdOn": newsFeedModel.createdOn,
-      "vedio": newsFeedModel.vedio,
-      "photo": newsFeedModel.photo,
-      "like": newsFeedModel.like,
-      "description": newsFeedModel.description
-    };
-
     try {
       final response = await http.post(
-        Uri.parse(url),
-        body: jsonEncode(obj),
-        headers: {'Authorization': 'Bearer $token'},
+        Uri.parse(postNewsFeedUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': "Bearer $token",
+        },
+        body: jsonEncode(newsFeedModel.toJson()),
       );
-      print(token);
       if (response.statusCode == 200) {
-        print('object');
-        print(response.body);
-        return response.body;
+        print('News feed posted successfully');
       } else {
-        print('post request failed status:${response.statusCode}');
+        print('Failed to post news feed');
       }
     } catch (e) {
-      print(e);
+      print('Exception occurred while posting news feed: $e');
     }
   }
 }

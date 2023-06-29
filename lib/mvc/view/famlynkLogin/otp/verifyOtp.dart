@@ -111,6 +111,10 @@ import 'package:famlynk_version1/services/verifyOtp_service.dart';
 import 'package:flutter/material.dart';
 
 class OTPPage extends StatefulWidget {
+  OTPPage({
+    this.userId,
+  });
+  final String? userId;
   @override
   _OTPPageState createState() => _OTPPageState();
 }
@@ -171,7 +175,7 @@ class _OTPPageState extends State<OTPPage> {
   }
 
   void _resendOTP() async {
-    bool isResent = await _otpService.resendOTP();
+    bool isResent = await _otpService.resendOTP(widget.userId.toString());
     if (isResent) {
       showDialog(
         context: context,

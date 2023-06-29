@@ -26,9 +26,8 @@ class OTPService {
     return result;
   }
 
-  Future<bool> resendOTP() async {
+  Future<bool> resendOTP(String userId) async {
     final prefs = await SharedPreferences.getInstance();
-    userId = prefs.getString('userId') ?? '';
     token = prefs.getString('token') ?? '';
     var url = FamlynkServiceUrl.resendOtp;
     try {
