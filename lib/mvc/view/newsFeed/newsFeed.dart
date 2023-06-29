@@ -1,9 +1,7 @@
+import 'package:famlynk_version1/mvc/view/newsFeed/addImage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transparent_image/transparent_image.dart';
-
-import 'addImage.dart';
 
 class FamlynkNewsFeed extends StatefulWidget {
   @override
@@ -11,8 +9,6 @@ class FamlynkNewsFeed extends StatefulWidget {
 }
 
 class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
-    String name ='';
-    
   List<String> downloadedImageUrls = [];
 
   Future<void> deleteImage(String docId) async {
@@ -29,23 +25,16 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
 
   @override
   Widget build(BuildContext context) {
-    
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AddImage()));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddImagePage()));
         },
       ),
-      body: 
-      Container(
-        
+      body: Container(
         child: StreamBuilder<QuerySnapshot>(
-          stream:
-              FirebaseFirestore.instance.collection('imageURLs').snapshots(),
+          stream: FirebaseFirestore.instance.collection('imageURLs').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
@@ -58,26 +47,18 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
             } else {
               final documents = snapshot.data!.docs;
               downloadedImageUrls = documents.map((doc) => doc.get('url') as String).toList();
-              for (String url in downloadedImageUrls) {
-              print(url);
-            }
               return ListView.builder(
-                
                 itemCount: documents.length,
                 itemBuilder: (context, index) {
                   final imageUrl = documents[index].get('url') as String;
-                  
                   return Column(
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
-                            
                             CircleAvatar(),
-                            SizedBox(
-                              width: 10,
-                            ),
+                            SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -98,8 +79,7 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
                                       children: [
                                         Icon(Icons.delete, size: 18),
                                         SizedBox(width: 6),
-                                        Text('Delete',
-                                            style: TextStyle(fontSize: 14)),
+                                        Text('Delete', style: TextStyle(fontSize: 14)),
                                       ],
                                     ),
                                   ),
@@ -108,7 +88,7 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
                               onSelected: (value) {
                                 deleteImage(documents[value].id);
                               },
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -122,12 +102,9 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
                           ),
                         ),
                       ),
-                      Divider(
-                        thickness: .5,
-                      ),
+                      Divider(thickness: .5),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 08, vertical: 1),
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -145,9 +122,7 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
                           ],
                         ),
                       ),
-                      Divider(
-                        thickness: 2.0,
-                      ),
+                      Divider(thickness: 2.0),
                     ],
                   );
                 },
