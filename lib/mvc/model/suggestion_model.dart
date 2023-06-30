@@ -13,7 +13,7 @@ class Suggestion {
   String? hometown;
   String? profileImage;
   String? address;
-  String? uniqueUserId;
+  String? uniqueUserID;
   String? mobileNo;
   Suggestion({
     required this.name,
@@ -24,7 +24,7 @@ class Suggestion {
     required this.hometown,
     required this.profileImage,
     required this.address,
-    required this.uniqueUserId,
+    required this.uniqueUserID,
     required this.mobileNo,
   });
   factory Suggestion.fromJson(Map<String, dynamic> json) {
@@ -37,7 +37,7 @@ class Suggestion {
       hometown: json["hometown"],
       profileImage: json["profileImage"],
       address: json["address"],
-      uniqueUserId: json["uniqueUserID"],
+      uniqueUserID: json["uniqueUserID"],
       mobileNo: json["mobileNo"],
     );
   }
@@ -50,7 +50,7 @@ class Suggestion {
         "hometown": hometown,
         "profileImage": profileImage,
         "address": address,
-        "uniqueUserID": uniqueUserId,
+        "uniqueUserID": uniqueUserID,
         "mobileNo": mobileNo
       };
 }

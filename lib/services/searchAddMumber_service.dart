@@ -17,7 +17,7 @@ class SearchAddMemberService {
     final url = Uri.parse(urls +
         userId +
         "/" +
-        searchAddMemberModel.uniqueUserId +
+        searchAddMemberModel.uniqueUserID +
         "/" +
         searchAddMemberModel.relation);
 
@@ -30,7 +30,7 @@ class SearchAddMemberService {
       "userId": searchAddMemberModel.userId,
       "image": searchAddMemberModel.image,
       "mobileNo": searchAddMemberModel.mobileNo,
-      "uniqueUserID": searchAddMemberModel.uniqueUserId,
+      "uniqueUserID": searchAddMemberModel.uniqueUserID,
       "relation": searchAddMemberModel.relation,
       // "createdOn": searchAddMemberModel.createdOn,
       // "modifiedOn": searchAddMemberModel.modifiedOn,

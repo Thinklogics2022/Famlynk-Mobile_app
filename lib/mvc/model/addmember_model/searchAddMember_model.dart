@@ -14,10 +14,10 @@ class SearchAddMember {
   String userId;
   String image;
   String mobileNo;
-  String uniqueUserId;
+  String uniqueUserID;
   String relation;
-  DateTime? createdOn;
-  DateTime? modifiedOn;
+  String? createdOn;
+  String? modifiedOn;
   SearchAddMember(
       {required this.famid,
       required this.name,
@@ -27,7 +27,7 @@ class SearchAddMember {
       required this.userId,
       required this.image,
       required this.mobileNo,
-      required this.uniqueUserId,
+      required this.uniqueUserID,
       required this.relation,
       this.createdOn,
       this.modifiedOn});
@@ -41,7 +41,7 @@ class SearchAddMember {
         userId: json["userId"],
         image: json["image"],
         mobileNo: json["mobileNo"],
-        uniqueUserId: json["uniqueUserID"],
+        uniqueUserID: json["uniqueUserID"],
         relation: json["relation"],
         createdOn: json["createdOn"],
         modifiedOn: json["modifiedOn"]);
@@ -55,7 +55,7 @@ class SearchAddMember {
         "userId": userId,
         "image": image,
         "mobileNo": mobileNo,
-        "uniqueUserID": uniqueUserId,
+        "uniqueUserID": uniqueUserID,
         "relation": relation,
         "createdOn": createdOn,
         "modifiedOn": modifiedOn,

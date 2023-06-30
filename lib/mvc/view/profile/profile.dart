@@ -160,7 +160,7 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Gallery()),
+                                  builder: (context) => MediaPage()),
                             );
                           },
                         ),
