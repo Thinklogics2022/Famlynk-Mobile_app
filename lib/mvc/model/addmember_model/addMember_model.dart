@@ -8,7 +8,7 @@ class AddMemberModel {
       required this.gender,
       required this.mobileNo,
       required this.email,
-      });
+      required this.uniqueUserID});
   String userId;
   String name;
   String dob;
@@ -17,15 +17,17 @@ class AddMemberModel {
   String gender;
   String mobileNo;
   String email;
+  String uniqueUserID;
   factory AddMemberModel.fromJson(Map<String, dynamic> json) => AddMemberModel(
-      userId: json["userId"],
-      name: json["name"],
-      dob: json["dob"],
-      image: json["image"],
-      relation: json["relation"],
-      gender: json["gender"],
-      mobileNo: json["mobileNo"],
-      email: json["email"],
+        userId: json["userId"],
+        name: json["name"],
+        dob: json["dob"],
+        image: json["image"],
+        relation: json["relation"],
+        gender: json["gender"],
+        mobileNo: json["mobileNo"],
+        email: json["email"],
+        uniqueUserID : json["uniqueUserID"]
       );
   Map<String, dynamic> toJson() => {
         "userId": userId,
@@ -35,7 +37,7 @@ class AddMemberModel {
         "relation": relation,
         "gender": gender,
         "mobileNo": mobileNo,
-        "email": email
+        "email": email,
+        "uniqueUserID" : uniqueUserID
       };
 }
-

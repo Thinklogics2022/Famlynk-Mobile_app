@@ -1,11 +1,16 @@
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DltMemberService {
-  Future<dynamic> deleteFamilyMember(String userId, String uniqueUserId) async {
+  String userId = "";
+  Future<dynamic> deleteFamilyMember(String userId, String uniqueUserID) async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId') ?? '';
+
     Map<String, dynamic> mapObj = {
       "userId": userId,
-      "uniqueUserId": uniqueUserId
+      "uniqueUserID": uniqueUserID
     };
     print(mapObj);
 
@@ -14,14 +19,15 @@ class DltMemberService {
         Uri.parse(FamlynkServiceUrl.deleteFamilyMember +
             "$userId" +
             "/" +
-            "$uniqueUserId"),
+            "$uniqueUserID"),
         headers: {"Content-Type": "application/json ; charset=UTF-8"},
       );
-
-      print("Deleted sucessfuly");
-      print(response.body);
-      print(response.statusCode);
-      return response.body;
+      if (response.statusCode == 200) {
+        print("Deleted sucessfuly");
+        print(response.body);
+        print(response.statusCode);
+        return response.body;
+      }
     } catch (e) {
       print("Member not deleted ");
     }

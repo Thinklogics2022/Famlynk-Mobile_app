@@ -288,7 +288,34 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                          onPressed: _submitForm, child: Text("Update")),
+                          onPressed: () async {
+                            UpdateFamListService updateFamListService =
+                                UpdateFamListService();
+                            UpdateFamMemberModel updateFamMemberModel =
+                                UpdateFamMemberModel(
+                                    name: _name.text,
+                                    dob: _dateinput.text,
+                                    gender: _selectedGender,
+                                    mobileNo: _phNumber.text,
+                                    famid: widget.updateMember!.famid,
+                                    email: _email.text,
+                                    userId: widget.updateMember!.userId,
+                                    uniqueUserID:
+                                        widget.updateMember!.uniqueUserID,
+                                    relation: dropdownValue1,
+                                    image: profilBase64);
+
+                            updateFamListService
+                                .updateFamMember(updateFamMemberModel);
+                            print(updateFamMemberModel.userId);
+                            print(updateFamMemberModel.name);
+                            print(updateFamMemberModel.famid);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FamilyList()));
+                          },
+                          child: Text("Update")),
                     )
                   ],
                 ),
@@ -298,34 +325,6 @@ class _UpdateFamListState extends State<UpdateFamList> {
         ),
       ),
     );
-  }
-
-  void _submitForm() async {
-    if (imageFile != null) {
-      final storageResult = await storageRef
-          .child('profile_images/${_name.text}')
-          .putFile(imageFile!);
-      final imageUrl = await storageResult.ref.getDownloadURL();
-
-      UpdateFamListService updateFamListService = UpdateFamListService();
-      UpdateFamMemberModel updateFamMemberModel = UpdateFamMemberModel(
-          name: _name.text,
-          dob: _dateinput.text,
-          gender: _selectedGender,
-          mobileNo: _phNumber.text,
-          famid: widget.updateMember!.famid,
-          email: _email.text,
-          userId: widget.updateMember!.userId,
-          uniqueUserID: widget.updateMember!.uniqueUserId,
-          relation: dropdownValue1,
-          image: imageUrl);
-
-      updateFamListService.updateFamMember(updateFamMemberModel);
-      print(updateFamMemberModel.name);
-      print(updateFamMemberModel.famid);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => FamilyList()));
-    }
   }
 
   Widget imageprofile(File? imageFile) {
