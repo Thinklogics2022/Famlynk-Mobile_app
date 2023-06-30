@@ -17,7 +17,7 @@ class UserDetailsPage extends StatefulWidget {
       this.hometown,
       this.profileImage,
       this.address,
-      this.uniqueUserId,
+      this.uniqueUserID,
       this.mobileNo});
   final String? name;
   final String? gender;
@@ -27,7 +27,7 @@ class UserDetailsPage extends StatefulWidget {
   final String? hometown;
   final String? profileImage;
   final String? address;
-  final String? uniqueUserId;
+  final String? uniqueUserID;
   final String? mobileNo;
   @override
   _UserDetailsPageState createState() => _UserDetailsPageState();
@@ -159,12 +159,13 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                         userId: userId,
                         image: widget.profileImage.toString(),
                         mobileNo: widget.mobileNo.toString(),
-                        uniqueUserId: widget.uniqueUserId.toString(),
+                        uniqueUserID: widget.uniqueUserID.toString(),
                         relation: dropdownValue1,
                         // createdOn: ,
                         // modifiedOn: ,
                       );
-                      await searchAddMemberService.searchAddMemberPost(searchAddMember);
+                      await searchAddMemberService
+                          .searchAddMemberPost(searchAddMember);
                     } catch (e) {
                       print(e.toString());
                     }

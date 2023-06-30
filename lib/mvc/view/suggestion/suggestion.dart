@@ -105,8 +105,8 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                                       suggestion.maritalStatus.toString(),
                                   // profileImage:
                                   //     suggestion.profileImage.toString(),
-                                  uniqueUserId:
-                                      suggestion.uniqueUserId.toString(),
+                                  uniqueUserID:
+                                      suggestion.uniqueUserID.toString(),
                                   mobileNo: suggestion.mobileNo.toString(),
                                 )));
                   },
@@ -138,8 +138,8 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                                           suggestion.maritalStatus.toString(),
                                       // profileImage:
                                       //     suggestion.profileImage.toString(),
-                                      uniqueUserId:
-                                          suggestion.uniqueUserId.toString(),
+                                      uniqueUserID:
+                                          suggestion.uniqueUserID.toString(),
                                       mobileNo: suggestion.mobileNo.toString(),
                                     )));
                       },

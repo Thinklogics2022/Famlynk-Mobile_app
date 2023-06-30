@@ -1,9 +1,16 @@
+import 'dart:convert';
+
+NewsFeedModel newsFeedModelFromJson(String str) =>
+    NewsFeedModel.fromJson(json.decode(str));
+
+String newsFeedModelToJson(NewsFeedModel data) => json.encode(data.toJson());
+
 class NewsFeedModel {
   final String userId;
   final String name;
   final String? newsFeedId;
   final String profilePicture;
-  final DateTime? createdOn;
+  final String? createdOn;
   final String vedio;
   final String photo;
   final int like;
