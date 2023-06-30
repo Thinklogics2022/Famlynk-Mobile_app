@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddMember extends StatefulWidget {
@@ -20,7 +19,6 @@ class AddMember extends StatefulWidget {
 class _AddMemberState extends State<AddMember> {
   final firebase_storage.Reference storageRef =
       firebase_storage.FirebaseStorage.instance.ref();
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
   File? imageFile;
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
@@ -55,21 +53,20 @@ class _AddMemberState extends State<AddMember> {
     fetchData();
   }
 
-  @override
-  void dispose() {
-    _name.dispose();
-    _dateinput.dispose();
-    _phNumber.dispose();
-    _email.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _name.dispose();
+  //   _dateinput.dispose();
+  //   _phNumber.dispose();
+  //   _email.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           title: Text(
             'Add Member',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -319,10 +316,8 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 
-
-void _submitForm() async {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      // Upload image to Firebase Storage
       if (imageFile != null) {
         final storageResult = await storageRef
             .child('profile_images/${_name.text}')
@@ -339,12 +334,14 @@ void _submitForm() async {
           email: _email.text,
           mobileNo: _phNumber.text,
           image: imageUrl,
+          uniqueUserID : ""
         );
+        print(addMemberModel.userId);
         addMemberService.addMemberPost(addMemberModel);
         // Save AddMemberModel to Firestore
         // await firestore.collection('members').add(addMemberModel.toMap());
 
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => FamilyList(),
@@ -353,7 +350,7 @@ void _submitForm() async {
       }
     }
   }
-  
+
   Widget imageprofile() {
     return Center(
       child: Stack(
@@ -372,7 +369,8 @@ void _submitForm() async {
                 child: imageFile == null
                     ? Center(
                         child: Icon(
-                          Icons.account_circle,
+                          // Icons.account_circle,
+                          Icons.account_circle_sharp,
                           color: Color.fromARGB(255, 124, 124, 124),
                           size: 140,
                         ),
@@ -388,8 +386,6 @@ void _submitForm() async {
       ),
     );
   }
-
-  
 
   Widget bottomSheet() {
     return Container(

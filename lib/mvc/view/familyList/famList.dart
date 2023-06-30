@@ -35,24 +35,10 @@ class _FamilyListState extends State<FamilyList> {
     }
   }
 
-  Future<void> deleteFamilyMember(String userId, String uniqueUserId) async {
-    try {
-      await dltMemberService.deleteFamilyMember(userId, uniqueUserId);
-      setState(() {
-        familyList.removeWhere((member) =>
-            member.userId.toString() == userId &&
-            member.uniqueUserId.toString() == uniqueUserId);
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          AppBar(title: Text("Family List"), automaticallyImplyLeading: false),
+      appBar: AppBar(title: Text("Family List")),
       body: isLoaded
           ? ListView.builder(
               itemCount: familyList.length,
@@ -84,7 +70,9 @@ class _FamilyListState extends State<FamilyList> {
                               style: TextStyle(
                                   fontSize: 17, fontWeight: FontWeight.bold),
                             ),
-                            Text(familyList[index].relation.toString())
+                            Text(familyList[index].relation.toString()),
+                            // Text(familyList[index].userId.toString()),
+                            // Text(familyList[index].uniqueUserID.toString())
                           ],
                         ),
                         Spacer(),
@@ -109,9 +97,12 @@ class _FamilyListState extends State<FamilyList> {
                                 child: TextButton(
                                   onPressed: () {
                                     _showMyDialog(
-                                      familyList[index].uniqueUserId.toString(),
                                       familyList[index].userId.toString(),
+                                      familyList[index].uniqueUserID.toString(),
                                     );
+                                    print(familyList[index]
+                                        .uniqueUserID
+                                        .toString());
                                   },
                                   child: Text("delete"),
                                 ),
@@ -131,7 +122,7 @@ class _FamilyListState extends State<FamilyList> {
     );
   }
 
-  Future<void> _showMyDialog(String userId, String uniqueUserId) async {
+  Future<void> _showMyDialog(String userId, String uniqueUserID) async {
     return showDialog<void>(
         context: context,
         builder: (BuildContext context) {
@@ -153,9 +144,9 @@ class _FamilyListState extends State<FamilyList> {
                 TextButton(
                   child: Text('Confirm'),
                   onPressed: () {
-                    Navigator.push(context,
+                    Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) => FamilyList()));
-                    dltMemberService.deleteFamilyMember(userId, uniqueUserId);
+                    dltMemberService.deleteFamilyMember(userId, uniqueUserID);
                   },
                 ),
               ]);

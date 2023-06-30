@@ -35,47 +35,24 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(25),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Image.asset(
-                  "assets/images/lock.jpg",
-                  height: 120,
-                ),
-                SizedBox(height: 25),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    icon: const Icon(Icons.email),
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey.shade400),
-                    ),
-                    fillColor: Colors.grey.shade200,
-                    filled: true,
-                    hintText: 'Email',
-                    hintStyle: const TextStyle(color: Colors.grey),
+        child: Card(
+          
+          child: Container(
+            padding: const EdgeInsets.all(25),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Image.asset(
+                    "assets/images/lock.jpg",
+                    height: 120,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "* Email is required";
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _newPasswordController,
-                  obscureText: !isPasswordVisible,
-                  decoration: InputDecoration(
-                      icon: const Icon(Icons.lock),
+                  SizedBox(height: 25),
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      icon: const Icon(Icons.email, color: Colors.green,),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
@@ -84,77 +61,103 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       ),
                       fillColor: Colors.grey.shade200,
                       filled: true,
-                      hintText: 'New Password',
+                      hintText: 'Email',
                       hintStyle: const TextStyle(color: Colors.grey),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
-                        child: Icon(isPasswordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                      )),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '* New password is required';
-                    }
-                    if (value.length < 8) {
-                      return '* Password should be at least 8 characters';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  obscureText: !isConfirmPswdVisible,
-                  decoration: InputDecoration(
-                      icon: const Icon(Icons.lock),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "* Email is required";
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _newPasswordController,
+                    obscureText: !isPasswordVisible,
+                    decoration: InputDecoration(
+                        icon: const Icon(Icons.lock, color: Colors.green,),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.shade400),
+                        ),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        hintText: 'New Password',
+                        hintStyle: const TextStyle(color: Colors.grey),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isPasswordVisible = !isPasswordVisible;
+                            });
+                          },
+                          child: Icon(isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off, color: Colors.green,),
+                        )),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return '* New password is required';
+                      }
+                      if (value.length < 8) {
+                        return '* Password should be at least 8 characters';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: !isConfirmPswdVisible,
+                    decoration: InputDecoration(
+                        icon: const Icon(Icons.lock, color: Colors.green,),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.shade400),
+                        ),
+                        fillColor: Colors.grey.shade200,
+                        filled: true,
+                        hintText: 'Confirm Password',
+                        hintStyle: const TextStyle(color: Colors.grey),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isConfirmPswdVisible = !isConfirmPswdVisible;
+                            });
+                          },
+                          child: Icon(isConfirmPswdVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off, color: Colors.green,),
+                        )),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return '* Confirm password is required';
+                      }
+                      if (value != _newPasswordController.text) {
+                        return '* Passwords do not match';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 25),
+                  ElevatedButton(
+                    onPressed: _submitForm,
+                    child: const Text(
+                      'Reset Password',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
-                      hintText: 'Confirm Password',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isConfirmPswdVisible = !isConfirmPswdVisible;
-                          });
-                        },
-                        child: Icon(isConfirmPswdVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                      )),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return '* Confirm password is required';
-                    }
-                    if (value != _newPasswordController.text) {
-                      return '* Passwords do not match';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 25),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: const Text(
-                    'Reset Password',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

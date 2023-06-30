@@ -21,7 +21,8 @@ class AddMemberService {
       "relation": addMemberModel.relation,
       "dob": addMemberModel.dob,
       "image": addMemberModel.image,
-      "userId": addMemberModel.userId
+      "userId": addMemberModel.userId,
+      "uniqueUserID" : addMemberModel.uniqueUserID
     };
 
     try {
