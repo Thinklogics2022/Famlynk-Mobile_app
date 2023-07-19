@@ -50,9 +50,9 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed>
     });
   }
 
-  bool isPostLiked(String postId) {
-    return likedPosts.contains(postId);
-  }
+  // bool isPostLiked(String postId) {
+  //   return likedPosts.contains(postId);
+  // }
 
   Future<bool> onWillpop() async {
     DateTime currentTime = DateTime.now();
