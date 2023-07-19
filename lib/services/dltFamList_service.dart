@@ -24,8 +24,7 @@ class DltMemberService {
       );
       if (response.statusCode == 200) {
         print("Deleted sucessfuly");
-        print(response.body);
-        print(response.statusCode);
+
         return response.body;
       }
     } catch (e) {

@@ -1,6 +1,7 @@
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/services/frgtPassword_service.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ForgetPasswordPage extends StatefulWidget {
   const ForgetPasswordPage({Key? key}) : super(key: key);
@@ -17,7 +18,6 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
 
   bool isPasswordVisible = false;
   bool isConfirmPswdVisible = false;
-
 
   @override
   void initState() {
@@ -36,7 +36,6 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
       ),
       body: SingleChildScrollView(
         child: Card(
-          
           child: Container(
             padding: const EdgeInsets.all(25),
             child: Form(
@@ -52,7 +51,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
-                      icon: const Icon(Icons.email, color: Colors.green,),
+                      icon: const Icon(
+                        Icons.email,
+                        color: Colors.green,
+                      ),
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                       ),
@@ -77,7 +79,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     controller: _newPasswordController,
                     obscureText: !isPasswordVisible,
                     decoration: InputDecoration(
-                        icon: const Icon(Icons.lock, color: Colors.green,),
+                        icon: const Icon(
+                          Icons.lock,
+                          color: Colors.green,
+                        ),
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
@@ -94,9 +99,12 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                               isPasswordVisible = !isPasswordVisible;
                             });
                           },
-                          child: Icon(isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off, color: Colors.green,),
+                          child: Icon(
+                            isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.green,
+                          ),
                         )),
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -113,7 +121,10 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                     controller: _confirmPasswordController,
                     obscureText: !isConfirmPswdVisible,
                     decoration: InputDecoration(
-                        icon: const Icon(Icons.lock, color: Colors.green,),
+                        icon: const Icon(
+                          Icons.lock,
+                          color: Colors.green,
+                        ),
                         enabledBorder: const OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
@@ -130,9 +141,12 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                               isConfirmPswdVisible = !isConfirmPswdVisible;
                             });
                           },
-                          child: Icon(isConfirmPswdVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off, color: Colors.green,),
+                          child: Icon(
+                            isConfirmPswdVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.green,
+                          ),
                         )),
                     validator: (value) {
                       if (value!.isEmpty) {
@@ -170,8 +184,19 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
       final email = _emailController.text;
       final newPassword = _newPasswordController.text;
       ForgetPasswordService.resetPassword(email, newPassword);
+      _flutterToast();
+
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginPage()));
     }
+  }
+
+  void _flutterToast() {
+    Fluttertoast.showToast(
+      msg: 'Password reset successfully!',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      textColor: Colors.white,
+    );
   }
 }
