@@ -219,6 +219,7 @@ class _OTPPageState extends State<OTPPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('OTP Verification'),
       ),
       body: Center(

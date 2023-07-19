@@ -7,6 +7,8 @@ import 'package:famlynk_version1/mvc/view/suggestion/suggestion.dart';
 import 'package:famlynk_version1/mvc/view/watsApp_message/message.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import '../familyList/famList.dart';
 
 
@@ -39,6 +41,7 @@ class _NavBarState extends State<NavBar> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: HexColor('#0175C8'),
           automaticallyImplyLeading: false,
           leadingWidth: 30,
           actions: [
@@ -174,11 +177,15 @@ class _NavBarState extends State<NavBar> {
                 SizedBox(width: 8),
                 Text(
                   "FAMLYNK",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                  style: GoogleFonts.dancingScript(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold
                   ),
+                  // TextStyle(
+                  //   color: Colors.white,
+                  //   fontSize: 20,
+                  //   fontWeight: FontWeight.bold,
+                  // ),
                 ),
                 Spacer(),
               ],
@@ -189,12 +196,11 @@ class _NavBarState extends State<NavBar> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,
           onTap: _onTabSelected,
-          backgroundColor: myProperties
-              .buttonColor, // Change the background color to green here
+          backgroundColor: HexColor('#0175C8'),
           selectedItemColor:
-              const Color.fromARGB(255, 255, 255, 255), // Change the selected icon color here
+               HexColor('#FF6F20'), 
           unselectedItemColor:
-              const Color.fromARGB(255, 219, 219, 219), // Change the unselected icon color here
+              const Color.fromARGB(255, 219, 219, 219), 
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
@@ -214,14 +220,14 @@ class _NavBarState extends State<NavBar> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.family_restroom_outlined,
+                FontAwesomeIcons.tree,
                 size: 25.0,
               ),
-              label: 'Genealogy',
+              label: 'Family Tree',
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.account_circle_rounded,
+                FontAwesomeIcons.personCircleCheck,
               ),
               label: 'Profile',
             ),

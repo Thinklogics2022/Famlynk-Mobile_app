@@ -1,19 +1,32 @@
-import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/addImage.dart';
-import 'package:famlynk_version1/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:transparent_image/transparent_image.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class FamlynkNewsFeed extends StatefulWidget {
   @override
   _FamlynkNewsFeedState createState() => _FamlynkNewsFeedState();
 }
 
-class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
+class _FamlynkNewsFeedState extends State<FamlynkNewsFeed>
+    with TickerProviderStateMixin {
+  late TabController tabController;
   List<String> downloadedImageUrls = [];
+  Set<String> likedPosts = {};
+  DateTime? _lastBackPressedTime;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
 
   Future<void> deleteImage(String docId) async {
     try {
@@ -27,171 +40,98 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => AddImagePage()));
-        },
-      ),
-      body: FutureBuilder<List<NewsFeedModel>>(
-        future: fetchPosts(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final posts = snapshot.data!;
-            return ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                return PostCard(post: posts[index]);
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
-          // Display a loading spinner while waiting for data
-          return CircularProgressIndicator();
-        },
-      ),
-    );
-    // body: Container(
-    //   child: StreamBuilder<QuerySnapshot>(
-    //     stream: FirebaseFirestore.instance.collection('imageURLs').snapshots(),
-    //     builder:
-    //     (context, snapshot) {
-    //       if (snapshot.connectionState == ConnectionState.waiting) {
-    //         return Center(
-    //           child: CircularProgressIndicator(),
-    //         );
-    //       } else if (snapshot.hasError) {
-    //         return Center(
-    //           child: Text('Error: ${snapshot.error}'),
-    //         );
-    //       } else {
-    //         final documents = snapshot.data!.docs;
-    //         downloadedImageUrls = documents.map((doc) => doc.get('url') as String).toList();
-    //         return ListView.builder(
-    //           itemCount: documents.length,
-    //           itemBuilder: (context, index) {
-    //             final imageUrl = documents[index].get('url') as String;
-    //             return Column(
-    //               children: [
-    //                 Padding(
-    //                   padding: const EdgeInsets.all(10.0),
-    //                   child: Row(
-    //                     children: [
-    //                       CircleAvatar(),
-    //                       SizedBox(width: 10),
-    //                       Column(
-    //                         crossAxisAlignment: CrossAxisAlignment.start,
-    //                         children: [
-    //                           Text('jai'),
-    //                           Text('05:20-26-06-2023'),
-    //                         ],
-    //                       ),
-    //                       Spacer(),
-    //                       PopupMenuButton<int>(
-    //                         icon: Icon(Icons.more_vert),
-    //                         iconSize: 18,
-    //                         itemBuilder: (context) => [
-    //                           PopupMenuItem<int>(
-    //                             value: index,
-    //                             child: Container(
-    //                               height: 15,
-    //                               child: Row(
-    //                                 children: [
-    //                                   Icon(Icons.delete, size: 18),
-    //                                   SizedBox(width: 6),
-    //                                   Text('Delete', style: TextStyle(fontSize: 14)),
-    //                                 ],
-    //                               ),
-    //                             ),
-    //                           ),
-    //                         ],
-    //                         onSelected: (value) {
-    //                           deleteImage(documents[value].id);
-    //                         },
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //                 Container(
-    //                   child: Padding(
-    //                     padding: const EdgeInsets.all(10.0),
-    //                     child: FadeInImage.memoryNetwork(
-    //                       fit: BoxFit.cover,
-    //                       placeholder: kTransparentImage,
-    //                       image: imageUrl,
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 Divider(thickness: .5),
-    //                 Padding(
-    //                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-    //                   child: Row(
-    //                     mainAxisAlignment: MainAxisAlignment.start,
-    //                     children: [
-    //                       IconButton(
-    //                         onPressed: () {},
-    //                         icon: Icon(Icons.favorite_border),
-    //                       ),
-    //                       Text('10'),
-    //                       Spacer(),
-    //                       IconButton(
-    //                         onPressed: () {},
-    //                         icon: Icon(Icons.comment),
-    //                       ),
-    //                       Text('Comments'),
-    //                     ],
-    //                   ),
-    //                 ),
-    //                 Divider(thickness: 2.0),
-    //               ],
-    //             );
-    //           },
-    //         );
-    //       }
-    //     },
-    //   ),
-    // ),
+  void toggleLike(String postId) {
+    setState(() {
+      if (likedPosts.contains(postId)) {
+        likedPosts.remove(postId);
+      } else {
+        likedPosts.add(postId);
+      }
+    });
   }
-}
 
+  bool isPostLiked(String postId) {
+    return likedPosts.contains(postId);
+  }
 
-class PostCard extends StatelessWidget {
-  final NewsFeedModel post;
-
-  PostCard({required this.post});
+  Future<bool> onWillpop() async {
+    DateTime currentTime = DateTime.now();
+    if (_lastBackPressedTime == null ||
+        currentTime.difference(_lastBackPressedTime!) > Duration(seconds: 2)) {
+      _lastBackPressedTime = currentTime;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Press back again to exit"),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return false;
+    }
+    SystemNavigator.pop();
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Image.network(post.photo),
-          ListTile(
-            title: Text(post.name),
-            subtitle: Text(post.description),
-            // trailing: Text('Likes: ${post.likesCount}'),
+    return WillPopScope(
+      onWillPop: onWillpop,
+      child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: HexColor('#0175C8'),
+          child: Icon(Icons.add,color: HexColor('#FF6F20'),),
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => AddImagePage()));
+          },
+        ),
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                SizedBox(height: 5),
+                Container(
+                  width: MediaQuery.of(context).size.height,
+                  decoration: BoxDecoration(
+                      color: HexColor('#0175C8'),
+                      borderRadius: BorderRadius.circular(7)),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(10),
+                        child: TabBar(
+                          labelColor: Colors.white,
+                          indicator: BoxDecoration(
+                            color: HexColor('#FF6F20'),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          controller: tabController,
+                          tabs: [
+                            Tab(text: 'Public News'),
+                            Tab(text: 'Private News'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      // UpcomingEvents(),
+                      // FinishedEvents(),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
 
-Future<List<NewsFeedModel>> fetchPosts() async {
-  final response = await http.get(Uri.parse(FamlynkServiceUrl.gallery));
-  
-  if (response.statusCode == 200) {
-    final List<dynamic> data = jsonDecode(response.body);
-    return data.map((json) => NewsFeedModel.fromJson(json)).toList();
-  } else {
-    throw Exception('Failed to fetch posts');
-  }
-
-
-}

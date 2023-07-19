@@ -1,61 +1,72 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, prefer_const_constructors
 
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class CircleAvatarLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: CustomPaint(
-          painter: CircleAvatarPainter(),
-          child: Container(
-            width: double.infinity,
-            height: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatarWidget(
-                      image: Image.asset('assets/me.png'),
-                      label: 'You',
-                    ),
-                    SizedBox(width: 20),
-                    CircleAvatarWidget(
-                      image: Image.asset('assets/wife.png'),
-                      label: 'Your Wife',
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                CircleAvatarWidget(
-                  image: Image.asset('assets/parents.png'),
-                  label: 'Parents',
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircleAvatarWidget(
-                      image: Image.asset('assets/child1.png'),
-                      label: 'Child 1',
-                    ),
-                    SizedBox(width: 20),
-                    CircleAvatarWidget(
-                      image: Image.asset('assets/child2.png'),
-                      label: 'Child 2',
-                    ),
-                  ],
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: () =>_onBackPressed(context),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: CustomPaint(
+            painter: CircleAvatarPainter(),
+            child: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatarWidget(
+                        image: Image.asset('assets/me.png'),
+                        label: 'You',
+                      ),
+                      SizedBox(width: 20),
+                      CircleAvatarWidget(
+                        image: Image.asset('assets/wife.png'),
+                        label: 'Your Wife',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  CircleAvatarWidget(
+                    image: Image.asset('assets/parents.png'),
+                    label: 'Parents',
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircleAvatarWidget(
+                        image: Image.asset('assets/child1.png'),
+                        label: 'Child 1',
+                      ),
+                      SizedBox(width: 20),
+                      CircleAvatarWidget(
+                        image: Image.asset('assets/child2.png'),
+                        label: 'Child 2',
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+  Future<bool> _onBackPressed(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => NavBar()), 
+    );
+    return Future.value(false);
   }
 }
 
@@ -79,8 +90,6 @@ class CircleAvatarWidget extends StatelessWidget {
     );
   }
 }
-
-
 
 class CircleAvatarPainter extends CustomPainter {
   @override
@@ -123,4 +132,3 @@ class CircleAvatarPainter extends CustomPainter {
   @override
   bool shouldRepaint(CircleAvatarPainter oldDelegate) => false;
 }
-

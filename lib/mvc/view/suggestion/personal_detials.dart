@@ -157,13 +157,15 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
                         dob: widget.dateOfBirth.toString(),
                         email: widget.email.toString(),
                         userId: userId,
-                        image: widget.profileImage.toString(),
+                        image: '',
                         mobileNo: widget.mobileNo.toString(),
                         uniqueUserID: widget.uniqueUserID.toString(),
                         relation: dropdownValue1,
-                        // createdOn: ,
-                        // modifiedOn: ,
+                        createdOn: '',
+                        modifiedOn: '',
                       );
+                      print('ttttttttttttttttttttttttttttttttttttttttttttt');
+                      print(searchAddMember);
                       await searchAddMemberService
                           .searchAddMemberPost(searchAddMember);
                     } catch (e) {
