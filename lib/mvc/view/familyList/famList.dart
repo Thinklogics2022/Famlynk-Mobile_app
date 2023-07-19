@@ -38,7 +38,7 @@ class _FamilyListState extends State<FamilyList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Family List")),
+      // appBar: AppBar(title: Text("Family List")),
       body: isLoaded
           ? ListView.builder(
               itemCount: familyList.length,
@@ -71,8 +71,6 @@ class _FamilyListState extends State<FamilyList> {
                                   fontSize: 17, fontWeight: FontWeight.bold),
                             ),
                             Text(familyList[index].relation.toString()),
-                            // Text(familyList[index].userId.toString()),
-                            // Text(familyList[index].uniqueUserID.toString())
                           ],
                         ),
                         Spacer(),

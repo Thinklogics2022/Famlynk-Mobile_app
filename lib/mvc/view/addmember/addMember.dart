@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/addmember_model/addMember_model.dart';
-import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/addMember_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -271,7 +270,6 @@ class _AddMemberState extends State<AddMember> {
                             ),
                             fillColor: Colors.grey.shade200,
                             filled: true,
-                            // labelText: 'Select Relation',
                             hintStyle: TextStyle(color: Colors.grey[500])),
                         dropdownColor: Color.fromARGB(255, 255, 255, 255),
                         value: dropdownValue1,
@@ -326,17 +324,18 @@ class _AddMemberState extends State<AddMember> {
 
         AddMemberService addMemberService = AddMemberService();
         AddMemberModel addMemberModel = AddMemberModel(
-          name: _name.text,
-          gender: _selectedGender,
-          relation: dropdownValue1,
-          dob: _dateinput.text,
-          userId: userId,
-          email: _email.text,
-          mobileNo: _phNumber.text,
-          image: imageUrl,
-          uniqueUserID : ""
-        );
+            name: _name.text,
+            gender: _selectedGender,
+            relation: dropdownValue1,
+            dob: _dateinput.text,
+            userId: userId,
+            email: _email.text,
+            mobileNo: _phNumber.text,
+            image: imageUrl,
+            uniqueUserID: "");
         print(addMemberModel.userId);
+        print(addMemberModel.image);
+        print(addMemberModel.name);
         addMemberService.addMemberPost(addMemberModel);
         // Save AddMemberModel to Firestore
         // await firestore.collection('members').add(addMemberModel.toMap());
@@ -344,7 +343,7 @@ class _AddMemberState extends State<AddMember> {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => FamilyList(),
+            builder: (context) => NavBar(),
           ),
         );
       }
@@ -369,8 +368,7 @@ class _AddMemberState extends State<AddMember> {
                 child: imageFile == null
                     ? Center(
                         child: Icon(
-                          // Icons.account_circle,
-                          Icons.account_circle_sharp,
+                          Icons.account_circle,
                           color: Color.fromARGB(255, 124, 124, 124),
                           size: 140,
                         ),

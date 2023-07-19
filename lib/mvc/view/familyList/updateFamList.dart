@@ -1,20 +1,18 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
-
 import 'package:famlynk_version1/mvc/model/updateFamMember_model.dart';
-import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:famlynk_version1/services/updateFamList_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class UpdateFamList extends StatefulWidget {
   UpdateFamList({super.key, required this.updateMember});
 
@@ -25,22 +23,21 @@ class UpdateFamList extends StatefulWidget {
 }
 
 class _UpdateFamListState extends State<UpdateFamList> {
-  final firebase_storage.Reference storageRef =
+ final firebase_storage.Reference storageRef =
       firebase_storage.FirebaseStorage.instance.ref();
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  File? imageFile;
 
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController _name = TextEditingController();
-  TextEditingController _phNumber = TextEditingController();
-  TextEditingController _email = TextEditingController();
-  TextEditingController _dateinput = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController phNumber = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController dateinput = TextEditingController();
 
   String _selectedGender = '';
   String dropdownValue1 = 'Select Relation';
   String? profilBase64;
-  File? imageFile;
   String userId = "";
 
   bool validateEmail(String value) {
@@ -49,7 +46,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
     return !regex.hasMatch(value);
   }
 
-  final ImagePicker _picker = ImagePicker();
+  // final ImagePicker _picker = ImagePicker();
 
   Future<void> fetchData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -58,27 +55,27 @@ class _UpdateFamListState extends State<UpdateFamList> {
     });
   }
 
-  void _pickImageBase64() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image == null) return;
+  // void _pickImageBase64() async {
+  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (image == null) return;
 
-    List<int> imagebyte = await image.readAsBytes();
+  //   List<int> imagebyte = await image.readAsBytes();
 
-    profilBase64 = base64.encode(imagebyte);
+  //   profilBase64 = base64.encode(imagebyte);
 
-    final imagetemppath = File(image.path);
-    setState(() {
-      this.imageFile = imagetemppath;
-    });
-  }
+  //   final imagetemppath = File(image.path);
+  //   setState(() {
+  //     this.imageFile = imagetemppath;
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    _name.text = widget.updateMember!.name.toString();
-    _phNumber.text = widget.updateMember!.mobileNo.toString();
-    _email.text = widget.updateMember!.email.toString();
-    _dateinput.text = widget.updateMember!.dob.toString();
+    name.text = widget.updateMember!.name.toString();
+    phNumber.text = widget.updateMember!.mobileNo.toString();
+    email.text = widget.updateMember!.email.toString();
+    dateinput.text = widget.updateMember!.dob.toString();
     profilBase64 = widget.updateMember!.image.toString();
     _selectedGender = widget.updateMember!.gender.toString();
     dropdownValue1 = widget.updateMember!.relation.toString();
@@ -104,12 +101,12 @@ class _UpdateFamListState extends State<UpdateFamList> {
                 padding: EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    imageprofile(imageFile),
+                    imageprofile(),
                     SizedBox(
                       height: 20,
                     ),
                     TextFormField(
-                      controller: _name,
+                      controller: name,
                       decoration: InputDecoration(
                           icon: Icon(Icons.person),
                           enabledBorder: const OutlineInputBorder(
@@ -185,7 +182,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     ),
                     SizedBox(height: 15),
                     TextFormField(
-                      controller: _dateinput,
+                      controller: dateinput,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
                           icon: Icon(Icons.calendar_month),
@@ -209,14 +206,14 @@ class _UpdateFamListState extends State<UpdateFamList> {
                           String formattedDate =
                               DateFormat('yyyy-MM-dd').format(pickedDate);
                           setState(() {
-                            _dateinput.text = formattedDate;
+                            dateinput.text = formattedDate;
                           });
                         }
                       },
                     ),
                     SizedBox(height: 15),
                     TextFormField(
-                      controller: _phNumber,
+                      controller: phNumber,
                       decoration: InputDecoration(
                           icon: Icon(Icons.phone),
                           enabledBorder: const OutlineInputBorder(
@@ -234,7 +231,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     ),
                     SizedBox(height: 15),
                     TextFormField(
-                      controller: _email,
+                      controller: email,
                       decoration: InputDecoration(
                           icon: Icon(Icons.email),
                           enabledBorder: const OutlineInputBorder(
@@ -288,34 +285,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     SizedBox(height: 35),
                     Container(
                       child: ElevatedButton(
-                          onPressed: () async {
-                            UpdateFamListService updateFamListService =
-                                UpdateFamListService();
-                            UpdateFamMemberModel updateFamMemberModel =
-                                UpdateFamMemberModel(
-                                    name: _name.text,
-                                    dob: _dateinput.text,
-                                    gender: _selectedGender,
-                                    mobileNo: _phNumber.text,
-                                    famid: widget.updateMember!.famid,
-                                    email: _email.text,
-                                    userId: widget.updateMember!.userId,
-                                    uniqueUserID:
-                                        widget.updateMember!.uniqueUserID,
-                                    relation: dropdownValue1,
-                                    image: profilBase64);
-
-                            updateFamListService
-                                .updateFamMember(updateFamMemberModel);
-                            print(updateFamMemberModel.userId);
-                            print(updateFamMemberModel.name);
-                            print(updateFamMemberModel.famid);
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => FamilyList()));
-                          },
-                          child: Text("Update")),
+                          onPressed: _submitForm, child: Text("Update")),
                     )
                   ],
                 ),
@@ -327,7 +297,37 @@ class _UpdateFamListState extends State<UpdateFamList> {
     );
   }
 
-  Widget imageprofile(File? imageFile) {
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      if (imageFile != null) {
+        final storageResult = await storageRef
+            .child('profile_images/${name.text}')
+            .putFile(imageFile!);
+        final imageUrl = await storageResult.ref.getDownloadURL();
+        UpdateFamListService updateFamListService = UpdateFamListService();
+        UpdateFamMemberModel updateFamMemberModel = UpdateFamMemberModel(
+            name: name.text,
+            dob: dateinput.text,
+            gender: _selectedGender,
+            mobileNo: phNumber.text,
+            famid: widget.updateMember!.famid,
+            email: email.text,
+            userId: widget.updateMember!.userId,
+            uniqueUserID: widget.updateMember!.uniqueUserID,
+            relation: dropdownValue1,
+            image: imageUrl);
+ print(updateFamMemberModel.userId);
+        print(updateFamMemberModel.image);
+        print(updateFamMemberModel.name);
+        updateFamListService.updateFamMember(updateFamMemberModel);
+
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => NavBar()));
+      }
+    }
+  }
+
+  Widget imageprofile() {
     return Center(
       child: Stack(
         children: <Widget>[
@@ -349,7 +349,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                               widget.updateMember!.image.toString()),
                         )
                       : Image.file(
-                          imageFile,
+                          imageFile!,
                           fit: BoxFit.cover,
                         ),
                 )),
@@ -375,15 +375,20 @@ class _UpdateFamListState extends State<UpdateFamList> {
               fontSize: 20.0,
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               IconButton(
-                onPressed: () {
-                  _pickImageBase64();
+                onPressed: () async {
+                  final picker = ImagePicker();
+                  final pickedImage =
+                      await picker.pickImage(source: ImageSource.gallery);
+                  if (pickedImage != null) {
+                    setState(() {
+                      imageFile = File(pickedImage.path);
+                    });
+                  }
                 },
                 icon: Icon(Icons.image),
               ),

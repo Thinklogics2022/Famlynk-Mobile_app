@@ -20,9 +20,10 @@ class ShowFamilyMemberService {
       );
 
       if (response.statusCode == 200) {
+        // print(response.body);
+        
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
-          
           List<FamListModel> familyList =
               jsonData.map((json) => FamListModel.fromJson(json)).toList();
           return familyList;
@@ -36,6 +37,4 @@ class ShowFamilyMemberService {
       throw Exception('Failed to connect to the server: $e');
     }
   }
-
-  
 }

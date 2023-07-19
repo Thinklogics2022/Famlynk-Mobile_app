@@ -23,7 +23,7 @@ class _NavBarState extends State<NavBar> {
 
   final List<Widget> _pages = [
     FamlynkNewsFeed(),
-    Home(),
+    FamilyList(),
     CircleAvatarLayout(),
     Profile(),
   ];
@@ -207,10 +207,10 @@ class _NavBarState extends State<NavBar> {
             
             BottomNavigationBarItem(
               icon: Icon(
-                FontAwesomeIcons.whatsapp,
+                FontAwesomeIcons.person,
                 size: 25.0,
               ),
-              label: 'WhatsApp',
+              label: 'FamilyList',
             ),
             BottomNavigationBarItem(
               icon: Icon(

@@ -22,7 +22,7 @@ class AddMemberService {
       "dob": addMemberModel.dob,
       "image": addMemberModel.image,
       "userId": addMemberModel.userId,
-      "uniqueUserID" : addMemberModel.uniqueUserID
+      "uniqueUserID": addMemberModel.uniqueUserID
     };
 
     try {
