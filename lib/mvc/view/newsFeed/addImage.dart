@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/services/newsFeed_service.dart';
@@ -22,8 +21,8 @@ class _AddImagePageState extends State<AddImagePage> {
   late CollectionReference imgRef;
   List<File> _imagesFile = [];
   late Reference ref;
-
   final picker = ImagePicker();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -42,10 +41,13 @@ class _AddImagePageState extends State<AddImagePage> {
   }
 
   void _postNewsFeed() async {
-    
+    if (uploading) return;
 
-      String photo = '';
+    setState(() {
+      uploading = true;
+    });
 
+    String photo = '';
     if (_imagesFile.isNotEmpty) {
       final imageFile = _imagesFile.first;
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
@@ -55,13 +57,14 @@ class _AddImagePageState extends State<AddImagePage> {
       TaskSnapshot taskSnapshot = await uploadTask;
       photo = await taskSnapshot.ref.getDownloadURL();
     }
-      String profilePicture = 'assets/images/FL03.png';
-      String vedio = '';
-      int like = 0.toInt();
-      String description = _descriptionController.text;
-      List<String> userLikes = [];
 
-      if (description.isNotEmpty) {
+    String profilePicture = 'assets/images/FL03.png';
+    String vedio = '';
+    int like = 0.toInt();
+    String description = _descriptionController.text;
+    List<String> userLikes = [];
+
+    if (description.isNotEmpty) {
       NewsFeedModel newsFeedModel = NewsFeedModel(
         userId: userId,
         name: name,
@@ -73,10 +76,29 @@ class _AddImagePageState extends State<AddImagePage> {
         uniqueUserID: uniqueUserID,
         userLikes: userLikes,
       );
+
       NewsFeedService newsFeedService = NewsFeedService();
-      newsFeedService.postNewsFeed(newsFeedModel);
-      Navigator.pop(context);
+
+      try {
+        await newsFeedService.postNewsFeed(newsFeedModel);
+        Navigator.pop(context);
+      } catch (error) {
+        setState(() {
+          uploading = false;
+        });
+
+        // _scaffoldKey.currentState!.showSnackBar(
+        //   SnackBar(
+        //     content: Text('Error: $error'),
+        //     duration: Duration(seconds: 3),
+        //   ),
+        // );
+      }
     } else {
+      setState(() {
+        uploading = false;
+      });
+
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -97,6 +119,7 @@ class _AddImagePageState extends State<AddImagePage> {
     }
   }
 
+
   @override
   void dispose() {
     _descriptionController.dispose();
@@ -106,65 +129,91 @@ class _AddImagePageState extends State<AddImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Add Image'),
       ),
-      body: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 30,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                    ),
+                    SizedBox(width: 10),
+                    Text("${name}"),
+                  ],
                 ),
-                SizedBox(width: 10),
-                Text("${name}"),
-              ],
-            ),
-            SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _descriptionController,
-                    decoration: InputDecoration(hintText: 'Description'),
-                  ),
-                ),
-                SizedBox(width: 20),
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: ((builder) => bottomSheet()),
-                    );
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 4,
-                        color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _descriptionController,
+                        decoration: InputDecoration(hintText: 'Description'),
                       ),
-                      color: Colors.green,
                     ),
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.white,
+                    SizedBox(width: 20),
+                    InkWell(
+                      onTap: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: ((builder) => bottomSheet()),
+                        );
+                      },
+                      child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 4,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                          color: Colors.green,
+                        ),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(width: 20),
+                    GestureDetector(
+                      onTap: _postNewsFeed,
+                      child: uploading
+                          ? CircularProgressIndicator()
+                          : Icon(Icons.send_sharp),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 20),
-                GestureDetector(
-                  onTap: _postNewsFeed,
-                  child: Icon(Icons.send_sharp),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: Colors.deepOrange,
+                  child: _imagesFile.isNotEmpty
+                      ? Image.file(
+                          _imagesFile.first,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(),
                 ),
-              ],
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -20,10 +20,10 @@ class User {
   });
 }
 
-class UserDetailsPage extends StatelessWidget {
+class UserDetailsPages extends StatelessWidget {
   final User user;
 
-  UserDetailsPage(this.user);
+  UserDetailsPages(this.user);
 
   @override
   Widget build(BuildContext context) {

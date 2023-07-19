@@ -5,7 +5,6 @@ import 'package:famlynk_version1/mvc/view/famlynkLogin/otp/verifyOtp.dart';
 import 'package:famlynk_version1/services/register_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
   @override

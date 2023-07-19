@@ -1,21 +1,64 @@
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/utils/default_option.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:hexcolor/hexcolor.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  print(fcmToken);
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Color _primaryColor = HexColor('#0175C8');
+  Color _accentColor = HexColor('#FF6F20');
+  String _errorMessage = "";
+  bool _isConnected = true;
+  Future<void> _checkConnectivity() async {
+    try {
+      var connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        setState(() {
+          _isConnected = false;
+          _errorMessage = "No Network Connection";
+        });
+      } else {
+        setState(() {
+          _isConnected = true;
+          _errorMessage = "";
+        });
+      }
+    } on PlatformException catch (e) {
+      setState(() {
+        _isConnected = false;
+        _errorMessage = "Network Error: ${e.message}";
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeApp();
+  }
+
+  Future<void> _initializeApp() async {
+    await _checkConnectivity();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +73,26 @@ class MyApp extends StatelessWidget {
         ],
       ),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF0097A0)),
+       theme: ThemeData(
+        primaryColor: _primaryColor,
+        hintColor: _accentColor,
+        // scaffoldBackgroundColor: Colors.grey.shade100,
+        // primarySwatch: Colors.grey,
       ),
-      home: LoginPage(),
-
-      // FutureBuilder<bool>(
-      //   future: isLoggedIn(),
-      //   builder: (context, snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return CircularProgressIndicator();
-      //     } else {
-      //       if (snapshot.data == true) {
-      //         return NavBar();
-      //       } else {
-      //         return LoginPage();
-      //       }
-      //     }
-      //   },
-      // ),
+      home: FutureBuilder<bool>(
+        future: isLoggedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else {
+            if (snapshot.data == true) {
+              return NavBar();
+            } else {
+              return LoginPage();
+            }
+          }
+        },
+      ),
     );
   }
 

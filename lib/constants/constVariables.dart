@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:hexcolor/hexcolor.dart';
 
 
 class MyProperties {
-  Color backgroundColor = Color.fromARGB(255, 15, 99, 104);
-  Color buttonColor = Color.fromARGB(255, 15, 99, 104);
+  Color backgroundColor =  HexColor('#0175C8');
+  Color buttonColor = HexColor('#0175C8');
   double fontSize = 18.0;
-  Color textColor = Color.fromARGB(255, 15, 99, 104);
+  Color textColor = HexColor('#0175C8');
   Color fillColor = Colors.grey.shade200;
 }
 

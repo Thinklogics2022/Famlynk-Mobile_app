@@ -60,7 +60,10 @@ dependencies:
   firebase_auth_web: ^5.5.3
   carousel_slider: ^4.0.0
   video_player: ^2.2.8
-  
+  connectivity: ^3.0.6
+  cached_network_image: ^3.2.3
+  hexcolor: ^3.0.1
+  google_fonts: ^4.0.4
   
 
   
