@@ -23,7 +23,7 @@ class UpdateFamList extends StatefulWidget {
 }
 
 class _UpdateFamListState extends State<UpdateFamList> {
- final firebase_storage.Reference storageRef =
+  final firebase_storage.Reference storageRef =
       firebase_storage.FirebaseStorage.instance.ref();
   File? imageFile;
 
@@ -316,7 +316,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
             uniqueUserID: widget.updateMember!.uniqueUserID,
             relation: dropdownValue1,
             image: imageUrl);
- print(updateFamMemberModel.userId);
+        print(updateFamMemberModel.userId);
         print(updateFamMemberModel.image);
         print(updateFamMemberModel.name);
         updateFamListService.updateFamMember(updateFamMemberModel);
@@ -334,26 +334,79 @@ class _UpdateFamListState extends State<UpdateFamList> {
           Container(
             width: 130,
             height: 130,
-            child: GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: ((builder) => bottomSheet()),
-                  );
-                },
-                child: ClipOval(
-                  child: imageFile == null
-                      ? CircleAvatar(
-                          radius: 35,
-                          backgroundImage: NetworkImage(
-                              widget.updateMember!.image.toString()),
-                        )
-                      : Image.file(
-                          imageFile!,
-                          fit: BoxFit.cover,
-                        ),
-                )),
+            decoration: BoxDecoration(
+              border: Border.all(
+                width: 4,
+                color: Theme.of(context).scaffoldBackgroundColor,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  spreadRadius: 2,
+                  blurRadius: 20,
+                  color: Colors.teal.withOpacity(0.2),
+                  offset: Offset(0, 10),
+                )
+              ],
+              shape: BoxShape.circle,
+            ),
+            child: ClipOval(
+              child: imageFile == null
+                  ? CircleAvatar(
+                      radius: 25,
+                      backgroundImage:
+                          NetworkImage(widget.updateMember!.image.toString()),
+                    )
+                  : Image.file(imageFile!, fit: BoxFit.cover),
+            ),
+
+            // child: GestureDetector(
+            //     onTap: () {
+            //       showModalBottomSheet(
+            //         context: context,
+            //         builder: ((builder) => bottomSheet()),
+            //       );
+            //     },
+            //     child: ClipOval(
+            //       child: imageFile == null
+            //           ? CircleAvatar(
+            //               radius: 35,
+            //               backgroundImage: NetworkImage(
+            //                   widget.updateMember!.image.toString()),
+            //             )
+            //           : Image.file(
+            //               imageFile!,
+            //               fit: BoxFit.cover,
+            //             ),
+            //     )),
           ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: InkWell(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: ((builder) => bottomSheet()),
+                );
+              },
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: 4,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  color: Colors.teal,
+                ),
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -370,7 +423,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
       child: Column(
         children: <Widget>[
           Text(
-            "Choose profile photo",
+            "Update your photo",
             style: TextStyle(
               fontSize: 20.0,
             ),

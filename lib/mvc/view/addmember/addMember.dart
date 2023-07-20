@@ -65,6 +65,7 @@ class _AddMemberState extends State<AddMember> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor:  const Color.fromARGB(255, 241, 229, 211),
         appBar: AppBar(
           title: Text(
             'Add Member',
@@ -87,7 +88,7 @@ class _AddMemberState extends State<AddMember> {
                     TextFormField(
                       controller: _name,
                       decoration: InputDecoration(
-                          icon: Icon(Icons.person),
+                          icon: Icon(Icons.person,),
                           enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
@@ -350,33 +351,66 @@ class _AddMemberState extends State<AddMember> {
     }
   }
 
-  Widget imageprofile() {
+   Widget imageprofile() {
     return Center(
       child: Stack(
         children: <Widget>[
           Container(
-            width: 130,
-            height: 130,
-            child: GestureDetector(
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 4,
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    spreadRadius: 2,
+                    blurRadius: 20,
+                    color: Colors.blue.withOpacity(0.2),
+                    offset: Offset(0, 10),
+                  ),
+                ],
+                shape: BoxShape.circle,
+              ),
+              child: ClipOval(
+                child: imageFile == null
+                    ? Center(
+                        child: Icon(
+                        Icons.person,
+                        color: const Color.fromARGB(255, 251, 239, 239),
+                        size: 100,
+                      ))
+                    : Image.file(
+                        imageFile!,
+                        fit: BoxFit.cover,
+                      ),
+              )),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: InkWell(
               onTap: () {
                 showModalBottomSheet(
                   context: context,
                   builder: ((builder) => bottomSheet()),
                 );
               },
-              child: ClipOval(
-                child: imageFile == null
-                    ? Center(
-                        child: Icon(
-                          Icons.account_circle,
-                          color: Color.fromARGB(255, 124, 124, 124),
-                          size: 140,
-                        ),
-                      )
-                    : Image.file(
-                        imageFile!,
-                        fit: BoxFit.cover,
-                      ),
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    width: 4,
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                  ),
+                  color: Colors.blue,
+                ),
+                child: Icon(
+                  Icons.camera_alt,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

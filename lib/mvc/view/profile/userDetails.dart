@@ -8,7 +8,6 @@ class User {
   final String phone;
   final String address;
   final String image;
-
   User({
     required this.name,
     required this.dob,
@@ -19,118 +18,128 @@ class User {
     required this.image,
   });
 }
-
-class UserDetailsPages extends StatelessWidget {
+class UserDetailsPage extends StatelessWidget {
   final User user;
-
-  UserDetailsPages(this.user);
-
+  UserDetailsPage(this.user);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 226, 237, 246),
       appBar: AppBar(
         title: Text('User Details'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.fromLTRB(20, 40, 20, 30),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: CircleAvatar(
-                  radius: 80,
-                  backgroundImage: NetworkImage(user.image),
-                ),
-              ),
-              SizedBox(height: 40),
-              Text(
-                'Name: ${user.name}',
-                style: TextStyle(fontSize: 27),
-              ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-              Text(
-                'Date of Birth: ${user.dob.toString().split(' ')[0]}',
-                style: TextStyle(fontSize: 27),
-              ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-              Text(
-                'Gender: ${user.gender}',
-                style: TextStyle(fontSize: 27),
-              ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-              Text(
-                'Email: ${user.email}',
-                style: TextStyle(fontSize: 27),
-              ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-              Text(
-                'Phone: ${user.phone}',
-                style: TextStyle(fontSize: 27),
-              ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-              Text(
-                'Home Town: ${user.address}',
-                style: TextStyle(fontSize: 27),
-              ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-              Text(
-                'Address: ${user.address}',
-                style: TextStyle(fontSize: 27),
-              ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-              Row(
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Marital Status: ',
-                    style: TextStyle(fontSize: 25,),
+                  SizedBox(height: 10),
+                  Center(
+                    // child: CircleAvatar(
+                    //   radius: 60,
+                    //   backgroundImage: NetworkImage(user.image),
+                    // ),
+                    child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage(
+                            "https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg")),
                   ),
+                  SizedBox(height: 30),
                   Text(
-                    '${user.address}',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                    'Name: ${user.name}',
+                    style: TextStyle(fontSize: 17),
                   ),
+                  SizedBox(height: 5),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Date of Birth: ${user.dob.toString().split(' ')[0]}',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  SizedBox(height: 5),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Gender: ${user.gender}',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  SizedBox(height: 5),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Email: ${user.email}',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  SizedBox(height: 3),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Phone: ${user.phone}',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  SizedBox(height: 5),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Home Town: ${user.address}',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  SizedBox(height: 5),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'Address: ${user.address}',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  SizedBox(height: 3),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
+                  SizedBox(height: 5),
+                  Row(
+                    children: [
+                      Text(
+                        'Marital Status: ',
+                        style: TextStyle(fontSize: 17),
+                      ),
+                      Text(
+                        '${user.address}',
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16)
                 ],
               ),
-              SizedBox(height: 3),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 3),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-

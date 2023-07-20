@@ -84,7 +84,7 @@ class _ProfileState extends State<Profile> {
                         ),
                       ),
                       SizedBox(
-                        width: 30.0,
+                        width: 20.0,
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,11 +128,11 @@ class _ProfileState extends State<Profile> {
                   Text(
                     "Account",
                     style: TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 40),
                   Card(
                     elevation: 3.0,
                     child: Padding(
@@ -204,7 +204,7 @@ class _ProfileState extends State<Profile> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => UserDetailsPages(
+                                  builder: (context) => UserDetailsPage(
                                     User(
                                       name: 'John Doe',
                                       dob: DateTime(1990, 6, 15),
@@ -223,10 +223,10 @@ class _ProfileState extends State<Profile> {
                                 icon: Icons.account_circle_rounded,
                                 text: "User Details"),
                           ),
-                          Divider(
-                            height: 10.0,
-                            color: Colors.grey,
-                          ),
+                          // Divider(
+                          //   height: 10.0,
+                          //   color: Colors.grey,
+                          // ),
                         ],
                       ),
                     ),
