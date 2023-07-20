@@ -198,6 +198,9 @@ class _FamilyListState extends State<FamilyList> {
     if (familyList.isEmpty) {
       try {
         familyList = await _familyMemberService.getFamilyList();
+        if (familyList.isNotEmpty) {
+          familyList = familyList.sublist(1);
+        }
         setState(() {
           isLoaded = true;
         });
@@ -327,7 +330,7 @@ class _FamilyListState extends State<FamilyList> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FamilyList()),
+                  MaterialPageRoute(builder: (context) => NavBar()),
                 );
                 dltMemberService.deleteFamilyMember(userId, uniqueUserID);
               },

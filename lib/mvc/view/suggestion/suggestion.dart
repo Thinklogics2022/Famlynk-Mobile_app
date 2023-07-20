@@ -93,7 +93,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => UserDetailsPage(
+                            builder: (context) => UserDetails(
                                   name: suggestion.name.toString(),
                                   gender: suggestion.gender.toString(),
                                   address: suggestion.address.toString(),
@@ -126,7 +126,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => UserDetailsPage(
+                                builder: (context) => UserDetails(
                                       name: suggestion.name.toString(),
                                       gender: suggestion.gender.toString(),
                                       address: suggestion.address.toString(),

@@ -4,7 +4,6 @@ import 'package:famlynk_version1/mvc/view/familyTree/famTree.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/newsFeed.dart';
 import 'package:famlynk_version1/mvc/view/profile/profile.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/suggestion.dart';
-import 'package:famlynk_version1/mvc/view/watsApp_message/message.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
