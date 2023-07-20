@@ -76,9 +76,10 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed>
     return WillPopScope(
       onWillPop: onWillpop,
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 223, 228, 237),
         floatingActionButton: FloatingActionButton(
           backgroundColor: HexColor('#0175C8'),
-          child: Icon(Icons.add,color: HexColor('#FF6F20'),),
+          child: Icon(Icons.add,color:Colors.white,),
           onPressed: () {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => AddImagePage()));
@@ -94,16 +95,17 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed>
                 Container(
                   width: MediaQuery.of(context).size.height,
                   decoration: BoxDecoration(
-                      color: HexColor('#0175C8'),
+                      color: HexColor('#cde0ee'),
                       borderRadius: BorderRadius.circular(7)),
                   child: Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.all(10),
                         child: TabBar(
-                          labelColor: Colors.white,
+                          labelColor:  HexColor('#0175C8'),
+                          labelStyle: TextStyle(fontSize: 17,fontWeight: FontWeight.bold),
                           indicator: BoxDecoration(
-                            color: HexColor('#FF6F20'),
+                            color:  Color.fromARGB(255, 223, 228, 237),
                             borderRadius: BorderRadius.circular(5),
                           ),
                           controller: tabController,

@@ -30,6 +30,7 @@ class _FamlynkLogoutState extends State<FamlynkLogout> {
   Widget build(BuildContext context) {
     MyProperties myProperties = MyProperties();
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
         title: Text("Sign-Out"),
         centerTitle: true,

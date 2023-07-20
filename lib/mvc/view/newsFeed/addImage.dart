@@ -129,6 +129,7 @@ class _AddImagePageState extends State<AddImagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Add Image'),

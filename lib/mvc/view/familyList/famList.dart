@@ -212,6 +212,7 @@ class _FamilyListState extends State<FamilyList> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 223, 228, 237),
         body: isLoaded
             ? ListView.builder(
                 itemCount: familyList.length,
@@ -338,4 +339,3 @@ class _FamilyListState extends State<FamilyList> {
     );
   }
 }
-

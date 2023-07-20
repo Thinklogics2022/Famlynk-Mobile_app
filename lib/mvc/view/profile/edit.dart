@@ -52,6 +52,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     MyProperties myProperties = MyProperties();
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
