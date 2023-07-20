@@ -3,6 +3,7 @@ import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
 import 'package:famlynk_version1/services/suggestion_services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class SuggestionScreen extends StatefulWidget {
   const SuggestionScreen({super.key});
@@ -40,8 +41,15 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        title: Text('Suggestions'),
+        backgroundColor: HexColor('#0175C8'),
+        title: Text(
+          'Suggestions',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: fetchSuggestions(),

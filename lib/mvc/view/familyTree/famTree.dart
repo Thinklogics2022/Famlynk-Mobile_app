@@ -10,6 +10,7 @@ class CircleAvatarLayout extends StatelessWidget {
     return WillPopScope(
       onWillPop: () =>_onBackPressed(context),
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 223, 228, 237),
         body: SingleChildScrollView(
           child: CustomPaint(
             painter: CircleAvatarPainter(),

@@ -5,6 +5,7 @@ import 'package:famlynk_version1/mvc/view/famlynkLogin/register/register.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/mailLogin_Service.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -74,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Padding(
@@ -172,8 +173,11 @@ class _LoginPageState extends State<LoginPage> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: HexColor('#0175C8'),
+                              ),
                               onPressed: _submitForm,
-                              child: Text('Login'),
+                              child: Text('Login',style: TextStyle(color: Colors.white),),
                             ),
                           ),
                           const SizedBox(height: 25),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/services/gallery_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class MediaPage extends StatefulWidget {
   @override
@@ -44,8 +45,10 @@ Future<void> _fetchMedia() async {
     final nonEmptyMediaList =
         mediaList.where((media) => media.photo.isNotEmpty).toList();
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        title: Text('Media Page'),
+        backgroundColor: HexColor('#0175C8'),
+        title: Text('Media Page',style: TextStyle(color: Colors.white,),),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())

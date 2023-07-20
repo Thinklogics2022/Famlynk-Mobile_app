@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: _primaryColor,
         hintColor: _accentColor,
         // scaffoldBackgroundColor: Colors.grey.shade100,
-        // primarySwatch: Colors.grey,
+        primarySwatch: Colors.grey,
       ),
       home: FutureBuilder<bool>(
         future: isLoggedIn(),

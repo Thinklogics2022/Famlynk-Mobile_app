@@ -218,6 +218,7 @@ class _OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text('OTP Verification'),
