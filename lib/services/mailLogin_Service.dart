@@ -24,6 +24,9 @@ class MailLoginServices {
         final token = responseData['token'];
         final uniqueUserID = responseData['uniqueUserID'];
         await saveResponseToStorage(name, userId, email, token, uniqueUserID);
+        print("ttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+        print(userId);
+        print(token);
       } else {
         throw Exception(
             'Failed to load API Data. Status Code: ${response.statusCode}');
