@@ -47,14 +47,15 @@ class _ProfileState extends State<Profile> {
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 20),
                   Text(
                     "Profile",
                     style: TextStyle(
-                      fontSize: 32.0,
+                      fontSize: 25.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -113,10 +114,10 @@ class _ProfileState extends State<Profile> {
                           SizedBox(height: 20.0),
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => EditProfilePage()));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => EditProfilePage()));
                             },
                             child: Text("Edit Profile"),
                           ),
@@ -132,7 +133,7 @@ class _ProfileState extends State<Profile> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 40),
+                  SizedBox(height: 30),
                   Card(
                     elevation: 3.0,
                     child: Padding(
@@ -202,22 +203,27 @@ class _ProfileState extends State<Profile> {
                           InkWell(
                             onTap: () {
                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => UserDetailsPage(
-                                    User(
-                                      name: 'John Doe',
-                                      dob: DateTime(1990, 6, 15),
-                                      gender: 'Male',
-                                      email: 'johndoe@example.com',
-                                      phone: '1234567890',
-                                      address: '123 Street, City',
-                                      image:
-                                          'https://example.com/profile_image.jpg',
-                                    ),
-                                  ),
-                                ),
-                              );
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProfileUserDetails()));
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => UserDetailsPage(
+                              //       User(
+                              //         name: 'John Doe',
+                              //         dob: DateTime(1990, 6, 15),
+                              //         gender: 'Male',
+                              //         email: 'johndoe@example.com',
+                              //         phone: '1234567890',
+                              //         address: '123 Street, City',
+                              //         image:
+                              //             'https://example.com/profile_image.jpg',
+                              //       ),
+                              //     ),
+                              //   ),
+                              // );
                             },
                             child: CustomListTile(
                                 icon: Icons.account_circle_rounded,
@@ -241,7 +247,7 @@ class _ProfileState extends State<Profile> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => FamlynkLogout()));
+                                  builder: (context) => LogOutPage()));
                         },
                         child: Text(
                           "Logout",
@@ -260,10 +266,11 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
   Future<bool> _onBackPressed() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => NavBar()), 
+      MaterialPageRoute(builder: (context) => NavBar()),
     );
     return Future.value(false);
   }
@@ -283,7 +290,7 @@ class CustomListTile extends StatelessWidget {
         children: <Widget>[
           Icon(
             icon,
-            color:  HexColor('#FF6F20'),
+            color: HexColor('#FF6F20'),
           ),
           SizedBox(
             width: 15.0,

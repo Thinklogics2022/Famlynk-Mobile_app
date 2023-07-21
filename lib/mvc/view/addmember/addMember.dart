@@ -65,7 +65,7 @@ class _AddMemberState extends State<AddMember> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor:  const Color.fromARGB(255, 241, 229, 211),
+        backgroundColor: const Color.fromARGB(255, 223, 231, 237),
         appBar: AppBar(
           title: Text(
             'Add Member',
@@ -378,7 +378,7 @@ class _AddMemberState extends State<AddMember> {
                     ? Center(
                         child: Icon(
                         Icons.person,
-                        color: const Color.fromARGB(255, 251, 239, 239),
+                        color: const Color.fromARGB(255, 153, 179, 201),
                         size: 100,
                       ))
                     : Image.file(

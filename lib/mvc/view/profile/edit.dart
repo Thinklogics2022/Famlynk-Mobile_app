@@ -1,17 +1,28 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
+import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
+import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
+import 'package:famlynk_version1/services/editProfileService.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
+import '../../../services/profileEdit_service.dart';
+
 class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({super.key, required this.profileUserModel});
+
+  final ProfileUserModel? profileUserModel;
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
@@ -24,15 +35,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void dispose() {
     nameController.dispose();
-    emailController.dispose();
+    // emailController.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
+    nameController.text = widget.profileUserModel!.name.toString();
+    _dateinput.text = widget.profileUserModel!.dateOfBirth.toString();
+    emailController.text = widget.profileUserModel!.email.toString();
+    mobileNumberController.text = widget.profileUserModel!.mobileNo.toString();
+    _selectedGender = widget.profileUserModel!.gender.toString();
+
     super.initState();
-    nameController.text = "Dor Alex";
-    _selectedGender = "male";
   }
 
   Future<void> uploadImageToFirebaseStorage(File imageFile) async {
@@ -54,12 +69,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: Text("Edit Profile"),
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.green,
+            color: Colors.white,
           ),
           onPressed: () {
             Navigator.of(context).pop();
@@ -70,150 +86,179 @@ class _EditProfilePageState extends State<EditProfilePage> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: ListView(
-          padding: EdgeInsets.symmetric(horizontal: 16),
-          children: [
-            SizedBox(height: 25),
-            Text(
-              "Edit Profile",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(height: 15),
-            Center(
-              child: Stack(
-                children: [
-                  imageprofile(),
-                ],
-              ),
-            ),
-            SizedBox(height: 35),
-            buildTextField("Full Name", nameController),
-            buildTextField("E-mail", emailController),
-            buildTextField("Mobile Number", mobileNumberController),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+        child: Form(
+          key: formkey,
+          child: ListView(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            children: [
+              SizedBox(height: 25),
+              // Text(
+              //   "Edit Profile",
+              //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+              // ),
+              SizedBox(height: 15),
+              Center(
+                child: Stack(
                   children: [
-                    Icon(Icons.person_add, color: Colors.grey, size: 25),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    Row(
-                      children: [
-                        Radio(
-                          value: 'male',
-                          groupValue: _selectedGender,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedGender = value!;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 6),
-                        Text("Male"),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Radio(
-                          value: 'female',
-                          groupValue: _selectedGender,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedGender = value!;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 6),
-                        Text("Female"),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Radio(
-                          value: 'others',
-                          groupValue: _selectedGender,
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedGender = value!;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 6),
-                        Text("Others"),
-                      ],
-                    ),
+                    imageprofile(),
                   ],
                 ),
-              ],
-            ),
-            SizedBox(height: 12.5),
-            Divider(
-              thickness: 2,
-            ),
-            SizedBox(height: 12.5),
-            TextField(
-              controller: _dateinput,
-              keyboardType: TextInputType.datetime,
-              decoration: InputDecoration(
-                prefixIcon: Icon(Icons.calendar_month),
-                fillColor: myProperties.fillColor,
-                hintText: 'Date Of Birth',
               ),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(2500));
-                if (pickedDate != null) {
-                  String formattedDate =
-                      DateFormat('yyyy-MM-dd').format(pickedDate);
-                  setState(() {
-                    _dateinput.text = formattedDate;
-                  });
-                }
-              },
-            ),
-            SizedBox(height: 25),
-            buildTextField("Home Town", homeTownController),
-            buildTextField("Address", addressController),
-            buildTextField("MaritalStatus", maritalStatusController),
-            SizedBox(height: 35),
-            ElevatedButton(
-              onPressed: () {
-                String fullName = nameController.text;
-                String email = emailController.text;
-                print(fullName);
-                print(email);
-                if (_imagesFile.isNotEmpty) {
-                  uploadImageToFirebaseStorage(_imagesFile.first);
-                } else {
-                  print("object");
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 50),
+              SizedBox(height: 35),
+              buildTextField("Full Name", nameController, Icons.person),
+              buildTextField("E-mail", emailController, Icons.email),
+              buildTextField(
+                  "Mobile Number", mobileNumberController, Icons.phone),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.person_add, color: Colors.grey, size: 25),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: 'male',
+                            groupValue: _selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedGender = value!;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 6),
+                          Text("Male"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: 'female',
+                            groupValue: _selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedGender = value!;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 6),
+                          Text("Female"),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Radio(
+                            value: 'others',
+                            groupValue: _selectedGender,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedGender = value!;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 6),
+                          Text("Others"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              child: Text(
-                "SAVE",
-                style: TextStyle(
-                  fontSize: 14,
-                  letterSpacing: 2.2,
-                  color: Colors.white,
+              SizedBox(height: 12.5),
+              Divider(
+                thickness: 2,
+              ),
+              SizedBox(height: 12.5),
+              TextField(
+                controller: _dateinput,
+                keyboardType: TextInputType.datetime,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.calendar_month),
+                  fillColor: myProperties.fillColor,
+                  hintText: 'Date Of Birth',
+                ),
+                onTap: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2500));
+                  if (pickedDate != null) {
+                    String formattedDate =
+                        DateFormat('yyyy-MM-dd').format(pickedDate);
+                    setState(() {
+                      _dateinput.text = formattedDate;
+                    });
+                  }
+                },
+              ),
+              SizedBox(height: 25),
+              buildTextField("Home Town", homeTownController, Icons.home),
+              buildTextField("Address", addressController, Icons.location_city),
+              buildTextField("MaritalStatus", maritalStatusController,
+                  Icons.child_care_outlined),
+              SizedBox(height: 35),
+              ElevatedButton(
+                onPressed: () {
+                  EditProfileService editProfileService = EditProfileService();
+                  if (formkey.currentState!.validate()) {
+                    ProfileUserModel profileUserModel = ProfileUserModel(
+                      name: nameController.text,
+                      email: emailController.text,
+                      mobileNo: mobileNumberController.text,
+                      gender: _selectedGender,
+                      dateOfBirth: _dateinput.text,
+                      hometown: homeTownController.text,
+                      address: addressController.text,
+                      maritalStatus: maritalStatusController.text,
+                      userId: widget.profileUserModel!.userId,
+                      uniqueUserID:  widget.profileUserModel!.uniqueUserID
+                    );
+                    editProfileService.editProfile(profileUserModel);
+                    // print(profileUserModel);
+                    print(profileUserModel.mobileNo);
+                    print(profileUserModel.hometown);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfileUserDetails()));
+                  }
+
+                  // if (_imagesFile.isNotEmpty) {
+                  //   uploadImageToFirebaseStorage(_imagesFile.first);
+                  // } else {
+                  //   print("object");
+                  // }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                ),
+                child: Text(
+                  "SAVE",
+                  style: TextStyle(
+                    fontSize: 14,
+                    letterSpacing: 2.2,
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 35),
-          ],
+              SizedBox(height: 35),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget buildTextField(String labelText, TextEditingController controller) {
+  Widget buildTextField(
+    String labelText,
+    TextEditingController controller,
+    IconData? prefixIcon,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: TextField(
@@ -221,6 +266,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 1),
           labelText: labelText,
+          prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
           labelStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

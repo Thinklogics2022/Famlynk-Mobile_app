@@ -15,26 +15,26 @@ class MyProperties {
 }
 
 
-class FirebaseUtils {
-  static firebase_storage.Reference storageRef =
-      firebase_storage.FirebaseStorage.instance.ref();
+// class FirebaseUtils {
+//   static firebase_storage.Reference storageRef =
+//       firebase_storage.FirebaseStorage.instance.ref();
 
-  static Future<File?> getImageFile(String imagePath) async {
-    try {
-      final String downloadUrl = await storageRef.child(imagePath).getDownloadURL();
-      final HttpClient httpClient = HttpClient();
-      final HttpClientRequest request = await httpClient.getUrl(Uri.parse(downloadUrl));
-      final HttpClientResponse response = await request.close();
-      if (response.statusCode == 200) {
-        final bytes = await consolidateHttpClientResponseBytes(response);
-        final tempDir = await getTemporaryDirectory();
-        final File file = File('${tempDir.path}/temp_image.jpg');
-        await file.writeAsBytes(bytes);
-        return file;
-      }
-    } catch (e) {
-      print('Error getting image from Firebase: $e');
-    }
-    return null;
-  }
-}
+//   static Future<File?> getImageFile(String imagePath) async {
+//     try {
+//       final String downloadUrl = await storageRef.child(imagePath).getDownloadURL();
+//       final HttpClient httpClient = HttpClient();
+//       final HttpClientRequest request = await httpClient.getUrl(Uri.parse(downloadUrl));
+//       final HttpClientResponse response = await request.close();
+//       if (response.statusCode == 200) {
+//         final bytes = await consolidateHttpClientResponseBytes(response);
+//         final tempDir = await getTemporaryDirectory();
+//         final File file = File('${tempDir.path}/temp_image.jpg');
+//         await file.writeAsBytes(bytes);
+//         return file;
+//       }
+//     } catch (e) {
+//       print('Error getting image from Firebase: $e');
+//     }
+//     return null;
+//   }
+// }
