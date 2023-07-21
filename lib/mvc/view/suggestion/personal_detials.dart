@@ -1,6 +1,7 @@
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/addmember_model/searchAddMember_model.dart';
 import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/searchAddMumber_service.dart';
 
 import 'package:flutter/material.dart';
@@ -56,9 +57,8 @@ class _UserDetailsState extends State<UserDetails> {
       backgroundColor: Color.fromARGB(255, 223, 233, 242),
       appBar: AppBar(
         title: Text('Family Details'),
-        
       ),
-      body : Padding(
+      body: Padding(
         padding: const EdgeInsets.all(10),
         child: Card(
           child: Padding(
@@ -91,21 +91,30 @@ class _UserDetailsState extends State<UserDetails> {
                     style: TextStyle(fontSize: 17),
                   ),
                   SizedBox(height: 8.0),
-                  Divider(thickness: 1, color: Colors.blue,),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
                   SizedBox(height: 8.0),
                   Text(
                     'Date of Birth: ${widget.dateOfBirth}',
                     style: TextStyle(fontSize: 17),
                   ),
                   SizedBox(height: 8.0),
-                  Divider(thickness: 1, color: Colors.blue,),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
                   SizedBox(height: 8.0),
                   Text(
                     'Email: ${widget.email}',
                     style: TextStyle(fontSize: 17),
                   ),
                   SizedBox(height: 8.0),
-                  Divider(thickness: 1, color: Colors.blue,),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
                   SizedBox(height: 8.0),
                   Text(
                     'Address: ${widget.address}',
@@ -119,7 +128,10 @@ class _UserDetailsState extends State<UserDetails> {
                     style: TextStyle(fontSize: 17),
                   ),
                   SizedBox(height: 8.0),
-                  Divider(thickness: 1, color: Colors.blue,),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.blue,
+                  ),
                   SizedBox(height: 8.0),
                   Container(
                     child: DropdownButtonFormField(
@@ -137,7 +149,8 @@ class _UserDetailsState extends State<UserDetails> {
                           dropdownValue1 = newValue!;
                         });
                       },
-                      items: relation.map<DropdownMenuItem<String>>((String value) {
+                      items: relation
+                          .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(
@@ -166,8 +179,10 @@ class _UserDetailsState extends State<UserDetails> {
                             mobileNo: widget.mobileNo.toString(),
                             uniqueUserID: widget.uniqueUserID.toString(),
                             relation: dropdownValue1,
-                            // createdOn: ,
-                            // modifiedOn: ,
+                            // createdOn: "",
+                            // modifiedOn: "",
+                            // address: widget.address.toString(),
+                            // homeTown: widget.hashCode.toString()
                           );
                           await searchAddMemberService
                               .searchAddMemberPost(searchAddMember);
@@ -176,10 +191,10 @@ class _UserDetailsState extends State<UserDetails> {
                         }
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => FamilyList()),
-                        );
+                          MaterialPageRoute(builder: (context) => NavBar()),
+                        ); 
                       },
-                      child: Text("Add to Family"),
+                      child: Text("Add to Family")
                     ),
                   ),
                 ],

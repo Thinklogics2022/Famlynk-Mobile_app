@@ -39,6 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return regex.hasMatch(phoneNumber);
   }
 
+   var  profileBase64;
   bool isPasswordVisible = false;
   bool isConfirmPswdVisible = false;
   String _selectedGender = '';
@@ -47,7 +48,6 @@ class _RegisterPageState extends State<RegisterPage> {
   String _password = '';
   String _confirmPassword = '';
 
- 
   @override
   void initState() {
     _dateinput.text = "";
@@ -128,8 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.person_add,
-                              color: Colors.grey, size: 25),
+                          Icon(Icons.person_add, color: Colors.grey, size: 25),
                           SizedBox(
                             width: 8,
                           ),
@@ -229,8 +228,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
                           fillColor: myProperties.fillColor,
                           filled: true,
@@ -368,14 +366,22 @@ class _RegisterPageState extends State<RegisterPage> {
                         RegisterService registerService = RegisterService();
                         if (_formKey.currentState!.validate()) {
                           RegisterModel registerModel = RegisterModel(
-                            name: _nameController.text,
-                            gender: _selectedGender,
-                            dateOfBirth: _dateinput.text,
-                            password: _passwordController.text,
-                            email: _emailController.text,
-                            phoneNumber: _phnController.text,
-                            // profileImage: profilBase64 ?? ""
-                          );
+                              id: "",
+                              uniqueUserId: "",
+                              userId: "",
+                              address: "",
+                              maritalStatus: "",
+                              hometown: "",
+                              otp: "",
+                              verificationToken: "",
+                              coverImage: "",
+                              name: _nameController.text,
+                              gender: _selectedGender,
+                              dateOfBirth: _dateinput.text,
+                              password: _passwordController.text,
+                              email: _emailController.text,
+                              phoneNumber: _phnController.text,
+                              profileImage: profileBase64 ?? "");
                           registerService.addRegister(registerModel);
                           print(registerModel.dateOfBirth);
                           print(registerModel);

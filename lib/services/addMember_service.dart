@@ -6,11 +6,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AddMemberService {
   String email = '';
+ String token = '';
 
   Future<dynamic> addMemberPost(AddMemberModel addMemberModel) async {
     var urls = FamlynkServiceUrl.addMember;
     final prefs = await SharedPreferences.getInstance();
     email = prefs.getString('email') ?? '';
+    token =  prefs.getString('token') ?? '';
+
     final url = Uri.parse(urls + email);
 
     Map<String, dynamic> requestBody = {
@@ -29,7 +32,7 @@ class AddMemberService {
       final response = await http.post(
         url,
         body: jsonEncode(requestBody),
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json", 'Authorization': 'Bearer $token'},
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

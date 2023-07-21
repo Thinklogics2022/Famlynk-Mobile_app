@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
-import 'package:famlynk_version1/mvc/model/updateFamMember_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,7 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// ignore: must_be_immutable
 class UpdateFamList extends StatefulWidget {
   UpdateFamList({super.key, required this.updateMember});
 
@@ -46,28 +44,12 @@ class _UpdateFamListState extends State<UpdateFamList> {
     return !regex.hasMatch(value);
   }
 
-  // final ImagePicker _picker = ImagePicker();
-
   Future<void> fetchData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = prefs.getString('userId') ?? '';
     });
   }
-
-  // void _pickImageBase64() async {
-  //   final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-  //   if (image == null) return;
-
-  //   List<int> imagebyte = await image.readAsBytes();
-
-  //   profilBase64 = base64.encode(imagebyte);
-
-  //   final imagetemppath = File(image.path);
-  //   setState(() {
-  //     this.imageFile = imagetemppath;
-  //   });
-  // }
 
   @override
   void initState() {
@@ -85,7 +67,6 @@ class _UpdateFamListState extends State<UpdateFamList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
         title: Text(
           'Update Family Member',
@@ -126,8 +107,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.person_add,
-                              color: Colors.grey, size: 25),
+                          Icon(Icons.person_add, color: Colors.grey, size: 25),
                           SizedBox(
                             width: 8,
                           ),
@@ -224,8 +204,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                         ),
                         fillColor: Colors.grey.shade200,
                         filled: true,
-                        hintText:
-                            '${widget.updateMember!.mobileNo.toString()}',
+                        hintText: '${widget.updateMember!.mobileNo.toString()}',
                         hintStyle: TextStyle(color: Colors.grey[500])),
                     keyboardType: TextInputType.phone,
                   ),
@@ -255,8 +234,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
                           fillColor: Colors.grey.shade200,
                           filled: true,
@@ -285,7 +263,9 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   SizedBox(height: 35),
                   Container(
                     child: ElevatedButton(
-                        onPressed: _submitForm, child: Text("Update")),
+                      onPressed: _updateFamMember,
+                      child: Text("Update"),
+                    ),
                   )
                 ],
               ),
@@ -296,34 +276,45 @@ class _UpdateFamListState extends State<UpdateFamList> {
     );
   }
 
-  void _submitForm() async {
+  void _updateFamMember() async {
     if (_formKey.currentState!.validate()) {
-      if (imageFile != null) {
-        final storageResult = await storageRef
-            .child('profile_images/${name.text}')
-            .putFile(imageFile!);
-        final imageUrl = await storageResult.ref.getDownloadURL();
-        UpdateFamListService updateFamListService = UpdateFamListService();
-        UpdateFamMemberModel updateFamMemberModel = UpdateFamMemberModel(
-            name: name.text,
-            dob: dateinput.text,
-            gender: _selectedGender,
-            mobileNo: phNumber.text,
-            famid: widget.updateMember!.famid,
-            email: email.text,
-            userId: widget.updateMember!.userId,
-            uniqueUserID: widget.updateMember!.uniqueUserID,
-            relation: dropdownValue1,
-            image: imageUrl);
-        print(updateFamMemberModel.userId);
-        print(updateFamMemberModel.image);
-        print(updateFamMemberModel.name);
-        updateFamListService.updateFamMember(updateFamMemberModel);
+      try {
+        // final updateFamListService = UpdateFamListService();
+        final imageUrl = await _uploadImage();
+        final updateData = {
+          'name': name.text,
+          'dob': dateinput.text,
+          'gender': _selectedGender,
+          'mobileNo': phNumber.text,
+          'email': email.text,
+          'relation': dropdownValue1,
+          'image': imageUrl,
+        };
+        final famMemberRef = FirebaseFirestore.instance
+            .collection('familyMembers')
+            .doc(widget.updateMember!.famid);
+        await famMemberRef.update(updateData);
 
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => NavBar()));
+      } catch (e) {
+        print('Error updating family member: $e');
       }
     }
+  }
+
+  Future<String?> _uploadImage() async {
+    if (imageFile != null) {
+      try {
+        final storageResult = await storageRef
+            .child('profile_images/${name.text}')
+            .putFile(imageFile!);
+        return await storageResult.ref.getDownloadURL();
+      } catch (e) {
+        print('Error uploading image: $e');
+      }
+    }
+    return null;
   }
 
   Widget imageprofile() {
@@ -342,7 +333,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                 BoxShadow(
                   spreadRadius: 2,
                   blurRadius: 20,
-                  color: Colors.teal.withOpacity(0.2),
+                  color: Colors.blue.withOpacity(0.2),
                   offset: Offset(0, 10),
                 )
               ],
@@ -357,26 +348,6 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     )
                   : Image.file(imageFile!, fit: BoxFit.cover),
             ),
-
-            // child: GestureDetector(
-            //     onTap: () {
-            //       showModalBottomSheet(
-            //         context: context,
-            //         builder: ((builder) => bottomSheet()),
-            //       );
-            //     },
-            //     child: ClipOval(
-            //       child: imageFile == null
-            //           ? CircleAvatar(
-            //               radius: 35,
-            //               backgroundImage: NetworkImage(
-            //                   widget.updateMember!.image.toString()),
-            //             )
-            //           : Image.file(
-            //               imageFile!,
-            //               fit: BoxFit.cover,
-            //             ),
-            //     )),
           ),
           Positioned(
             bottom: 0,
@@ -397,7 +368,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     width: 4,
                     color: Theme.of(context).scaffoldBackgroundColor,
                   ),
-                  color: Colors.teal,
+                  color: Colors.blue,
                 ),
                 child: Icon(
                   Icons.camera_alt,
@@ -424,6 +395,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
           Text(
             "Update your photo",
             style: TextStyle(
+              color: Colors.blue,
               fontSize: 20.0,
             ),
           ),
@@ -442,7 +414,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     });
                   }
                 },
-                icon: Icon(Icons.image),
+                icon: Icon(Icons.image, color: Colors.blue),
               ),
             ],
           ),

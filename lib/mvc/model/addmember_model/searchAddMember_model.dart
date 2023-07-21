@@ -18,6 +18,8 @@ class SearchAddMember {
   String relation;
   String? createdOn;
   String? modifiedOn;
+  // String address;
+  // String homeTown;
   SearchAddMember(
       {required this.famid,
       required this.name,
@@ -29,8 +31,11 @@ class SearchAddMember {
       required this.mobileNo,
       required this.uniqueUserID,
       required this.relation,
+      // required this.address,
+      // required this.homeTown,
       this.createdOn,
-      this.modifiedOn});
+      this.modifiedOn
+      });
   factory SearchAddMember.fromJson(Map<String, dynamic> json) {
     return SearchAddMember(
         famid: json["famid"],
@@ -44,7 +49,10 @@ class SearchAddMember {
         uniqueUserID: json["uniqueUserID"],
         relation: json["relation"],
         createdOn: json["createdOn"],
-        modifiedOn: json["modifiedOn"]);
+        modifiedOn: json["modifiedOn"],
+        // address: json["address"],
+        // homeTown : json["homeTown"]
+        );
   }
   Map<String, dynamic> toJson() => {
         "famid": famid,
@@ -59,5 +67,7 @@ class SearchAddMember {
         "relation": relation,
         "createdOn": createdOn,
         "modifiedOn": modifiedOn,
+        // "address": address,
+        // "homeTown" : homeTown
       };
 }

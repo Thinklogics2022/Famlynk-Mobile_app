@@ -19,7 +19,8 @@ class UpdateFamListService {
       "dob": data.dob,
       "image": data.image,
       "famid": data.famid,
-      "userId": data.userId
+      "userId": data.userId,
+      "uniqueUserID" : data.uniqueUserID
     };
 
     try {

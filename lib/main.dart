@@ -77,22 +77,23 @@ class _MyAppState extends State<MyApp> {
         primaryColor: _primaryColor,
         hintColor: _accentColor,
         // scaffoldBackgroundColor: Colors.grey.shade100,
-        primarySwatch: Colors.grey,
+        // primarySwatch: Colors.blue,
       ),
-      home: FutureBuilder<bool>(
-        future: isLoggedIn(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else {
-            if (snapshot.data == true) {
-              return NavBar();
-            } else {
-              return LoginPage();
-            }
-          }
-        },
-      ),
+      home: LoginPage()
+      //  FutureBuilder<bool>(
+      //   future: isLoggedIn(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return CircularProgressIndicator();
+      //     } else {
+      //       if (snapshot.data == true) {
+      //         return NavBar();
+      //       } else {
+      //         return LoginPage();
+      //       }
+      //     }
+      //   },
+      // ),
     );
   }
 
