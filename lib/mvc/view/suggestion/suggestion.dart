@@ -4,6 +4,7 @@ import 'package:famlynk_version1/services/suggestion_services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SuggestionScreen extends StatefulWidget {
   const SuggestionScreen({super.key});
@@ -13,22 +14,61 @@ class SuggestionScreen extends StatefulWidget {
 }
 
 class _SuggestionScreenState extends State<SuggestionScreen> {
-  late List<Suggestion> suggestionlist = [];
+  List<Suggestion> suggestionlist=[];
   var isLoaded = false;
   String currentQuery = '';
   List<Suggestion> filteredSuggestions = [];
+  int pageNumber = 0;
+  int pageSize = 20;
+  String userId = '';
+  int registerMember = 0;
+
+  Future<void> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId') ?? '';
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    // fetchTotalRegisterMembers();
     fetchSuggestions();
   }
+
+//   Future<void> fetchTotalRegisterMembers() async {
+//   try {
+//     final response = await http.get(Uri.parse('${FamlynkServiceUrl.allUser}/$userId/$pageNumber/$pageSize'));
+//     if (response.statusCode == 200) {
+//       final registerMemberTotal = json.decode(response.body);
+//       if (registerMemberTotal < 0 && registerMemberTotal >= pageSize) {
+//         setState(() {
+//           registerMember = 0;
+//         });
+//       } else {
+//         setState(() {
+//           registerMember = (registerMemberTotal / pageSize).ceil();
+//         });
+//       }
+//     } else {
+//       print('Failed to fetch total register members. Status code: ${response.statusCode}');
+//     }
+//   } catch (e) {
+//     print('Error: $e');
+//   }
+// }
 
   Future<void> fetchSuggestions() async {
     SuggestionService suggestionService = SuggestionService();
     if (suggestionlist.isEmpty) {
       try {
-        suggestionlist = await suggestionService.getSuggestions();
+        suggestionlist =
+            await suggestionService.getSuggestions(pageNumber, pageSize);
+        print(
+            "11111111111111111111111111111111111111111111111111111111111111111");
+
+        print(suggestionlist);
         setState(() {
           isLoaded = true;
         });
