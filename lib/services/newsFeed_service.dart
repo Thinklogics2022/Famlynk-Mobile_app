@@ -30,28 +30,4 @@ class NewsFeedService {
       print('Exception occurred while posting news feed: $e');
     }
   }
-
-  Future<void> getNewsFeed(NewsFeedModel newsFeedModel) async {
-    var Url = FamlynkServiceUrl.getNewsFeed;
-    final prefs = await SharedPreferences.getInstance();
-    token = prefs.getString('token') ?? '';
-    try {
-      final response = await http.get(
-        Uri.parse(Url),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': "Bearer $token",
-        },
-      );
-      if (response.statusCode == 200) {
-        print('News feed Get successfully');
-      } else {
-        print('Failed to Get news feed');
-      }
-    } catch (e) {
-      print('Exception occurred while geting news feed: $e');
-    }
-  }
-
-
 }

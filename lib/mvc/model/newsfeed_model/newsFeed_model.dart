@@ -8,7 +8,7 @@ String newsFeedModelToJson(NewsFeedModel data) => json.encode(data.toJson());
 class NewsFeedModel {
   final String userId;
   final String name;
-  final String? newsFeedId;
+  // final String newsFeedId;
   final String profilePicture;
   final String? createdOn;
   final String vedio;
@@ -21,7 +21,7 @@ class NewsFeedModel {
   NewsFeedModel({
     required this.userId,
     required this.name,
-    this.newsFeedId,
+    // required this.newsFeedId,
     required this.profilePicture,
     this.createdOn,
     required this.vedio,
@@ -36,7 +36,7 @@ class NewsFeedModel {
     return NewsFeedModel(
       userId: json['userId'],
       name: json['name'],
-      newsFeedId: json['newsFeedId'],
+      // newsFeedId: json['newsFeedId'],
       profilePicture: json['profilePicture'],
       createdOn: json['createdOn'],
       vedio: json['vedio'],
@@ -52,7 +52,7 @@ class NewsFeedModel {
     return {
       'userId': userId,
       'name': name,
-      'newsFeedId': newsFeedId,
+      // 'newsFeedId': newsFeedId,
       'profilePicture': profilePicture,
       'createdOn': createdOn,
       'vedio': vedio,
