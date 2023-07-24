@@ -1,5 +1,5 @@
 class FamlynkServiceUrl {
-  static const String baseUrl = "http://192.168.1.19:8080";
+  static const String baseUrl = "http://192.168.1.23:8080";
   static const String createUser = baseUrl + "/register/createregister";
   static const String login = baseUrl + "/authenticate/login";
   static const String updateRegister =
@@ -15,8 +15,10 @@ class FamlynkServiceUrl {
   static const String deleteFamilyMember =
       baseUrl + "/familymembers/deletefamilymember/";
   static const String postNewsFeed = baseUrl + "/newsfeed/createnewsfeed";
-  static const String getNewsFeed =
-      baseUrl + "/newsfeed/retrievenewsfeedbyuserid/{userId}";
+  static const String getPublicNewsFeed =
+      baseUrl + "/newsfeed/retrievenewsfeed/pagination/";
+  static const String getFamilyNewsFeed =
+      baseUrl + "/newsfeed/retrievefamilynewsfeed/pagination/";
   static const String like = baseUrl + "/newsfeed/likes/{userId}/{newsFeedId}";
   static const String postComment = baseUrl + "/comment/createcomment";
   static const String getComment =

@@ -1,19 +1,19 @@
-import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
-import 'package:famlynk_version1/services/publicNewsFeed_service.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/familyNewsFeed_model.dart';
+import 'package:famlynk_version1/services/familyNewsFeed_services.dart';
 import 'package:flutter/material.dart';
 
-class PublicNews extends StatefulWidget {
-  const PublicNews({Key? key}) : super(key: key);
+class FamilyNews extends StatefulWidget {
+  const FamilyNews({Key? key}) : super(key: key);
 
   @override
-  State<PublicNews> createState() => _PublicNewsState();
+  State<FamilyNews> createState() => _FamilyNewsState();
 }
 
-class _PublicNewsState extends State<PublicNews> {
+class _FamilyNewsState extends State<FamilyNews> {
   bool isLoaded = false;
   int pageNumber = 0;
   int pageSize = 20;
-  List<PublicNewsFeedModel>? publicNewsFeedList = [];
+  List<FamilyNewsFeedModel>? familyNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -37,12 +37,12 @@ class _PublicNewsState extends State<PublicNews> {
   }
 
   Future<void> fetchPublicNewsFeed(int pageNumber, int pageSize) async {
-    PublicNewsFeedService publicNewsFeedService = PublicNewsFeedService();
+    FamilyNewsFeedService familyNewsFeedService = FamilyNewsFeedService();
     try {
-      var newsFeedPublic =
-          await publicNewsFeedService.getPublicNewsFeed(pageNumber, pageSize);
+      var newsFeedFamily =
+          await familyNewsFeedService.getFamilyNewsFeed(pageNumber, pageSize);
       setState(() {
-        publicNewsFeedList!.addAll(newsFeedPublic);
+        familyNewsFeedList!.addAll(newsFeedFamily);
         isLoaded = true;
       });
     } catch (e) {
@@ -59,18 +59,18 @@ class _PublicNewsState extends State<PublicNews> {
 
   void onLikeButtonPressed(int index) {
     setState(() {
-      publicNewsFeedList![index].isLiked = !publicNewsFeedList![index].isLiked;
-      if (publicNewsFeedList![index].isLiked) {
-        publicNewsFeedList![index].userLikes.add('your-user-id');
+      familyNewsFeedList![index].isLiked = !familyNewsFeedList![index].isLiked;
+      if (familyNewsFeedList![index].isLiked) {
+        familyNewsFeedList![index].userLikes.add('your-user-id');
       } else {
-        publicNewsFeedList![index].userLikes.remove('your-user-id');
+        familyNewsFeedList![index].userLikes.remove('your-user-id');
       }
     });
   }
 
   void addComment(int index, String comment) {
     setState(() {
-      publicNewsFeedList![index].comments.add(comment);
+      familyNewsFeedList![index].comments.add(comment);
     });
   }
 
@@ -80,9 +80,9 @@ class _PublicNewsState extends State<PublicNews> {
       body: isLoaded
           ? ListView.builder(
               controller: _scrollController,
-              itemCount: publicNewsFeedList!.length,
+              itemCount: familyNewsFeedList!.length,
               itemBuilder: (context, index) {
-                PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+                FamilyNewsFeedModel newsFeed = familyNewsFeedList![index];
                 return Card(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),

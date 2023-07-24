@@ -66,6 +66,7 @@ class _AddImagePageState extends State<AddImagePage> {
 
     if (description.isNotEmpty) {
       NewsFeedModel newsFeedModel = NewsFeedModel(
+        // newsFeedId: '',
         userId: userId,
         name: name,
         profilePicture: profilePicture,
@@ -118,7 +119,6 @@ class _AddImagePageState extends State<AddImagePage> {
       );
     }
   }
-
 
   @override
   void dispose() {

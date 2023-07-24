@@ -1,4 +1,6 @@
 import 'package:famlynk_version1/mvc/view/newsFeed/addImage.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/public_private/familyNewsFeed.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/public_private/public.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -111,7 +113,7 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed>
                           controller: tabController,
                           tabs: [
                             Tab(text: 'Public News'),
-                            Tab(text: 'Private News'),
+                            Tab(text: 'Family News'),
                           ],
                         ),
                       ),
@@ -122,8 +124,8 @@ class _FamlynkNewsFeedState extends State<FamlynkNewsFeed>
                   child: TabBarView(
                     controller: tabController,
                     children: [
-                      // UpcomingEvents(),
-                      // FinishedEvents(),
+                       PublicNews(),
+                       FamilyNews(),
                     ],
                   ),
                 )
