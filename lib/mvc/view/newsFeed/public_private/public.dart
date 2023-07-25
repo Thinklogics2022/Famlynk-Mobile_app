@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
 import 'package:famlynk_version1/services/publicNewsFeed_service.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PublicNews extends StatefulWidget {
   const PublicNews({Key? key}) : super(key: key);
@@ -74,56 +76,71 @@ class _PublicNewsState extends State<PublicNews> {
     });
   }
 
+  Future<void> _handleRefresh() async {
+    setState(() {
+      pageNumber = 0;
+      publicNewsFeedList!.clear();
+      isLoaded = false;
+    });
+    await fetchPublicNewsFeed(pageNumber, pageSize);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoaded
-          ? ListView.builder(
-              controller: _scrollController,
-              itemCount: publicNewsFeedList!.length,
-              itemBuilder: (context, index) {
-                PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        child: isLoaded
+            ? ListView.builder(
+                controller: _scrollController,
+                itemCount: publicNewsFeedList!.length,
+                itemBuilder: (context, index) {
+                  PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+                  DateTime? utcDateTime =
+                      DateTime.parse(newsFeed.createdOn.toString());
+                  DateTime localDateTime = utcDateTime.toLocal();
+
+                  String formattedDate =
+                      DateFormat('MMMM-dd-yyyy  hh:mm a').format(localDateTime);
+
+                  return Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              radius: 20.0,
-                              backgroundImage:
-                                  AssetImage('assets/images/FL02.png'),
-                            ),
-                            SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(newsFeed.name),
-                                SizedBox(height: 10),
-                                Text(newsFeed.createdOn.toString()),
-                              ],
-                            ),
-                          ],
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage('assets/images/FL02.png'),
+                          ),
+                          title: Text(newsFeed.name),
+                          subtitle: Text(formattedDate),
                         ),
-                        Divider(thickness: 1),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(newsFeed.description),
-                            SizedBox(height: 10,),
-                            if (newsFeed.photo != null)
-                              Image.network(newsFeed.photo!),
-                          ],
+                        Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            newsFeed.description,
+                            style: TextStyle(fontSize: 16.0),
+                          ),
                         ),
-
-                        Divider(thickness: 1),
-                        Container(
-                          margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        if (newsFeed.photo != null)
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CachedNetworkImage(
+                              imageUrl: newsFeed.photo!,
+                              placeholder: (context, url) => CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            ),
+                          ),
+                        Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GestureDetector(
                                 onTap: () => onLikeButtonPressed(index),
@@ -134,24 +151,24 @@ class _PublicNewsState extends State<PublicNews> {
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       size: 20.0,
-                                      color: newsFeed.isLiked
-                                          ? const Color.fromARGB(255, 206, 0, 0)
-                                          : null,
+                                      color: newsFeed.isLiked ? Colors.red : null,
                                     ),
                                     SizedBox(width: 5),
                                     Text(newsFeed.likeCount.toString()),
                                   ],
                                 ),
                               ),
+                              Spacer(),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    newsFeed.showAllComments =
-                                        !newsFeed.showAllComments;
+                                    newsFeed.showAllComments = !newsFeed.showAllComments;
                                   });
                                 },
                                 child: Row(
                                   children: [
+                                    Icon(Icons.comment),
+                                    SizedBox(width: 5),
                                     Text(newsFeed.comments.length.toString()),
                                   ],
                                 ),
@@ -159,16 +176,30 @@ class _PublicNewsState extends State<PublicNews> {
                             ],
                           ),
                         ),
-                        // Rest of your code
+                        SizedBox(height: 10),
+                        if (newsFeed.showAllComments) ...[
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: newsFeed.comments.length,
+                            itemBuilder: (context, commentIndex) {
+                              String comment = newsFeed.comments[commentIndex];
+                              return ListTile(
+                                title: Text(comment),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 10),
+                        ],
                       ],
                     ),
-                  ),
-                );
-              },
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+                  );
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
     );
   }
 }

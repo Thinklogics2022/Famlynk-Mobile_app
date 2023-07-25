@@ -11,7 +11,7 @@ class NewsFeedModel {
   // final String newsFeedId;
   final String profilePicture;
   final String? createdOn;
-  final String vedio;
+  // final String vedio;
   final String photo;
   final int like;
   final String description;
@@ -24,7 +24,7 @@ class NewsFeedModel {
     // required this.newsFeedId,
     required this.profilePicture,
     this.createdOn,
-    required this.vedio,
+    // required this.vedio,
     required this.photo,
     required this.like,
     required this.description,
@@ -39,7 +39,7 @@ class NewsFeedModel {
       // newsFeedId: json['newsFeedId'],
       profilePicture: json['profilePicture'],
       createdOn: json['createdOn'],
-      vedio: json['vedio'],
+      // vedio: json['vedio'],
       photo: json['photo'],
       like: json['like'],
       description: json['description'],
@@ -55,7 +55,7 @@ class NewsFeedModel {
       // 'newsFeedId': newsFeedId,
       'profilePicture': profilePicture,
       'createdOn': createdOn,
-      'vedio': vedio,
+      // 'vedio': vedio,
       'photo': photo,
       'like': like,
       'description': description,

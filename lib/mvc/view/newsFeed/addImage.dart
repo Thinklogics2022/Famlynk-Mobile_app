@@ -70,7 +70,7 @@ class _AddImagePageState extends State<AddImagePage> {
         userId: userId,
         name: name,
         profilePicture: profilePicture,
-        vedio: vedio,
+        // vedio: vedio,
         photo: photo,
         like: like,
         description: description,

@@ -48,23 +48,24 @@ class FamilyNewsFeedModel {
   int get likeCount => userLikes.length;
 
   factory FamilyNewsFeedModel.fromJson(Map<String, dynamic> json) {
-    return FamilyNewsFeedModel(
-      userId: json['userId'],
-      name: json['name'],
-      newsFeedId: json['newsFeedId'],
-      profilePicture: json['profilePicture'],
-      createdOn: json['createdOn'],
-      video: json['video'],
-      photo: json['photo'],
-      like: json['like'],
-      description: json['description'],
-      uniqueUserID: json['uniqueUserID'],
-      image: json['image'],
-      userLikes: List<String>.from(json['userLikes']),
-      mutualConnection: List<dynamic>.from(json['mutualConnection'] ?? []),
-      userLikeNames: List<String>.from(json['userLikeNames'] ?? []),
-    );
-  }
+  return FamilyNewsFeedModel(
+    userId: json['userId'],
+    name: json['name'],
+    newsFeedId: json['newsFeedId'],
+    profilePicture: json['profilePicture'],
+    createdOn: json['createdOn'],
+    video: json['video'],
+    photo: json['photo'],
+    like: json['like'] is int ? json['like'] : int.tryParse(json['like']) ?? 0,
+    description: json['description'],
+    uniqueUserID: json['uniqueUserID'],
+    image: json['image'],
+    userLikes: List<String>.from(json['userLikes']),
+    mutualConnection: List<dynamic>.from(json['mutualConnection'] ?? []),
+    userLikeNames: List<String>.from(json['userLikeNames'] ?? []),
+  );
+}
+
 
   Map<String, dynamic> toJson() {
     return {
