@@ -26,44 +26,44 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
   String userId = '';
   int registerMember = 0;
 
-  // Future<void> fetchData() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     userId = prefs.getString('userId') ?? '';
-  //   });
-  // }
+  Future<void> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId') ?? '';
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    // fetchData();
-    // fetchTotalRegisterMembers();
+    fetchData();
+    fetchTotalRegisterMembers();
     fetchSuggestions(pageNumber, pageSize);
   }
 
-  // Future<void> fetchTotalRegisterMembers() async {
-  //   try {
-  //     final response = await http.get(
-  //       Uri.parse('${FamlynkServiceUrl.allUser}/$userId/$pageNumber/$pageSize'),
-  //     );
-  //     if (response.statusCode == 200) {
-  //       final registerMemberTotal = json.decode(response.body);
-  //       if (registerMemberTotal < 0 && registerMemberTotal >= pageSize) {
-  //         setState(() {
-  //           registerMember = 0;
-  //         });
-  //       } else {
-  //         setState(() {
-  //           registerMember = (registerMemberTotal / pageSize).ceil();
-  //         });
-  //       }
-  //     } else {
-  //       print('Failed to fetch total register members. Status code: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print('Error: $e');
-  //   }
-  // }
+  Future<void> fetchTotalRegisterMembers() async {
+    try {
+      final response = await http.get(
+        Uri.parse('${FamlynkServiceUrl.allUser}/$userId/$pageNumber/$pageSize'),
+      );
+      if (response.statusCode == 200) {
+        final registerMemberTotal = json.decode(response.body);
+        if (registerMemberTotal < 0 && registerMemberTotal >= pageSize) {
+          setState(() {
+            registerMember = 0;
+          });
+        } else {
+          setState(() {
+            registerMember = (registerMemberTotal / pageSize).ceil();
+          });
+        }
+      } else {
+        print('Failed to fetch total register members. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   Future<void> fetchSuggestions(int pageNumber, int pageSize) async {
     SuggestionService suggestionService = SuggestionService();

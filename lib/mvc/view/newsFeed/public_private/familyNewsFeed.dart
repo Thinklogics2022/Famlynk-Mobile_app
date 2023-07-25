@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/familyNewsFeed_model.dart';
 import 'package:famlynk_version1/services/familyNewsFeed_services.dart';
 import 'package:flutter/material.dart';
@@ -11,15 +12,14 @@ class FamilyNews extends StatefulWidget {
 
 class _FamilyNewsState extends State<FamilyNews> {
   bool isLoaded = false;
-  int pageNumber = 0;
-  int pageSize = 20;
+  
   List<FamilyNewsFeedModel>? familyNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    fetchPublicNewsFeed(pageNumber, pageSize);
+    fetchPublicNewsFeed();
     _scrollController.addListener(_onScroll);
   }
 
@@ -32,15 +32,14 @@ class _FamilyNewsState extends State<FamilyNews> {
   void _onScroll() {
     if (_scrollController.position.atEdge &&
         _scrollController.position.pixels != 0) {
-      loadMoreSuggestions();
     }
   }
 
-  Future<void> fetchPublicNewsFeed(int pageNumber, int pageSize) async {
+  Future<void> fetchPublicNewsFeed() async {
     FamilyNewsFeedService familyNewsFeedService = FamilyNewsFeedService();
     try {
       var newsFeedFamily =
-          await familyNewsFeedService.getFamilyNewsFeed(pageNumber, pageSize);
+          await familyNewsFeedService.getFamilyNewsFeed();
       setState(() {
         familyNewsFeedList!.addAll(newsFeedFamily);
         isLoaded = true;
@@ -50,12 +49,7 @@ class _FamilyNewsState extends State<FamilyNews> {
     }
   }
 
-  void loadMoreSuggestions() {
-    setState(() {
-      pageNumber++;
-    });
-    fetchPublicNewsFeed(pageNumber, pageSize);
-  }
+  
 
   void onLikeButtonPressed(int index) {
     setState(() {
@@ -73,85 +67,92 @@ class _FamilyNewsState extends State<FamilyNews> {
       familyNewsFeedList![index].comments.add(comment);
     });
   }
+  
+  Future<void> _handleRefresh() async {
+    setState(() {
+      familyNewsFeedList!.clear();
+      isLoaded = false;
+    });
+    await fetchPublicNewsFeed();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoaded
-          ? ListView.builder(
-              controller: _scrollController,
-              itemCount: familyNewsFeedList!.length,
-              itemBuilder: (context, index) {
-                FamilyNewsFeedModel newsFeed = familyNewsFeedList![index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+      backgroundColor:  Color.fromARGB(255, 223, 228, 237),
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        child: isLoaded
+            ? ListView.builder(
+                controller: _scrollController,
+                itemCount: familyNewsFeedList!.length,
+                itemBuilder: (context, index) {
+                  FamilyNewsFeedModel newsFeed = familyNewsFeedList![index];
+                  return Card(
+                    elevation: 4.0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              radius: 20.0,
-                              backgroundImage:
-                                  AssetImage('assets/images/FL02.png'),
-                            ),
-                            SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(newsFeed.name),
-                                SizedBox(height: 10),
-                                Text(newsFeed.createdOn.toString()),
-                              ],
-                            ),
-                          ],
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: AssetImage('assets/images/FL02.png'),
+                          ),
+                          title: Text(newsFeed.name),
+                          subtitle: Text(newsFeed.createdOn.toString()),
                         ),
-                        Divider(thickness: 1),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(newsFeed.description),
-                            SizedBox(height: 10,),
-                            if (newsFeed.photo != null)
-                              Image.network(newsFeed.photo!),
-                          ],
+                        Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            newsFeed.description,
+                            style: TextStyle(fontSize: 16.0),
+                          ),
                         ),
-
-                        Divider(thickness: 1),
-                        Container(
-                          margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        if (newsFeed.photo != null) ...[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CachedNetworkImage(
+                              imageUrl: newsFeed.photo!,
+                              placeholder: (context, url) => CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            ),
+                          ),
+                          // SizedBox(height: 10),
+                        ],
+                        Divider(),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               GestureDetector(
                                 onTap: () => onLikeButtonPressed(index),
                                 child: Row(
                                   children: [
                                     Icon(
-                                      newsFeed.isLiked
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
+                                      newsFeed.isLiked ? Icons.favorite : Icons.favorite_border,
                                       size: 20.0,
-                                      color: newsFeed.isLiked
-                                          ? const Color.fromARGB(255, 206, 0, 0)
-                                          : null,
+                                      color: newsFeed.isLiked ? Colors.red : null,
                                     ),
                                     SizedBox(width: 5),
                                     Text(newsFeed.likeCount.toString()),
                                   ],
                                 ),
                               ),
+                              Spacer(),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    newsFeed.showAllComments =
-                                        !newsFeed.showAllComments;
+                                    newsFeed.showAllComments = !newsFeed.showAllComments;
                                   });
                                 },
                                 child: Row(
                                   children: [
+                                    Icon(Icons.comment),
+                                    SizedBox(width: 5),
                                     Text(newsFeed.comments.length.toString()),
                                   ],
                                 ),
@@ -159,16 +160,16 @@ class _FamilyNewsState extends State<FamilyNews> {
                             ],
                           ),
                         ),
-                        // Rest of your code
+                        SizedBox(height: 10),
                       ],
                     ),
-                  ),
-                );
-              },
-            )
-          : Center(
-              child: CircularProgressIndicator(),
-            ),
+                  );
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
+      ),
     );
   }
 }
