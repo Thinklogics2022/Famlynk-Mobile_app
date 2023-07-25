@@ -24,8 +24,7 @@ class FamlynkServiceUrl {
   static const String updatePassword =
       baseUrl + "/register/updatepasswordbyemail/";
   static const String gallery = baseUrl + "/newsfeed/retrieveusernewsfeed/";
-  static const String profileUser =
-      baseUrl + "/register/retrievemembersbyuserid/";
+  static const String profileUser = baseUrl + "/register/retrieveregisterbyemail/";
   static const String editProfile = baseUrl + "/register/updateregisterbyid/";
   static const String postComment = baseUrl + "/comment/createcomment";
   static const String getComment =
@@ -33,4 +32,7 @@ class FamlynkServiceUrl {
   static const String updateComment = "/comment/updatecommentbyid/{id}";
   static const String deleteComment = "/comment/deletecomment/{id}";
   static const String like = baseUrl + "/newsfeed/likes/{userId}/{newsFeedId}";
+
+
+  static const String profileUserrr = baseUrl + "/register/retrievemembersbyuserid/";
 }

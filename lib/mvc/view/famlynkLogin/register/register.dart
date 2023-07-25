@@ -380,7 +380,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               dateOfBirth: _dateinput.text,
                               password: _passwordController.text,
                               email: _emailController.text,
-                              phoneNumber: _phnController.text,
+                              mobileNo: _phnController.text,
                               profileImage: profileBase64 ?? "");
                           registerService.addRegister(registerModel);
                           print(registerModel.dateOfBirth);

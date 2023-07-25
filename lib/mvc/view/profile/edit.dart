@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
+import 'package:famlynk_version1/mvc/view/profile/profile.dart';
 import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
 import 'package:famlynk_version1/services/editProfileService.dart';
@@ -21,6 +23,9 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
+  final firebase_storage.Reference storageRef =
+      firebase_storage.FirebaseStorage.instance.ref();
+  File? imageFile;
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   TextEditingController nameController = TextEditingController();
@@ -32,10 +37,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController _dateinput = TextEditingController();
   String _selectedGender = '';
   List<File> _imagesFile = [];
+  String? profilBase64;
+
   @override
   void dispose() {
     nameController.dispose();
-    // emailController.dispose();
     super.dispose();
   }
 
@@ -46,22 +52,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
     emailController.text = widget.profileUserModel!.email.toString();
     mobileNumberController.text = widget.profileUserModel!.mobileNo.toString();
     _selectedGender = widget.profileUserModel!.gender.toString();
+    homeTownController.text = widget.profileUserModel!.hometown.toString();
+    addressController.text = widget.profileUserModel!.address.toString();
+    maritalStatusController.text =
+        widget.profileUserModel!.maritalStatus.toString();
 
     super.initState();
   }
 
-  Future<void> uploadImageToFirebaseStorage(File imageFile) async {
-    String fileName = path.basename(imageFile.path);
-    firebase_storage.Reference storageReference = firebase_storage
-        .FirebaseStorage.instance
-        .ref()
-        .child('profile_images')
-        .child(fileName);
-    firebase_storage.UploadTask uploadTask =
-        storageReference.putFile(imageFile);
-    String downloadURL = await (await uploadTask).ref.getDownloadURL();
-    print('Download URL: $downloadURL');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +68,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
         title: Text("Edit Profile"),
-        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 1,
         leading: IconButton(
           icon: Icon(
@@ -203,55 +200,65 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   Icons.child_care_outlined),
               SizedBox(height: 35),
               ElevatedButton(
-                onPressed: () {
-                  EditProfileService editProfileService = EditProfileService();
-                  if (formkey.currentState!.validate()) {
-                    ProfileUserModel profileUserModel = ProfileUserModel(
-                      name: nameController.text,
-                      email: emailController.text,
-                      mobileNo: mobileNumberController.text,
-                      gender: _selectedGender,
-                      dateOfBirth: _dateinput.text,
-                      hometown: homeTownController.text,
-                      address: addressController.text,
-                      maritalStatus: maritalStatusController.text,
-                      userId: widget.profileUserModel!.userId,
-                      uniqueUserID:  widget.profileUserModel!.uniqueUserID
-                    );
-                    editProfileService.editProfile(profileUserModel);
-                    // print(profileUserModel);
-                    print(profileUserModel.mobileNo);
-                    print(profileUserModel.hometown);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ProfileUserDetails()));
-                  }
-
-                  // if (_imagesFile.isNotEmpty) {
-                  //   uploadImageToFirebaseStorage(_imagesFile.first);
-                  // } else {
-                  //   print("object");
-                  // }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                ),
-                child: Text(
-                  "SAVE",
-                  style: TextStyle(
-                    fontSize: 14,
-                    letterSpacing: 2.2,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+                  onPressed: submitForm,
+                  child: Text(
+                    "SAVE",
+                    style: TextStyle(
+                      fontSize: 14,
+                      letterSpacing: 2.2,
+                      color: Colors.white,
+                    ),
+                  )),
               SizedBox(height: 35),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void submitForm() async {
+    if (imageFile != null) {
+      final storageResult = await storageRef
+          .child('profile_images/${nameController.text}')
+          .putFile(imageFile!);
+      final imageUrl = await storageResult.ref.getDownloadURL();
+      EditProfileService editProfileService = EditProfileService();
+      if (formkey.currentState!.validate()) {
+        ProfileUserModel profileUserModel = ProfileUserModel(
+          name: nameController.text,
+          email: emailController.text,
+          mobileNo: mobileNumberController.text,
+          gender: _selectedGender,
+          dateOfBirth: _dateinput.text,
+          hometown: homeTownController.text,
+          address: addressController.text,
+          maritalStatus: maritalStatusController.text,
+          userId: widget.profileUserModel!.userId,
+          uniqueUserID: widget.profileUserModel!.uniqueUserID,
+          profileImage: imageUrl,
+          id: widget.profileUserModel!.id,
+          password: widget.profileUserModel!.password,
+          coverImage: "",
+          createdOn: widget.profileUserModel!.createdOn,
+          modifiedOn: "",
+          status: widget.profileUserModel!.status,
+          role: widget.profileUserModel!.role,
+          enabled: widget.profileUserModel!.enabled,
+          verificationToken: widget.profileUserModel!.verificationToken,
+          otp: widget.profileUserModel!.otp,
+        );
+        editProfileService.editProfile(profileUserModel);
+
+        print(profileUserModel.id);
+        print(profileUserModel.hometown);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NavBar()));
+      }
+
+     
+    }
+    ;
   }
 
   Widget buildTextField(
@@ -282,38 +289,53 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
+  
+
   Widget imageprofile() {
     return Center(
       child: Stack(
         children: <Widget>[
           Container(
-            width: 130,
-            height: 130,
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 4,
-                color: Theme.of(context).scaffoldBackgroundColor,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  spreadRadius: 2,
-                  blurRadius: 10,
-                  color: Colors.black.withOpacity(0.1),
-                  offset: Offset(0, 10),
+              width: 130,
+              height: 130,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 4,
+                  color: Theme.of(context).scaffoldBackgroundColor,
                 ),
-              ],
-              shape: BoxShape.circle,
-              image: _imagesFile.isNotEmpty
-                  ? DecorationImage(
-                      fit: BoxFit.cover,
-                      image: FileImage(_imagesFile.first),
-                    )
-                  : DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage("assets/images/FL04.png"),
-                    ),
-            ),
-          ),
+                boxShadow: [
+                  BoxShadow(
+                    spreadRadius: 2,
+                    blurRadius: 10,
+                    color: Colors.black.withOpacity(0.1),
+                    offset: Offset(0, 10),
+                  ),
+                ],
+                shape: BoxShape.circle,
+              ),
+              child: ClipOval(
+                child: imageFile == null
+                    ? Center(
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage: NetworkImage(
+                            
+                              widget.profileUserModel!.profileImage.toString()),
+                        ),
+                        //   child: Icon(
+                        //   Icons.person,
+                        //   color: const Color.fromARGB(255, 153, 179, 201),
+                        //   size: 100,
+                        // ))
+                      )
+                    : Image.file(
+                        imageFile!,
+                        fit: BoxFit.cover,
+                      ),
+              )),
+
+          
           Positioned(
             bottom: 0,
             right: 0,
@@ -367,23 +389,20 @@ class _EditProfilePageState extends State<EditProfilePage> {
             height: 20,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              TextButton.icon(
-                icon: Icon(Icons.camera),
-                onPressed: () {
-                  takePhoto(ImageSource.camera);
-                  Navigator.pop(context);
+              IconButton(
+                onPressed: () async {
+                  final picker = ImagePicker();
+                  final pickedImage =
+                      await picker.pickImage(source: ImageSource.gallery);
+                  if (pickedImage != null) {
+                    setState(() {
+                      imageFile = File(pickedImage.path);
+                    });
+                  }
                 },
-                label: Text("Camera"),
-              ),
-              TextButton.icon(
                 icon: Icon(Icons.image),
-                onPressed: () {
-                  takePhoto(ImageSource.gallery);
-                  Navigator.pop(context);
-                },
-                label: Text("Gallery"),
               ),
             ],
           ),

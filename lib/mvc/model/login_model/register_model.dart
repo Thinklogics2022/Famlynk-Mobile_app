@@ -9,7 +9,7 @@ class RegisterModel {
     this.password,
     this.email,
     this.profileImage,
-    this.phoneNumber,
+    this.mobileNo,
     this.address,
     this.coverImage,
     this.hometown,
@@ -26,7 +26,7 @@ class RegisterModel {
   String? password;
   String? email;
   String? profileImage;
-  String? phoneNumber;
+  String? mobileNo;
   String? address;
   String? hometown;
   String? maritalStatus;
@@ -44,7 +44,7 @@ class RegisterModel {
       password: json["password"],
       email: json["email"],
       profileImage: json["profileImage"],
-      phoneNumber: json["phoneNumber"],
+      mobileNo: json["mobileNo"],
       address: json["address"],
       hometown: json["hometown"],
       maritalStatus: json["maritalStatus"],
@@ -62,7 +62,7 @@ class RegisterModel {
         "password": password,
         "email": email,
         "profileImage": profileImage,
-        "phoneNumber": phoneNumber,
+        "mobileNo": mobileNo,
         "address" : address,
         "hometown" : hometown,
         "maritalStatus" : maritalStatus,
