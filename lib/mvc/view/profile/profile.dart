@@ -5,13 +5,17 @@ import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
 import 'package:famlynk_version1/mvc/view/gallery/gallery.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/mvc/view/profile/edit.dart';
+import 'package:famlynk_version1/mvc/view/profile/editPage.dart';
 import 'package:famlynk_version1/mvc/view/profile/logout.dart';
 import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
+import 'package:famlynk_version1/services/profile_Service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../model/profile_model/profile_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -21,21 +25,35 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String name = '';
-  String email = '';
+  ProfileUserModel profileUserModel = ProfileUserModel();
+  ProfileUserService profileUserService = ProfileUserService();
 
-  Future<void> fetchData() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      name = prefs.getString('name') ?? '';
-      email = prefs.getString('email') ?? '';
-    });
-  }
+  // String name = '';
+  // String email = '';
+  // List<ProfileUserModel> _members = [];
+
+  // Future<void> fetchData() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     name = prefs.getString('name') ?? '';
+  //     email = prefs.getString('email') ?? '';
+  //   });
+  // }
+  var imageFile;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    _fetchMembers();
+  }
+
+  _fetchMembers() async {
+    try {
+      profileUserModel = await profileUserService.fetchMembersByUserId();
+      setState(() {});
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -76,13 +94,18 @@ class _ProfileState extends State<Profile> {
                               color: Colors.black38,
                             ),
                           ],
-                          image: DecorationImage(
-                            image: AssetImage(
-                              "assets/images/FL04.png",
-                            ),
-                            fit: BoxFit.cover,
-                          ),
                         ),
+                        child: imageFile == null
+                            ? Image.asset("assets/images/FL01.png")
+                            : Image.network(
+                                profileUserModel.profileImage.toString()),
+
+                        // image: DecorationImage(
+                        //   image: AssetImage(
+                        //     "assets/images/FL04.png",
+                        //   ),
+                        //   fit: BoxFit.cover,
+                        // ),
                       ),
                       SizedBox(
                         width: 20.0,
@@ -94,7 +117,7 @@ class _ProfileState extends State<Profile> {
                           Row(
                             children: [
                               Text(
-                                name,
+                                profileUserModel.name.toString(),
                                 style: TextStyle(
                                   fontSize: 16,
                                 ),
@@ -103,21 +126,22 @@ class _ProfileState extends State<Profile> {
                           ),
                           // SizedBox(height: 10.0),
                           Text(
-                            "123456789",
+                            profileUserModel.mobileNo.toString(),
                             style: TextStyle(fontSize: 13, color: Colors.grey),
                           ),
                           // SizedBox(height: 10.0),
                           Text(
-                            email,
+                            profileUserModel.email.toString(),
                             style: TextStyle(color: Colors.grey),
                           ),
                           SizedBox(height: 20.0),
                           TextButton(
                             onPressed: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => EditProfilePage()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => EditProfilePage(
+                                          profileUserModel: profileUserModel)));
                             },
                             child: Text("Edit Profile"),
                           ),
@@ -180,59 +204,23 @@ class _ProfileState extends State<Profile> {
                               text: "Notification",
                             ),
                           ),
-                          // Divider(
-                          //   height: 10.0,
-                          //   color: Colors.grey,
-                          // ),
-                          // InkWell(
-                          //   child: CustomListTile(
-                          //     icon:  FontAwesomeIcons.person,
-                          //     text: "Family Members",
-                          //   ),
-                          //   onTap: () {
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) => FamilyList()));
-                          //   },
-                          // ),
                           Divider(
                             height: 10.0,
                             color: Colors.grey,
                           ),
                           InkWell(
+                            child: CustomListTile(
+                              icon: Icons.account_circle_rounded,
+                              text: "User Details",
+                            ),
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           ProfileUserDetails()));
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => UserDetailsPage(
-                              //       User(
-                              //         name: 'John Doe',
-                              //         dob: DateTime(1990, 6, 15),
-                              //         gender: 'Male',
-                              //         email: 'johndoe@example.com',
-                              //         phone: '1234567890',
-                              //         address: '123 Street, City',
-                              //         image:
-                              //             'https://example.com/profile_image.jpg',
-                              //       ),
-                              //     ),
-                              //   ),
-                              // );
                             },
-                            child: CustomListTile(
-                                icon: Icons.account_circle_rounded,
-                                text: "User Details"),
                           ),
-                          // Divider(
-                          //   height: 10.0,
-                          //   color: Colors.grey,
-                          // ),
                         ],
                       ),
                     ),

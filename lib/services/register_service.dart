@@ -15,7 +15,7 @@ class RegisterService {
       "password": registerModel.password,
       "email": registerModel.email,
       "profileImage": registerModel.profileImage,
-      "phoneNumber": registerModel.phoneNumber,
+      "mobileNo": registerModel.mobileNo,
       "address": registerModel.address,
       "hometown": registerModel.hometown,
       "maritalStatus": registerModel.maritalStatus,
@@ -33,7 +33,7 @@ class RegisterService {
       return response.body;
     } catch (e) {
       print(e);
-      throw Exception('Failed to load API Data');
+      throw Exception(' Register : Failed to load API Data');
     }
   }
 }
