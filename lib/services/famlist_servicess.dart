@@ -20,7 +20,7 @@ class ShowFamilyMemberService {
       );
 
       if (response.statusCode == 200) {
-        // print(response.body);
+        print("getList : ${response.body}");
         
         final jsonData = json.decode(response.body);
         if (jsonData is List) {

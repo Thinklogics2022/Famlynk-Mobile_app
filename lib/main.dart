@@ -1,5 +1,4 @@
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
-import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/utils/default_option.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';

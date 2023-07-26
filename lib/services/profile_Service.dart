@@ -6,16 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileUserService {
-  String email = '';
+  String userId = '';
   String token = '';
   Future<dynamic> fetchMembersByUserId() async {
     final prefs = await SharedPreferences.getInstance();
-    email = prefs.getString('email') ?? '';
+    userId = prefs.getString('userId') ?? '';
     token = prefs.getString("token") ?? '';
     try {
       http.Response response;
       response = await http.get(
-          Uri.parse(FamlynkServiceUrl.profileUser + email),
+          Uri.parse(FamlynkServiceUrl.profileUser + userId),
           headers: {'Authorization': 'Bearer $token'});
       dynamic returnObject;
       if (response.statusCode == 200) {

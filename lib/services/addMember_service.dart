@@ -6,13 +6,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class AddMemberService {
   String email = '';
- String token = '';
+  String token = '';
 
   Future<dynamic> addMemberPost(AddMemberModel addMemberModel) async {
     var urls = FamlynkServiceUrl.addMember;
     final prefs = await SharedPreferences.getInstance();
     email = prefs.getString('email') ?? '';
-    token =  prefs.getString('token') ?? '';
+    token = prefs.getString('token') ?? '';
 
     final url = Uri.parse(urls + email);
 
@@ -25,19 +25,22 @@ class AddMemberService {
       "dob": addMemberModel.dob,
       "image": addMemberModel.image,
       "userId": addMemberModel.userId,
-      "uniqueUserID": addMemberModel.uniqueUserID
+      // "uniqueUserID": addMemberModel.uniqueUserID,
     };
 
     try {
       final response = await http.post(
         url,
         body: jsonEncode(requestBody),
-        headers: {"Content-Type": "application/json", 'Authorization': 'Bearer $token'},
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer $token'
+        },
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('POST request successful');
-        print(response.body);
+        print("add : ${response.body}");
 
         return response.body;
       } else {

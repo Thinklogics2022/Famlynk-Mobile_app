@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/model/updateFamMember_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -263,7 +264,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   SizedBox(height: 35),
                   Container(
                     child: ElevatedButton(
-                      onPressed: _updateFamMember,
+                      onPressed: _submitForm,
                       child: Text("Update"),
                     ),
                   )
@@ -276,45 +277,35 @@ class _UpdateFamListState extends State<UpdateFamList> {
     );
   }
 
-  void _updateFamMember() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        // final updateFamListService = UpdateFamListService();
-        final imageUrl = await _uploadImage();
-        final updateData = {
-          'name': name.text,
-          'dob': dateinput.text,
-          'gender': _selectedGender,
-          'mobileNo': phNumber.text,
-          'email': email.text,
-          'relation': dropdownValue1,
-          'image': imageUrl,
-        };
-        final famMemberRef = FirebaseFirestore.instance
-            .collection('familyMembers')
-            .doc(widget.updateMember!.famid);
-        await famMemberRef.update(updateData);
+  void _submitForm() async {
+    String imageUrl = widget.updateMember!.image.toString();
 
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => NavBar()));
-      } catch (e) {
-        print('Error updating family member: $e');
-      }
-    }
-  }
-
-  Future<String?> _uploadImage() async {
     if (imageFile != null) {
-      try {
-        final storageResult = await storageRef
-            .child('profile_images/${name.text}')
-            .putFile(imageFile!);
-        return await storageResult.ref.getDownloadURL();
-      } catch (e) {
-        print('Error uploading image: $e');
-      }
+      final storageResult = await storageRef
+          .child('profile_images/${name.text}')
+          .putFile(imageFile!);
+       imageUrl = await storageResult.ref.getDownloadURL();
     }
-    return null;
+    UpdateFamMemberModel updateFamMemberModel = UpdateFamMemberModel(
+        name: name.text,
+        dob: dateinput.text,
+        gender: _selectedGender,
+        mobileNo: phNumber.text,
+        famid: widget.updateMember!.famid,
+        email: email.text,
+        userId: widget.updateMember!.userId,
+        uniqueUserID: widget.updateMember!.uniqueUserID,
+        relation: dropdownValue1,
+        image: imageUrl);
+    print(updateFamMemberModel.userId);
+    print(updateFamMemberModel.image);
+    print(updateFamMemberModel.name);
+        UpdateFamListService updateFamListService = UpdateFamListService();
+
+    updateFamListService.updateFamMember(updateFamMemberModel);
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => NavBar()));
   }
 
   Widget imageprofile() {
