@@ -326,13 +326,11 @@ class _AddMemberState extends State<AddMember> {
             email: _email.text,
             mobileNo: _phNumber.text,
             image: imageUrl,
-            uniqueUserID: "");
-        print(addMemberModel.userId);
-        print(addMemberModel.image);
-        print(addMemberModel.name);
+            // uniqueUserID: ""
+            );
+      
         addMemberService.addMemberPost(addMemberModel);
-        // Save AddMemberModel to Firestore
-        // await firestore.collection('members').add(addMemberModel.toMap());
+        
 
         Navigator.pushReplacement(
           context,

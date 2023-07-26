@@ -10,7 +10,7 @@ class FamlynkServiceUrl {
       baseUrl + "/familymembers/createfamilymembers/";
   static const String allUser = baseUrl + "/register/retrievemembers/";
   static const String getFamilyMember =
-      baseUrl + "/familymembers/retrievefamilymembersbyuseridss/";
+      baseUrl + "/familymembers/retrieveFamilyMembers/";
   static const String searchAddMember = baseUrl + "/familymembers/addfamily";
   static const String deleteFamilyMember =
       baseUrl + "/familymembers/deletefamilymember/";
@@ -24,7 +24,7 @@ class FamlynkServiceUrl {
   static const String updatePassword =
       baseUrl + "/register/updatepasswordbyemail/";
   static const String gallery = baseUrl + "/newsfeed/retrieveusernewsfeed/";
-  static const String profileUser = baseUrl + "/register/retrieveregisterbyemail/";
+  static const String profileUser = baseUrl + "/register/retrieveregisterbyid/";
   static const String editProfile = baseUrl + "/register/updateregisterbyid/";
   static const String postComment = baseUrl + "/comment/createcomment";
   static const String getComment =

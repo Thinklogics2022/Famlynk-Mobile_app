@@ -1,18 +1,13 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
+import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
-import 'package:famlynk_version1/mvc/view/profile/profile.dart';
-import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
-import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
 import 'package:famlynk_version1/services/editProfileService.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-
-import '../../../services/profileEdit_service.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key, required this.profileUserModel});
@@ -26,6 +21,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final firebase_storage.Reference storageRef =
       firebase_storage.FirebaseStorage.instance.ref();
   File? imageFile;
+
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   TextEditingController nameController = TextEditingController();
@@ -33,11 +29,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController homeTownController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController maritalStatusController = TextEditingController();
+  // TextEditingController maritalStatusController = TextEditingController();
   TextEditingController _dateinput = TextEditingController();
   String _selectedGender = '';
   List<File> _imagesFile = [];
   String? profilBase64;
+  String dropdownValuess = 'Marital Status';
 
   @override
   void dispose() {
@@ -54,12 +51,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _selectedGender = widget.profileUserModel!.gender.toString();
     homeTownController.text = widget.profileUserModel!.hometown.toString();
     addressController.text = widget.profileUserModel!.address.toString();
-    maritalStatusController.text =
-        widget.profileUserModel!.maritalStatus.toString();
+    dropdownValuess = widget.profileUserModel!.maritalStatus.toString();
 
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -89,11 +84,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             children: [
               SizedBox(height: 25),
-              // Text(
-              //   "Edit Profile",
-              //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-              // ),
-              SizedBox(height: 15),
               Center(
                 child: Stack(
                   children: [
@@ -196,8 +186,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(height: 25),
               buildTextField("Home Town", homeTownController, Icons.home),
               buildTextField("Address", addressController, Icons.location_city),
-              buildTextField("MaritalStatus", maritalStatusController,
-                  Icons.child_care_outlined),
+              // buildTextField("MaritalStatus", maritalStatusController,
+              //     Icons.child_care_outlined),
+              Container(
+                child: DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    icon: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Icon(Icons.child_care),
+                    ),
+                    contentPadding: EdgeInsets.only(bottom: 1),
+                    labelText: "Marital Status",
+                    labelStyle:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    hintText:
+                        "${widget.profileUserModel!.maritalStatus.toString()}",
+                    hintStyle: TextStyle(color: Colors.black),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  items: maritalStatus
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValuess = newValue!;
+                    });
+                  },
+                ),
+              ),
               SizedBox(height: 35),
               ElevatedButton(
                   onPressed: submitForm,
@@ -218,47 +241,43 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   void submitForm() async {
+    String imageUrl = widget.profileUserModel!.profileImage.toString();
+
     if (imageFile != null) {
       final storageResult = await storageRef
           .child('profile_images/${nameController.text}')
           .putFile(imageFile!);
-      final imageUrl = await storageResult.ref.getDownloadURL();
-      EditProfileService editProfileService = EditProfileService();
-      if (formkey.currentState!.validate()) {
-        ProfileUserModel profileUserModel = ProfileUserModel(
-          name: nameController.text,
-          email: emailController.text,
-          mobileNo: mobileNumberController.text,
-          gender: _selectedGender,
-          dateOfBirth: _dateinput.text,
-          hometown: homeTownController.text,
-          address: addressController.text,
-          maritalStatus: maritalStatusController.text,
-          userId: widget.profileUserModel!.userId,
-          uniqueUserID: widget.profileUserModel!.uniqueUserID,
-          profileImage: imageUrl,
-          id: widget.profileUserModel!.id,
-          password: widget.profileUserModel!.password,
-          coverImage: "",
-          createdOn: widget.profileUserModel!.createdOn,
-          modifiedOn: "",
-          status: widget.profileUserModel!.status,
-          role: widget.profileUserModel!.role,
-          enabled: widget.profileUserModel!.enabled,
-          verificationToken: widget.profileUserModel!.verificationToken,
-          otp: widget.profileUserModel!.otp,
-        );
-        editProfileService.editProfile(profileUserModel);
-
-        print(profileUserModel.id);
-        print(profileUserModel.hometown);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NavBar()));
-      }
-
-     
+      imageUrl = await storageResult.ref.getDownloadURL();
     }
-    ;
+
+    ProfileUserModel profileUserModel = ProfileUserModel(
+      name: nameController.text,
+      email: emailController.text,
+      mobileNo: mobileNumberController.text,
+      gender: _selectedGender,
+      dateOfBirth: _dateinput.text,
+      hometown: homeTownController.text,
+      address: addressController.text,
+      maritalStatus: dropdownValuess,
+      userId: widget.profileUserModel!.userId,
+      uniqueUserID: widget.profileUserModel!.uniqueUserID,
+      profileImage: imageUrl,
+      id: widget.profileUserModel!.id,
+      password: widget.profileUserModel!.password,
+      coverImage: "",
+      createdOn: widget.profileUserModel!.createdOn,
+      modifiedOn: "",
+      status: widget.profileUserModel!.status,
+      role: widget.profileUserModel!.role,
+      enabled: widget.profileUserModel!.enabled,
+      verificationToken: widget.profileUserModel!.verificationToken,
+      otp: widget.profileUserModel!.otp,
+    );
+
+    EditProfileService editProfileService = EditProfileService();
+    editProfileService.editProfile(profileUserModel);
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
   }
 
   Widget buildTextField(
@@ -289,8 +308,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  
-
   Widget imageprofile() {
     return Center(
       child: Stack(
@@ -320,7 +337,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           radius: 60,
                           backgroundColor: Colors.transparent,
                           backgroundImage: NetworkImage(
-                            
                               widget.profileUserModel!.profileImage.toString()),
                         ),
                         //   child: Icon(
@@ -334,8 +350,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         fit: BoxFit.cover,
                       ),
               )),
-
-          
           Positioned(
             bottom: 0,
             right: 0,
