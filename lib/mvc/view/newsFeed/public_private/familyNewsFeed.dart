@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/familyNewsFeed_model.dart';
-import 'package:famlynk_version1/services/familyNewsFeed_services.dart';
+import 'package:famlynk_version1/services/newsFeedService/familyNewsFeed_services.dart';
 import 'package:flutter/material.dart';
 
 class FamilyNews extends StatefulWidget {

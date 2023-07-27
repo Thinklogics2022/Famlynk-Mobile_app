@@ -8,14 +8,13 @@ PublicNewsFeedModel publicNewsFeedModelFromJson(String str) =>
 String publicNewsFeedModelToJson(PublicNewsFeedModel data) =>
     json.encode(data.toJson());
 
-// Model class representing a single news feed item
 class PublicNewsFeedModel {
   final String userId;
   final String name;
   final String newsFeedId;
   final String? profilePicture;
   final String? createdOn;
-  final String? vedio;
+  // final String? vedio;
   final String? photo;
   int like;
   final String description;
@@ -23,7 +22,7 @@ class PublicNewsFeedModel {
   List<String> userLikes;
   List<String>? userLikeNames;
   List<dynamic>? mutualConnection;
-  bool isLiked;
+  bool isLiked = false;
   List<String> comments;
   bool showAllComments;
 
@@ -33,9 +32,8 @@ class PublicNewsFeedModel {
     required this.newsFeedId,
     required this.profilePicture,
     this.createdOn,
-    this.vedio,
+    // this.vedio,
     this.photo,
-  
     required this.like,
     required this.description,
     required this.uniqueUserID,
@@ -56,12 +54,11 @@ class PublicNewsFeedModel {
       newsFeedId: json['newsFeedId'],
       profilePicture: json['profilePicture'],
       createdOn: json['createdOn'],
-      vedio: json['vedio'],
+      // vedio: json['vedio'],
       photo: json['photo'],
       like: json['like'],
       description: json['description'],
       uniqueUserID: json['uniqueUserID'],
-
       userLikes: List<String>.from(json['userLikes']),
       mutualConnection: List<dynamic>.from(json['mutualConnection'] ?? []),
       userLikeNames: List<String>.from(json['userLikeNames'] ?? []),
@@ -75,7 +72,7 @@ class PublicNewsFeedModel {
       'newsFeedId': newsFeedId,
       'profilePicture': profilePicture,
       'createdOn': createdOn,
-      'vedio': vedio,
+      // 'vedio': vedio,
       'photo': photo,
       'like': like,
       'description': description,
@@ -83,7 +80,6 @@ class PublicNewsFeedModel {
       'userLikes': userLikes,
       'mutualConnection': mutualConnection,
       'userLikeNames': userLikeNames,
-
     };
   }
 }
