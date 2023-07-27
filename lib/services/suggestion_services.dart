@@ -9,15 +9,15 @@ class SuggestionService {
   String userId = '';
   String token = '';
 
-  Future<List<Suggestion>> getAllSuggestions(int pageNumber, int pageSize) async {
-    var url = FamlynkServiceUrl.allUser;
+  Future<List<Suggestion>> getAllSuggestions() async {
+    var url = FamlynkServiceUrl.searchAllUser;
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';
     token = prefs.getString('token') ?? '';
 
     try {
       final response = await http.get(
-        Uri.parse('$url$userId/$pageNumber/$pageSize'),
+        Uri.parse('$url$userId'),
         headers: {'Authorization': 'Bearer $token'},
       );
 

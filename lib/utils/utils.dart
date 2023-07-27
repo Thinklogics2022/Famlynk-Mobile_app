@@ -8,7 +8,7 @@ class FamlynkServiceUrl {
   static const String resendOtp = baseUrl + "/register/resend/";
   static const String addMember =
       baseUrl + "/familymembers/createfamilymembers/";
-  static const String allUser = baseUrl + "/register/retrievemembers/";
+  static const String searchAllUser = baseUrl + "/register/retrievemembers/";
   static const String getFamilyMember =
       baseUrl + "/familymembers/retrieveFamilyMembers/";
   static const String searchAddMember = baseUrl + "/familymembers/addfamily";
@@ -26,12 +26,12 @@ class FamlynkServiceUrl {
   static const String gallery = baseUrl + "/newsfeed/retrieveusernewsfeed/";
   static const String profileUser = baseUrl + "/register/retrieveregisterbyid/";
   static const String editProfile = baseUrl + "/register/updateregisterbyid/";
-  static const String postComment = baseUrl + "/comment/createcomment";
+  static const String addComment = baseUrl + "/comment/createcomment";
   static const String getComment =
       baseUrl + "/comment/retrievecommentbyid/{newsFeedId}";
   static const String updateComment = "/comment/updatecommentbyid/{id}";
   static const String deleteComment = "/comment/deletecomment/{id}";
-  static const String like = baseUrl + "/newsfeed/likes/{userId}/{newsFeedId}";
+  static const String like = baseUrl + "/newsfeed/likes/";
 
 
   static const String profileUserrr = baseUrl + "/register/retrievemembersbyuserid/";

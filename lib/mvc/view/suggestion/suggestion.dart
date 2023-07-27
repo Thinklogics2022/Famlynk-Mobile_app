@@ -37,39 +37,39 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
   void initState() {
     super.initState();
     fetchData();
-    fetchTotalRegisterMembers();
-    fetchSuggestions(pageNumber, pageSize);
+    // fetchTotalRegisterMembers();
+    fetchSuggestions();
   }
 
-  Future<void> fetchTotalRegisterMembers() async {
-    try {
-      final response = await http.get(
-        Uri.parse('${FamlynkServiceUrl.allUser}/$userId/$pageNumber/$pageSize'),
-      );
-      if (response.statusCode == 200) {
-        final registerMemberTotal = json.decode(response.body);
-        if (registerMemberTotal < 0 && registerMemberTotal >= pageSize) {
-          setState(() {
-            registerMember = 0;
-          });
-        } else {
-          setState(() {
-            registerMember = (registerMemberTotal / pageSize).ceil();
-          });
-        }
-      } else {
-        print('Failed to fetch total register members. Status code: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
+  // Future<void> fetchTotalRegisterMembers() async {
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse('${FamlynkServiceUrl.searchAllUser}$userId'),
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final registerMemberTotal = json.decode(response.body);
+  //       if (registerMemberTotal < 0 && registerMemberTotal >= pageSize) {
+  //         setState(() {
+  //           registerMember = 0;
+  //         });
+  //       } else {
+  //         setState(() {
+  //           registerMember = (registerMemberTotal / pageSize).ceil();
+  //         });
+  //       }
+  //     } else {
+  //       print('Failed to fetch total register members. Status code: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
-  Future<void> fetchSuggestions(int pageNumber, int pageSize) async {
+  Future<void> fetchSuggestions() async {
     SuggestionService suggestionService = SuggestionService();
     try {
       var newSuggestions =
-          await suggestionService.getAllSuggestions(pageNumber, pageSize);
+          await suggestionService.getAllSuggestions();
 
       setState(() {
         suggestionlist.addAll(newSuggestions);
@@ -82,7 +82,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
 
   void loadMoreSuggestions() {
     pageNumber++;
-    fetchSuggestions(pageNumber, pageSize);
+    fetchSuggestions();
   }
 
   @override

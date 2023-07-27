@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
-import 'package:famlynk_version1/services/publicNewsFeed_service.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/comment.dart';
+import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
+import 'package:famlynk_version1/services/newsFeedService/publicNewsFeed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PublicNews extends StatefulWidget {
   const PublicNews({Key? key}) : super(key: key);
@@ -17,12 +20,14 @@ class _PublicNewsState extends State<PublicNews> {
   int pageSize = 20;
   List<PublicNewsFeedModel>? publicNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
+  String userId = "";
 
   @override
   void initState() {
     super.initState();
     fetchPublicNewsFeed(pageNumber, pageSize);
     _scrollController.addListener(_onScroll);
+    _handleRefresh();
   }
 
   @override
@@ -36,6 +41,13 @@ class _PublicNewsState extends State<PublicNews> {
         _scrollController.position.pixels != 0) {
       loadMoreSuggestions();
     }
+  }
+
+  Future<void> fetchData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId') ?? '';
+    });
   }
 
   Future<void> fetchPublicNewsFeed(int pageNumber, int pageSize) async {
@@ -59,15 +71,36 @@ class _PublicNewsState extends State<PublicNews> {
     fetchPublicNewsFeed(pageNumber, pageSize);
   }
 
-  void onLikeButtonPressed(int index) {
-    setState(() {
-      publicNewsFeedList![index].isLiked = !publicNewsFeedList![index].isLiked;
-      if (publicNewsFeedList![index].isLiked) {
-        publicNewsFeedList![index].userLikes.add('your-user-id');
-      } else {
-        publicNewsFeedList![index].userLikes.remove('your-user-id');
-      }
-    });
+  // void onLikeButtonPressed(int index) async {
+  //   PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+  //   await PublicNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
+  //   setState(() {
+  //     publicNewsFeedList![index].isLiked = !publicNewsFeedList![index].isLiked;
+  //     if (publicNewsFeedList![index].isLiked) {
+  //       publicNewsFeedList![index].userLikes.add(userId);
+  //     } else {
+  //       publicNewsFeedList![index].userLikes.remove(userId);
+  //     }
+  //   });
+  // }
+
+  void onLikeButtonPressed(int index) async {
+    PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+    bool isCurrentlyLiked = newsFeed.isLiked;
+    try {
+      await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
+      setState(() {
+        publicNewsFeedList![index].isLiked = !isCurrentlyLiked;
+        if (publicNewsFeedList![index].isLiked) {
+          publicNewsFeedList![index].userLikes.add(userId);
+        } else {
+          publicNewsFeedList![index].userLikes.remove(userId);
+        }
+        publicNewsFeedList = List.from(publicNewsFeedList!);
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void addComment(int index, String comment) {
@@ -114,7 +147,8 @@ class _PublicNewsState extends State<PublicNews> {
                       children: [
                         ListTile(
                           leading: CircleAvatar(
-                            backgroundImage: AssetImage('assets/images/FL02.png'),
+                            backgroundImage:
+                                AssetImage('assets/images/FL02.png'),
                           ),
                           title: Text(newsFeed.name),
                           subtitle: Text(formattedDate),
@@ -132,8 +166,10 @@ class _PublicNewsState extends State<PublicNews> {
                             padding: const EdgeInsets.all(8.0),
                             child: CachedNetworkImage(
                               imageUrl: newsFeed.photo!,
-                              placeholder: (context, url) => CircularProgressIndicator(),
-                              errorWidget: (context, url, error) => Icon(Icons.error),
+                              placeholder: (context, url) =>
+                                  CircularProgressIndicator(),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
                             ),
                           ),
                         Divider(),
@@ -142,7 +178,7 @@ class _PublicNewsState extends State<PublicNews> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              GestureDetector(
+                              InkWell(
                                 onTap: () => onLikeButtonPressed(index),
                                 child: Row(
                                   children: [
@@ -151,7 +187,8 @@ class _PublicNewsState extends State<PublicNews> {
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       size: 20.0,
-                                      color: newsFeed.isLiked ? Colors.red : null,
+                                      color:
+                                          newsFeed.isLiked ? Colors.red : null,
                                     ),
                                     SizedBox(width: 5),
                                     Text(newsFeed.likeCount.toString()),
@@ -161,19 +198,61 @@ class _PublicNewsState extends State<PublicNews> {
                               Spacer(),
                               GestureDetector(
                                 onTap: () {
-                                  setState(() {
-                                    newsFeed.showAllComments = !newsFeed.showAllComments;
-                                  });
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CommentScreen(
+                                            name: newsFeed.name,
+                                            newsFeedId: newsFeed.newsFeedId,
+                                            profilePicture: newsFeed
+                                                .profilePicture
+                                                .toString(),
+                                          )));
+                                  // setState(() {
+                                  //   newsFeed.showAllComments =
+                                  //       !newsFeed.showAllComments;
+                                  // });
                                 },
                                 child: Row(
                                   children: [
-                                    Icon(Icons.comment),
+                                    Icon(Icons.chat_bubble_outline),
                                     SizedBox(width: 5),
                                     Text(newsFeed.comments.length.toString()),
                                   ],
                                 ),
                               ),
                             ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Text("Liked by "),
+                              Text(
+                                "gokul ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Text('and '),
+                              Text(
+                                "others",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0, top: 8),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Gokul',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                  text: 'qwdefgfd',
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(height: 10),
