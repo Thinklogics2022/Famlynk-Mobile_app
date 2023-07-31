@@ -32,7 +32,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        title: const Text("Reset Password"),
+        title: const Text("Forget Password"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -163,7 +163,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                   ElevatedButton(
                     onPressed: _submitForm,
                     child: const Text(
-                      'Reset Password',
+                      'Submit',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
