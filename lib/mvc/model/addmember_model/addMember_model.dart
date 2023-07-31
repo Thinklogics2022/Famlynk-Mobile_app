@@ -9,7 +9,7 @@ class AddMemberModel {
       required this.mobileNo,
       required this.email,
       this.uniqueUserID,
-       this.famid,
+      this.famid,
       this.secondLevelrelation,
       this.thirdLevelrelation,
       this.createdOn,
@@ -73,6 +73,6 @@ class AddMemberModel {
         "notification": notification,
         "hometown": hometown,
         "address": address,
-        "famid" : famid
+        "famid": famid
       };
 }

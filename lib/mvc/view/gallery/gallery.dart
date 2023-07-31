@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/model/profile_model/gallery_model.dart';
 import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/services/gallery_service.dart';
@@ -10,7 +11,7 @@ class MediaPage extends StatefulWidget {
 }
 
 class _MediaPageState extends State<MediaPage> {
-  List<NewsFeedModel> mediaList = [];
+  List<GalleryNewsFeedModel> mediaList = [];
   bool isLoading = true;
 
   @override
@@ -58,7 +59,7 @@ Future<void> _fetchMedia() async {
     );
   }
 
-  Widget _buildMediaGridView(List<NewsFeedModel> mediaList) {
+  Widget _buildMediaGridView(List<GalleryNewsFeedModel> mediaList) {
     final padding = EdgeInsets.symmetric(
       horizontal: MediaQuery.of(context).size.width * 0.01,
       vertical: MediaQuery.of(context).size.width * 0.01,
@@ -78,9 +79,9 @@ Future<void> _fetchMedia() async {
     );
   }
 
-  Widget _buildImage(NewsFeedModel media) {
+  Widget _buildImage(GalleryNewsFeedModel media) {
     return CachedNetworkImage(
-      imageUrl: media.photo,
+      imageUrl: media.photo.toString(),
       fit: BoxFit.cover,
       placeholder: (context, url) => CircularProgressIndicator(),
       errorWidget: (context, url, error) => Icon(Icons.error),

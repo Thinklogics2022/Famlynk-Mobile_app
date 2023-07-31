@@ -1,88 +1,78 @@
 import 'dart:convert';
 
-FamilyNewsFeedModel familyNewsFeedModelFromJson(String str) =>
-    FamilyNewsFeedModel.fromJson(json.decode(str));
+List<FamilyNewsFeedModel> familyNewsFeedModelFromJson(String str) =>
+    List<FamilyNewsFeedModel>.from(
+        json.decode(str).map((x) => FamilyNewsFeedModel.fromJson(x)));
 
-String familyNewsFeedModelToJson(FamilyNewsFeedModel data) =>
-    json.encode(data.toJson());
+String familyNewsFeedModelToJson(List<FamilyNewsFeedModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class FamilyNewsFeedModel {
-  final String userId;
-  final String name;
-  final String newsFeedId;
-  final String? profilePicture;
-  final String? createdOn;
-  final String? video;
-  final String? photo;
+  String newsFeedId;
+  String userId;
+  dynamic profilePicture;
+  dynamic vedio;
+  String? photo;
   int like;
-  final dynamic image;
-  final String description;
-  final String uniqueUserID;
+  String description;
+  String name;
+  DateTime createdOn;
   List<String> userLikes;
-  List<String>? userLikeNames;
-  List<dynamic>? mutualConnection;
-  bool isLiked;
-  List<String> comments;
-  bool showAllComments;
+  List<String> userLikeNames;
+  dynamic image;
+  String uniqueUserID;
+  List<dynamic> mutualConnection;
 
   FamilyNewsFeedModel({
-    required this.userId,
-    required this.name,
     required this.newsFeedId,
-    required this.profilePicture,
-    this.createdOn,
-    this.video,
+    required this.userId,
+    this.profilePicture,
+    this.vedio,
     this.photo,
-    this.image,
     required this.like,
     required this.description,
-    required this.uniqueUserID,
+    required this.name,
+    required this.createdOn,
     required this.userLikes,
-    this.userLikeNames,
-    this.mutualConnection,
-    this.isLiked = false,
-    this.comments = const [],
-    this.showAllComments = false,
+    required this.userLikeNames,
+    this.image,
+    required this.uniqueUserID,
+    required this.mutualConnection,
   });
 
-  int get likeCount => userLikes.length;
+  factory FamilyNewsFeedModel.fromJson(Map<String, dynamic> json) =>
+      FamilyNewsFeedModel(
+        newsFeedId: json["newsFeedId"],
+        userId: json["userId"],
+        profilePicture: json["profilePicture"],
+        vedio: json["vedio"],
+        photo: json["photo"],
+        like: json["like"],
+        description: json["description"],
+        name: json["name"],
+        createdOn: DateTime.parse(json["createdOn"]),
+        userLikes: List<String>.from(json["userLikes"].map((x) => x)),
+        userLikeNames: List<String>.from(json["userLikeNames"].map((x) => x)),
+        image: json["image"],
+        uniqueUserID: json["uniqueUserID"],
+        mutualConnection:
+            List<dynamic>.from(json["mutualConnection"].map((x) => x)),
+      );
 
-  factory FamilyNewsFeedModel.fromJson(Map<String, dynamic> json) {
-  return FamilyNewsFeedModel(
-    userId: json['userId'],
-    name: json['name'],
-    newsFeedId: json['newsFeedId'],
-    profilePicture: json['profilePicture'],
-    createdOn: json['createdOn'],
-    video: json['video'],
-    photo: json['photo'],
-    like: json['like'] is int ? json['like'] : int.tryParse(json['like']) ?? 0,
-    description: json['description'],
-    uniqueUserID: json['uniqueUserID'],
-    image: json['image'],
-    userLikes: List<String>.from(json['userLikes']),
-    mutualConnection: List<dynamic>.from(json['mutualConnection'] ?? []),
-    userLikeNames: List<String>.from(json['userLikeNames'] ?? []),
-  );
-}
-
-
-  Map<String, dynamic> toJson() {
-    return {
-      'userId': userId,
-      'name': name,
-      'newsFeedId': newsFeedId,
-      'profilePicture': profilePicture,
-      'createdOn': createdOn,
-      'video': video,
-      'photo': photo,
-      'like': like,
-      'description': description,
-      'uniqueUserID': uniqueUserID,
-      'userLikes': userLikes,
-      'mutualConnection': mutualConnection,
-      'userLikeNames': userLikeNames,
-      'image': image,
-    };
-  }
+  Map<String, dynamic> toJson() => {
+        "newsFeedId": newsFeedId,
+        "userId": userId,
+        "profilePicture": profilePicture,
+        "vedio": vedio,
+        "photo": photo,
+        "like": like,
+        "description": description,
+        "name": name,
+        "createdOn": createdOn.toIso8601String(),
+        "userLikes": List<dynamic>.from(userLikes.map((x) => x)),
+        "userLikeNames": List<dynamic>.from(userLikeNames.map((x) => x)),
+        "image": image,
+        "uniqueUserID": uniqueUserID,
+        "mutualConnection": List<dynamic>.from(mutualConnection.map((x) => x)),
+      };
 }

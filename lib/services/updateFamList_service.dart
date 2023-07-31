@@ -20,7 +20,7 @@ class UpdateFamListService {
       "image": data.image,
       "famid": data.famid,
       "userId": data.userId,
-      "uniqueUserID" : data.uniqueUserID
+      "uniqueUserID": data.uniqueUserID
     };
 
     try {
@@ -34,7 +34,7 @@ class UpdateFamListService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 202) {
-        // print(response.body); 
+        // print(response.body);
         return response.body;
       } else {
         print("Update request failed with : ${response.statusCode}");

@@ -8,7 +8,7 @@ class RegisterService {
     Map<String, dynamic> obj1 = {
       "id": registerModel.id,
       "userId": registerModel.userId,
-      "uniqueUserId": registerModel.uniqueUserId,
+      "uniqueUserID": registerModel.uniqueUserID,
       "name": registerModel.name,
       "gender": registerModel.gender,
       "dateOfBirth": registerModel.dateOfBirth,

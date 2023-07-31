@@ -1,42 +1,43 @@
 import 'dart:convert';
 
-NewsFeedModel newsFeedModelFromJson(String str) =>
-    NewsFeedModel.fromJson(json.decode(str));
+GalleryNewsFeedModel galleryNewsFeedModelFromJson(String str) =>
+    GalleryNewsFeedModel.fromJson(json.decode(str));
 
-String newsFeedModelToJson(NewsFeedModel data) => json.encode(data.toJson());
+String galleryNewsFeedModelToJson(GalleryNewsFeedModel data) =>
+    json.encode(data.toJson());
 
-class NewsFeedModel {
+class GalleryNewsFeedModel {
   final String userId;
   final String name;
-  // final String newsFeedId;
+  final String newsFeedId;
   final String profilePicture;
   final String? createdOn;
   // final String vedio;
   final String photo;
-  final int? like;
+  final int like;
   final String description;
   final String uniqueUserID;
-  List<String>? userLikes;
+  List<String> userLikes;
 
-  NewsFeedModel({
+  GalleryNewsFeedModel({
     required this.userId,
     required this.name,
-    // required this.newsFeedId,
+    required this.newsFeedId,
     required this.profilePicture,
     this.createdOn,
     // required this.vedio,
     required this.photo,
-    this.like,
+    required this.like,
     required this.description,
     required this.uniqueUserID,
-    this.userLikes,
+    required this.userLikes,
   });
 
-  factory NewsFeedModel.fromJson(Map<String, dynamic> json) {
-    return NewsFeedModel(
+  factory GalleryNewsFeedModel.fromJson(Map<String, dynamic> json) {
+    return GalleryNewsFeedModel(
       userId: json['userId'],
       name: json['name'],
-      // newsFeedId: json['newsFeedId'],
+      newsFeedId: json['newsFeedId'],
       profilePicture: json['profilePicture'],
       createdOn: json['createdOn'],
       // vedio: json['vedio'],
@@ -52,7 +53,7 @@ class NewsFeedModel {
     return {
       'userId': userId,
       'name': name,
-      // 'newsFeedId': newsFeedId,
+      'newsFeedId': newsFeedId,
       'profilePicture': profilePicture,
       'createdOn': createdOn,
       // 'vedio': vedio,

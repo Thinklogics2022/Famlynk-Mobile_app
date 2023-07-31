@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/comment.dart';
 import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:famlynk_version1/services/newsFeedService/publicNewsFeed_service.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PublicNews extends StatefulWidget {
@@ -18,6 +18,8 @@ class _PublicNewsState extends State<PublicNews> {
   bool isLoaded = false;
   int pageNumber = 0;
   int pageSize = 20;
+  bool isLiked = false;
+  late List<String> comments;
   List<PublicNewsFeedModel>? publicNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
   String userId = "";
@@ -25,7 +27,8 @@ class _PublicNewsState extends State<PublicNews> {
   @override
   void initState() {
     super.initState();
-    fetchPublicNewsFeed(pageNumber, pageSize);
+    fetchData();
+    comments = [];
     _scrollController.addListener(_onScroll);
     _handleRefresh();
   }
@@ -71,41 +74,53 @@ class _PublicNewsState extends State<PublicNews> {
     fetchPublicNewsFeed(pageNumber, pageSize);
   }
 
-  // void onLikeButtonPressed(int index) async {
+  void onLikeButtonPressed(int index) async {
+  PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+  bool isCurrentlyLiked = newsFeed.userLikes.contains(userId);
+
+  try {
+    // if (isCurrentlyLiked) {
+    //   await LikeNewsFeedService().unlikeNewsFeed(newsFeed.newsFeedId);
+    // } else {
+    //   await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
+    // }
+    setState(() {
+      isLiked = !isCurrentlyLiked;
+      if (isLiked) {
+        publicNewsFeedList![index].userLikes.add(userId);
+        publicNewsFeedList![index].like++;
+      } else {
+        publicNewsFeedList![index].userLikes.remove(userId);
+        publicNewsFeedList![index].like--;
+      }
+      publicNewsFeedList = List.from(publicNewsFeedList!);
+    });
+  } catch (e) {
+    print(e);
+  }
+}
+
+
+  // Future<void> onLikeButtonPressed(int index) async {
   //   PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-  //   await PublicNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
-  //   setState(() {
-  //     publicNewsFeedList![index].isLiked = !publicNewsFeedList![index].isLiked;
-  //     if (publicNewsFeedList![index].isLiked) {
-  //       publicNewsFeedList![index].userLikes.add(userId);
-  //     } else {
-  //       publicNewsFeedList![index].userLikes.remove(userId);
-  //     }
-  //   });
+  //   try {
+  //     await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
+  //     setState(() {
+  //       isLiked = !isLiked;
+  //       if (isLiked) {
+  //         newsFeed.userLikes.add(userId);
+  //       } else {
+  //         newsFeed.userLikes.remove(userId);
+  //       }
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
   // }
 
-  void onLikeButtonPressed(int index) async {
-    PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-    bool isCurrentlyLiked = newsFeed.isLiked;
-    try {
-      await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
-      setState(() {
-        publicNewsFeedList![index].isLiked = !isCurrentlyLiked;
-        if (publicNewsFeedList![index].isLiked) {
-          publicNewsFeedList![index].userLikes.add(userId);
-        } else {
-          publicNewsFeedList![index].userLikes.remove(userId);
-        }
-        publicNewsFeedList = List.from(publicNewsFeedList!);
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void addComment(int index, String comment) {
+  Future<void> addComment(int index, String comment) async {
     setState(() {
-      publicNewsFeedList![index].comments.add(comment);
+      comments.add(comment);
     });
   }
 
@@ -183,15 +198,15 @@ class _PublicNewsState extends State<PublicNews> {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      newsFeed.isLiked
+                                      isLiked
                                           ? Icons.favorite
                                           : Icons.favorite_border,
                                       size: 20.0,
-                                      color:
-                                          newsFeed.isLiked ? Colors.red : null,
+                                      color: isLiked ? Colors.red : null,
                                     ),
                                     SizedBox(width: 5),
-                                    Text(newsFeed.likeCount.toString()),
+                                    Text(newsFeed.like
+                                        .toString()), // Display the like count
                                   ],
                                 ),
                               ),
@@ -206,16 +221,12 @@ class _PublicNewsState extends State<PublicNews> {
                                                 .profilePicture
                                                 .toString(),
                                           )));
-                                  // setState(() {
-                                  //   newsFeed.showAllComments =
-                                  //       !newsFeed.showAllComments;
-                                  // });
                                 },
                                 child: Row(
                                   children: [
                                     Icon(Icons.chat_bubble_outline),
                                     SizedBox(width: 5),
-                                    Text(newsFeed.comments.length.toString()),
+                                    Text(comments.length.toString()),
                                   ],
                                 ),
                               ),
@@ -256,20 +267,6 @@ class _PublicNewsState extends State<PublicNews> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        if (newsFeed.showAllComments) ...[
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: newsFeed.comments.length,
-                            itemBuilder: (context, commentIndex) {
-                              String comment = newsFeed.comments[commentIndex];
-                              return ListTile(
-                                title: Text(comment),
-                              );
-                            },
-                          ),
-                          SizedBox(height: 10),
-                        ],
                       ],
                     ),
                   );
