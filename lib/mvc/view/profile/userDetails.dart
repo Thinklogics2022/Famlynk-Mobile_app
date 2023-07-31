@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
-import 'package:famlynk_version1/mvc/view/profile/edit.dart';
 import 'package:famlynk_version1/services/profile_Service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
