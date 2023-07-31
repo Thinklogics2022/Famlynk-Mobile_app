@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
@@ -285,19 +286,13 @@ class _AddMemberState extends State<AddMember> {
                                 selectedValueFromDropdown1 = newValue!;
                                 print(newValue);
                               });
-                              DrpDwnAddMembeService drpDwnAddMembeService =
-                                  DrpDwnAddMembeService();
-                              AddMemberModel downModel = AddMemberModel(
-                                 relation: selectedValueFromDropdown1
-                                 );
-                              drpDwnAddMembeService.drpdown(downModel);
-                              print(downModel);
+
                             },
                           ),
                           if (selectedValueFromDropdown1 != null)
                             DropdownButton<String>(
                               value: selectedValueFromDropdown2,
-                              items: dropdown2Items.map((String value) {
+
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),

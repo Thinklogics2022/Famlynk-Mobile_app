@@ -1,3 +1,4 @@
+
 class RegisterModel {
   RegisterModel(
       {this.id,
@@ -48,8 +49,9 @@ class RegisterModel {
       hometown: json["hometown"],
       maritalStatus: json["maritalStatus"],
       coverImage: json["coverImage"],
-      otp: json["otp"],
-      verificationToken: json["verificationToken"]);
+      otp: json["otp"], 
+      verificationToken: json["verificationToken"]
+      );
   Map<String, dynamic> toJson() => {
         "id": id,
         "uniqueUserID": uniqueUserID,

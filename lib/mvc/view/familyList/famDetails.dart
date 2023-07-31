@@ -1,3 +1,4 @@
+
 import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
 import 'package:flutter/material.dart';
 
@@ -143,4 +144,6 @@ class _MemberDetailsState extends State<MemberDetails>
       ),
     );
   }
+
 }
+
