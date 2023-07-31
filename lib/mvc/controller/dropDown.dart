@@ -17,3 +17,9 @@ const List<String> maritalStatus = <String>[
   "Single",
   "Marrried"
 ];
+
+const List<String> options = <String>[
+  // "Marital Status",
+  "Options 1",
+  "Options2"
+];

@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
@@ -29,7 +30,10 @@ class _AddMemberState extends State<AddMember> {
 
   String _selectedGender = '';
   String dropdownValue1 = 'Select Relation';
+  String dropdownValue2 = 'Select ';
   String? profilBase64;
+  var selectedValueFromDropdown1;
+  var selectedValueFromDropdown2;
 
   String userId = "";
 
@@ -51,8 +55,6 @@ class _AddMemberState extends State<AddMember> {
     super.initState();
     fetchData();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -81,17 +83,20 @@ class _AddMemberState extends State<AddMember> {
                     TextFormField(
                       controller: _name,
                       decoration: InputDecoration(
-                          icon: Icon(Icons.person,),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          hintText: 'Enter Name',
-                          hintStyle: TextStyle(color: Colors.grey[500])),
+          contentPadding: EdgeInsets.only(bottom: 1),
+          labelText: "Name",
+          prefixIcon: Icon(Icons.person),
+          labelStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          hintStyle: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return '*name is required';
@@ -159,23 +164,28 @@ class _AddMemberState extends State<AddMember> {
                           ],
                         ),
                       ],
-                    ),
-                    SizedBox(height: 15),
+                    ), Divider(
+                      thickness: .8,color: Colors.grey,
+                    )
+,                    SizedBox(height: 15),
                     TextFormField(
                       controller: _dateinput,
                       keyboardType: TextInputType.datetime,
                       decoration: InputDecoration(
-                          icon: Icon(Icons.calendar_month),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                          ),
-                          fillColor: myProperties.fillColor,
-                          filled: true,
-                          hintText: 'Date Of Birth',
-                          hintStyle: TextStyle(color: Colors.grey[500])),
+          contentPadding: EdgeInsets.only(bottom: 1),
+          labelText: "DOB",
+          prefixIcon: Icon(Icons.calendar_month),
+          labelStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          hintStyle: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                             context: context,
@@ -202,17 +212,20 @@ class _AddMemberState extends State<AddMember> {
                     TextFormField(
                       controller: _phNumber,
                       decoration: InputDecoration(
-                          icon: Icon(Icons.phone),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          hintText: 'Enter Mobile Number',
-                          hintStyle: TextStyle(color: Colors.grey[500])),
+          contentPadding: EdgeInsets.only(bottom: 1),
+          labelText: "Mobile No",
+          prefixIcon:Icon(Icons.phone),
+          labelStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          hintStyle: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "*mobile number is required";
@@ -228,17 +241,20 @@ class _AddMemberState extends State<AddMember> {
                     TextFormField(
                       controller: _email,
                       decoration: InputDecoration(
-                          icon: Icon(Icons.email),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          hintText: 'Enter Email',
-                          hintStyle: TextStyle(color: Colors.grey[500])),
+          contentPadding: EdgeInsets.only(bottom: 1),
+          labelText: "Email",
+          prefixIcon:Icon(Icons.email),
+          labelStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          hintStyle: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -251,37 +267,43 @@ class _AddMemberState extends State<AddMember> {
                       },
                     ),
                     SizedBox(height: 15),
-                    Container(
-                      child: DropdownButtonFormField(
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.people),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DropdownButton<String>(
+                            value: selectedValueFromDropdown1,
+                            items: relation.map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                selectedValueFromDropdown1 = newValue!;
+                                print(newValue);
+                              });
+                            
+                            },
+                          ),
+                          if (selectedValueFromDropdown1 != null)
+                            DropdownButton<String>(
+                              value: selectedValueFromDropdown2,
+                              items: options.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectedValueFromDropdown2 = newValue;
+                                });
+                                print("Second dropdown selected: $newValue");
+                              },
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey.shade400),
-                            ),
-                            fillColor: Colors.grey.shade200,
-                            filled: true,
-                            hintStyle: TextStyle(color: Colors.grey[500])),
-                        dropdownColor: Color.fromARGB(255, 255, 255, 255),
-                        value: dropdownValue1,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            dropdownValue1 = newValue!;
-                          });
-                        },
-                        items: relation
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          );
-                        }).toList(),
+                        ],
                       ),
                     ),
                     SizedBox(height: 35),
@@ -318,19 +340,18 @@ class _AddMemberState extends State<AddMember> {
 
         AddMemberService addMemberService = AddMemberService();
         AddMemberModel addMemberModel = AddMemberModel(
-            name: _name.text,
-            gender: _selectedGender,
-            relation: dropdownValue1,
-            dob: _dateinput.text,
-            userId: userId,
-            email: _email.text,
-            mobileNo: _phNumber.text,
-            image: imageUrl,
-            // uniqueUserID: ""
-            );
-      
+          name: _name.text,
+          gender: _selectedGender,
+          relation: dropdownValue1,
+          dob: _dateinput.text,
+          userId: userId,
+          email: _email.text,
+          mobileNo: _phNumber.text,
+          image: imageUrl,
+          // uniqueUserID: ""
+        );
+
         addMemberService.addMemberPost(addMemberModel);
-        
 
         Navigator.pushReplacement(
           context,
@@ -342,7 +363,7 @@ class _AddMemberState extends State<AddMember> {
     }
   }
 
-   Widget imageprofile() {
+  Widget imageprofile() {
     return Center(
       child: Stack(
         children: <Widget>[

@@ -1,4 +1,6 @@
+
 import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/view/familyList/famDetails.dart';
 import 'package:famlynk_version1/mvc/view/familyList/updateFamList.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/dltFamList_service.dart';
@@ -44,80 +46,93 @@ class _FamilyListState extends State<FamilyList> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         body: isLoaded
-            ? ListView.builder(
+          ? familyList.isEmpty
+              ? Center(
+                  child: Text('There is no more family list.'),
+                )
+              : ListView.builder(
                 itemCount: familyList.length,
                 itemBuilder: (context, index) {
-                  return Card(
-                    child: Container(
-                      margin: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        color: Color.fromARGB(255, 221, 232, 232),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CircleAvatar(
-                              radius: 35,
-                              backgroundImage: NetworkImage(
-                                  familyList[index].image.toString()),
-                            ),
-                          ),
-                          SizedBox(width: 20),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                familyList[index].name.toString(),
-                                style: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.bold),
+                  return InkWell(
+                    child: Card(
+                      child: Container(
+                        margin: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14),
+                          color: Color.fromARGB(255, 221, 232, 232),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                radius: 35,
+                                backgroundImage: NetworkImage(
+                                    familyList[index].image.toString()),
                               ),
-                              Text(familyList[index].relation.toString()),
-                            ],
-                          ),
-                          Spacer(),
-                          Center(
-                            child: PopupMenuButton(
-                              itemBuilder: (BuildContext context) => [
-                                PopupMenuItem(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => UpdateFamList(
-                                            updateMember: familyList[index],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text("edit"),
-                                  ),
+                            ),
+                            SizedBox(width: 20),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  familyList[index].name.toString(),
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                PopupMenuItem(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      _showMyDialog(
-                                        familyList[index].userId.toString(),
-                                        familyList[index]
-                                            .uniqueUserID
-                                            .toString(),
-                                      );
-                                      print(familyList[index]
-                                          .uniqueUserID
-                                          .toString());
-                                    },
-                                    child: Text("delete"),
-                                  ),
-                                ),
+                                Text(familyList[index].relation.toString()),
                               ],
                             ),
-                          ),
-                        ],
+                            Spacer(),
+                            Center(
+                              child: PopupMenuButton(
+                                itemBuilder: (BuildContext context) => [
+                                  PopupMenuItem(
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => UpdateFamList(
+                                              updateMember: familyList[index],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text("edit"),
+                                    ),
+                                  ),
+                                  PopupMenuItem(
+                                    child: TextButton(
+                                      onPressed: () {
+                                        _showMyDialog(
+                                          familyList[index].userId.toString(),
+                                          familyList[index]
+                                              .uniqueUserID
+                                              .toString(),
+                                        );
+                                        print(familyList[index]
+                                            .uniqueUserID
+                                            .toString());
+                                      },
+                                      child: Text("delete"),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MemberDetails(details:familyList [index])));
+                    },
                   );
                 },
               )
