@@ -144,4 +144,6 @@ class _MemberDetailsState extends State<MemberDetails>
       ),
     );
   }
+
 }
+

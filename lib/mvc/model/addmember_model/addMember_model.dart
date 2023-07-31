@@ -1,13 +1,13 @@
 class AddMemberModel {
   AddMemberModel(
-      {required this.userId,
-      required this.name,
-      required this.dob,
-      required this.image,
-      required this.relation,
-      required this.gender,
-      required this.mobileNo,
-      required this.email,
+      { this.userId,
+       this.name,
+       this.dob,
+       this.image,
+       this.relation,
+       this.gender,
+       this.mobileNo,
+       this.email,
       this.uniqueUserID,
       this.famid,
       this.secondLevelrelation,
@@ -18,14 +18,14 @@ class AddMemberModel {
       this.maritalStatus,
       this.hometown,
       this.address});
-  String userId;
-  String name;
-  String dob;
-  String image;
-  String relation;
-  String gender;
-  String mobileNo;
-  String email;
+  String? userId;
+  String? name;
+  String? dob;
+  String? image;
+  String? relation;
+  String? gender;
+  String? mobileNo;
+  String? email;
   String? uniqueUserID;
   String? secondLevelrelation;
   String? thirdLevelrelation;

@@ -90,17 +90,20 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   TextFormField(
                     controller: name,
                     decoration: InputDecoration(
-                        icon: Icon(Icons.person),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        hintText: '${widget.updateMember!.name.toString()}',
-                        hintStyle: TextStyle(color: Colors.grey[500])),
+                      contentPadding: EdgeInsets.only(bottom: 1),
+                      labelText: "Name",
+                      prefixIcon: Icon(Icons.person),
+                      labelStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintStyle: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                   SizedBox(height: 15),
                   Column(
@@ -161,22 +164,29 @@ class _UpdateFamListState extends State<UpdateFamList> {
                       ),
                     ],
                   ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                  ),
                   SizedBox(height: 15),
                   TextFormField(
                     controller: dateinput,
                     keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
-                        icon: Icon(Icons.calendar_month),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: myProperties.fillColor,
-                        filled: true,
-                        hintText: '${widget.updateMember!.dob.toString()}',
-                        hintStyle: TextStyle(color: Colors.grey[500])),
+                      contentPadding: EdgeInsets.only(bottom: 1),
+                      labelText: "DOB",
+                      prefixIcon: Icon(Icons.calendar_month),
+                      labelStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintStyle: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -192,56 +202,64 @@ class _UpdateFamListState extends State<UpdateFamList> {
                       }
                     },
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: phNumber,
                     decoration: InputDecoration(
-                        icon: Icon(Icons.phone),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        hintText: '${widget.updateMember!.mobileNo.toString()}',
-                        hintStyle: TextStyle(color: Colors.grey[500])),
+                      contentPadding: EdgeInsets.only(bottom: 1),
+                      labelText: "Mobile No",
+                      prefixIcon: Icon(Icons.phone),
+                      labelStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintStyle: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                     keyboardType: TextInputType.phone,
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: email,
                     decoration: InputDecoration(
-                        icon: Icon(Icons.email),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        hintText: '${widget.updateMember!.email.toString()}',
-                        hintStyle: TextStyle(color: Colors.grey[500])),
+                      contentPadding: EdgeInsets.only(bottom: 1),
+                      labelText: "Email",
+                      prefixIcon: Icon(Icons.email),
+                      labelStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintStyle: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  SizedBox(height: 15),
+                  SizedBox(height: 20),
                   Container(
                     child: DropdownButtonFormField(
                       decoration: InputDecoration(
-                          icon: Icon(Icons.people),
-                          enabledBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
-                          ),
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          hintText:
-                              '${widget.updateMember!.relation.toString()}',
-                          hintStyle: TextStyle(color: Colors.grey[500])),
+                        contentPadding: EdgeInsets.only(bottom: 1),
+                        labelText: "Relation",
+                        prefixIcon: Icon(Icons.people),
+                        labelStyle: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintStyle: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
                       dropdownColor: Color.fromARGB(255, 255, 255, 255),
                       value: dropdownValue1,
                       onChanged: (String? newValue) {
