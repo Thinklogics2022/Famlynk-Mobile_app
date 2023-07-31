@@ -39,7 +39,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return regex.hasMatch(phoneNumber);
   }
 
-   var  profileBase64;
+  var profileBase64;
   bool isPasswordVisible = false;
   bool isConfirmPswdVisible = false;
   String _selectedGender = '';
@@ -367,7 +367,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         if (_formKey.currentState!.validate()) {
                           RegisterModel registerModel = RegisterModel(
                               id: "",
-                              uniqueUserId: "",
+                              uniqueUserID: "",
                               userId: "",
                               address: "",
                               maritalStatus: "",

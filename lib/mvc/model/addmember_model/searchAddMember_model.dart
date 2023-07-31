@@ -34,25 +34,24 @@ class SearchAddMember {
       // required this.address,
       // required this.homeTown,
       this.createdOn,
-      this.modifiedOn
-      });
+      this.modifiedOn});
   factory SearchAddMember.fromJson(Map<String, dynamic> json) {
     return SearchAddMember(
-        famid: json["famid"],
-        name: json["name"],
-        gender: json["gender"],
-        dob: json["dob"],
-        email: json["email"],
-        userId: json["userId"],
-        image: json["image"],
-        mobileNo: json["mobileNo"],
-        uniqueUserID: json["uniqueUserID"],
-        relation: json["relation"],
-        createdOn: json["createdOn"],
-        modifiedOn: json["modifiedOn"],
-        // address: json["address"],
-        // homeTown : json["homeTown"]
-        );
+      famid: json["famid"],
+      name: json["name"],
+      gender: json["gender"],
+      dob: json["dob"],
+      email: json["email"],
+      userId: json["userId"],
+      image: json["image"],
+      mobileNo: json["mobileNo"],
+      uniqueUserID: json["uniqueUserID"],
+      relation: json["relation"],
+      createdOn: json["createdOn"],
+      modifiedOn: json["modifiedOn"],
+      // address: json["address"],
+      // homeTown : json["homeTown"]
+    );
   }
   Map<String, dynamic> toJson() => {
         "famid": famid,

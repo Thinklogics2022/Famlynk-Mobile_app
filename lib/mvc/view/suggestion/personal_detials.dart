@@ -164,38 +164,37 @@ class _UserDetailsState extends State<UserDetails> {
                   SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
-                      onPressed: () async {
-                        try {
-                          SearchAddMemberService searchAddMemberService =
-                              SearchAddMemberService();
-                          SearchAddMember searchAddMember = SearchAddMember(
-                            famid: '',
-                            name: widget.name.toString(),
-                            gender: widget.gender.toString(),
-                            dob: widget.dateOfBirth.toString(),
-                            email: widget.email.toString(),
-                            userId: userId,
-                            image: widget.profileImage.toString(),
-                            mobileNo: widget.mobileNo.toString(),
-                            uniqueUserID: widget.uniqueUserID.toString(),
-                            relation: dropdownValue1,
-                            // createdOn: "",
-                            // modifiedOn: "",
-                            // address: widget.address.toString(),
-                            // homeTown: widget.hashCode.toString()
+                        onPressed: () async {
+                          try {
+                            SearchAddMemberService searchAddMemberService =
+                                SearchAddMemberService();
+                            SearchAddMember searchAddMember = SearchAddMember(
+                              famid: '',
+                              name: widget.name.toString(),
+                              gender: widget.gender.toString(),
+                              dob: widget.dateOfBirth.toString(),
+                              email: widget.email.toString(),
+                              userId: userId,
+                              image: widget.profileImage.toString(),
+                              mobileNo: widget.mobileNo.toString(),
+                              uniqueUserID: widget.uniqueUserID.toString(),
+                              relation: dropdownValue1,
+                              // createdOn: "",
+                              // modifiedOn: "",
+                              // address: widget.address.toString(),
+                              // homeTown: widget.hashCode.toString()
+                            );
+                            await searchAddMemberService
+                                .searchAddMemberPost(searchAddMember);
+                          } catch (e) {
+                            print(e.toString());
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NavBar()),
                           );
-                          await searchAddMemberService
-                              .searchAddMemberPost(searchAddMember);
-                        } catch (e) {
-                          print(e.toString());
-                        }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => NavBar()),
-                        ); 
-                      },
-                      child: Text("Add to Family")
-                    ),
+                        },
+                        child: Text("Add to Family")),
                   ),
                 ],
               ),

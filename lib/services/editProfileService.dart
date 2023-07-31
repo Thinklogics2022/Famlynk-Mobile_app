@@ -13,7 +13,7 @@ class EditProfileService {
     userId = prefs.getString('userId') ?? '';
     token = prefs.getString('token') ?? "";
     Map<String, dynamic> editProfile = {
-      "id" : data.id,
+      "id": data.id,
       "name": data.name,
       "gender": data.gender,
       "email": data.email,
@@ -25,15 +25,15 @@ class EditProfileService {
       "hometown": data.hometown,
       "userId": data.userId,
       "uniqueUserID": data.uniqueUserID,
-      "password" : data.password,
-      "createdOn" : data.createdOn,
-      "modifiedOn" : data.modifiedOn,
-      "status" : data.status,
-      "role" : data.role,
-      "enabled" : data.enabled,
-      "verificationToken" : data.verificationToken,
-      "otp" : data.otp,
-      "coverImage" : data.coverImage
+      "password": data.password,
+      "createdOn": data.createdOn,
+      "modifiedOn": data.modifiedOn,
+      "status": data.status,
+      "role": data.role,
+      "enabled": data.enabled,
+      "verificationToken": data.verificationToken,
+      "otp": data.otp,
+      "coverImage": data.coverImage
     };
     try {
       var response = await http.put(
@@ -50,7 +50,7 @@ class EditProfileService {
       } else {
         print("Update request failed with : ${response.statusCode}");
       }
-    } catch (e) {  
+    } catch (e) {
       print(e);
     }
   }

@@ -1,4 +1,3 @@
-
 import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
 import 'package:famlynk_version1/mvc/view/familyList/updateFamList.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
@@ -102,7 +101,9 @@ class _FamilyListState extends State<FamilyList> {
                                     onPressed: () {
                                       _showMyDialog(
                                         familyList[index].userId.toString(),
-                                        familyList[index].uniqueUserID.toString(),
+                                        familyList[index]
+                                            .uniqueUserID
+                                            .toString(),
                                       );
                                       print(familyList[index]
                                           .uniqueUserID
@@ -130,7 +131,7 @@ class _FamilyListState extends State<FamilyList> {
   Future<bool> _onBackPressed() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => NavBar()), 
+      MaterialPageRoute(builder: (context) => NavBar()),
     );
     return Future.value(false);
   }

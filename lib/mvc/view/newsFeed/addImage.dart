@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/services/newsFeedService/newsFeed_service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -59,64 +58,26 @@ class _AddImagePageState extends State<AddImagePage> {
     }
 
     String profilePicture = 'assets/images/FL03.png';
-    String vedio = '';
-    int like = 0.toInt();
     String description = _descriptionController.text;
-    List<String> userLikes = [];
 
-    if (description.isNotEmpty) {
-      NewsFeedModel newsFeedModel = NewsFeedModel(
-        // newsFeedId: '',
-        userId: userId,
-        name: name,
-        profilePicture: profilePicture,
-        // vedio: vedio,
-        photo: photo,
-        like: like,
-        description: description,
-        uniqueUserID: uniqueUserID,
-        userLikes: userLikes,
-      );
+    Map<String, dynamic> postData = {
+      'userId': userId,
+      'name': name,
+      'profilePicture': profilePicture,
+      'uniqueUserID': uniqueUserID,
+      'photo': photo,
+      'description': description,
+    };
 
-      NewsFeedService newsFeedService = NewsFeedService();
+    NewsFeedService newsFeedService = NewsFeedService();
 
-      try {
-        await newsFeedService.postNewsFeed(newsFeedModel);
-        Navigator.pop(context);
-      } catch (error) {
-        setState(() {
-          uploading = false;
-        });
-
-        // _scaffoldKey.currentState!.showSnackBar(
-        //   SnackBar(
-        //     content: Text('Error: $error'),
-        //     duration: Duration(seconds: 3),
-        //   ),
-        // );
-      }
-    } else {
+    try {
+      await newsFeedService.postNewsFeed(postData);
+      Navigator.pop(context);
+    } catch (error) {
       setState(() {
         uploading = false;
       });
-
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Please enter a description.'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
     }
   }
 

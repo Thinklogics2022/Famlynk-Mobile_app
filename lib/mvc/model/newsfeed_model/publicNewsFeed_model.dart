@@ -1,5 +1,3 @@
-
-
 import 'dart:convert';
 
 PublicNewsFeedModel publicNewsFeedModelFromJson(String str) =>
@@ -9,77 +7,69 @@ String publicNewsFeedModelToJson(PublicNewsFeedModel data) =>
     json.encode(data.toJson());
 
 class PublicNewsFeedModel {
-  final String userId;
-  final String name;
-  final String newsFeedId;
-  final String? profilePicture;
-  final String? createdOn;
-  // final String? vedio;
-  final String? photo;
+  String newsFeedId;
+  String userId;
+  String profilePicture;
+  // String video;
+  String? photo;
   int like;
-  final String description;
-  final String uniqueUserID;
+  String description;
+  String name;
+  DateTime createdOn;
   List<String> userLikes;
-  List<String>? userLikeNames;
-  List<dynamic>? mutualConnection;
-  bool isLiked = false;
-  List<String> comments;
-  bool showAllComments;
+  List<String> userLikeNames;
+  String uniqueUserID;
+  List<dynamic> mutualConnection;
 
   PublicNewsFeedModel({
-    required this.userId,
-    required this.name,
     required this.newsFeedId,
+    required this.userId,
     required this.profilePicture,
-    this.createdOn,
-    // this.vedio,
-    this.photo,
+    // required this.video,
+    required this.photo,
     required this.like,
     required this.description,
-    required this.uniqueUserID,
+    required this.name,
+    required this.createdOn,
     required this.userLikes,
-    this.userLikeNames,
-    this.mutualConnection,
-    this.isLiked = false,
-    this.comments = const [],
-    this.showAllComments = false,
+    required this.userLikeNames,
+    required this.uniqueUserID,
+    required this.mutualConnection,
   });
-
-  int get likeCount => userLikes.length;
 
   factory PublicNewsFeedModel.fromJson(Map<String, dynamic> json) {
     return PublicNewsFeedModel(
-      userId: json['userId'],
-      name: json['name'],
       newsFeedId: json['newsFeedId'],
+      userId: json['userId'],
       profilePicture: json['profilePicture'],
-      createdOn: json['createdOn'],
-      // vedio: json['vedio'],
+      // video: json['video'],
       photo: json['photo'],
       like: json['like'],
       description: json['description'],
-      uniqueUserID: json['uniqueUserID'],
+      name: json['name'],
+      createdOn: DateTime.parse(json['createdOn']),
       userLikes: List<String>.from(json['userLikes']),
-      mutualConnection: List<dynamic>.from(json['mutualConnection'] ?? []),
-      userLikeNames: List<String>.from(json['userLikeNames'] ?? []),
+      userLikeNames: List<String>.from(json['userLikeNames']),
+      uniqueUserID: json['uniqueUserID'],
+      mutualConnection: List<dynamic>.from(json['mutualConnection']),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
-      'name': name,
       'newsFeedId': newsFeedId,
+      'userId': userId,
       'profilePicture': profilePicture,
-      'createdOn': createdOn,
-      // 'vedio': vedio,
+      // 'video': video,
       'photo': photo,
       'like': like,
       'description': description,
-      'uniqueUserID': uniqueUserID,
+      'name': name,
+      'createdOn': createdOn.toIso8601String(),
       'userLikes': userLikes,
-      'mutualConnection': mutualConnection,
       'userLikeNames': userLikeNames,
+      'uniqueUserID': uniqueUserID,
+      'mutualConnection': mutualConnection,
     };
   }
 }

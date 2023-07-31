@@ -284,7 +284,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
       final storageResult = await storageRef
           .child('profile_images/${name.text}')
           .putFile(imageFile!);
-       imageUrl = await storageResult.ref.getDownloadURL();
+      imageUrl = await storageResult.ref.getDownloadURL();
     }
     UpdateFamMemberModel updateFamMemberModel = UpdateFamMemberModel(
         name: name.text,
@@ -300,7 +300,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
     print(updateFamMemberModel.userId);
     print(updateFamMemberModel.image);
     print(updateFamMemberModel.name);
-        UpdateFamListService updateFamListService = UpdateFamListService();
+    UpdateFamListService updateFamListService = UpdateFamListService();
 
     updateFamListService.updateFamMember(updateFamMemberModel);
 

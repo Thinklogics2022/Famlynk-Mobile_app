@@ -12,14 +12,13 @@ class FamilyNews extends StatefulWidget {
 
 class _FamilyNewsState extends State<FamilyNews> {
   bool isLoaded = false;
-  
-  List<FamilyNewsFeedModel>? familyNewsFeedList = [];
+  List<FamilyNewsFeedModel> familyNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    fetchPublicNewsFeed();
+    _fetchPublicNewsFeed();
     _scrollController.addListener(_onScroll);
   }
 
@@ -32,16 +31,16 @@ class _FamilyNewsState extends State<FamilyNews> {
   void _onScroll() {
     if (_scrollController.position.atEdge &&
         _scrollController.position.pixels != 0) {
+      // Load more content if needed (pagination)
     }
   }
 
-  Future<void> fetchPublicNewsFeed() async {
+  Future<void> _fetchPublicNewsFeed() async {
     FamilyNewsFeedService familyNewsFeedService = FamilyNewsFeedService();
     try {
-      var newsFeedFamily =
-          await familyNewsFeedService.getFamilyNewsFeed();
+      var newsFeedFamily = await familyNewsFeedService.getFamilyNewsFeed();
       setState(() {
-        familyNewsFeedList!.addAll(newsFeedFamily);
+        familyNewsFeedList.addAll(newsFeedFamily);
         isLoaded = true;
       });
     } catch (e) {
@@ -49,45 +48,26 @@ class _FamilyNewsState extends State<FamilyNews> {
     }
   }
 
-  
-
-  void onLikeButtonPressed(int index) {
-    setState(() {
-      familyNewsFeedList![index].isLiked = !familyNewsFeedList![index].isLiked;
-      if (familyNewsFeedList![index].isLiked) {
-        familyNewsFeedList![index].userLikes.add('your-user-id');
-      } else {
-        familyNewsFeedList![index].userLikes.remove('your-user-id');
-      }
-    });
-  }
-
-  void addComment(int index, String comment) {
-    setState(() {
-      familyNewsFeedList![index].comments.add(comment);
-    });
-  }
-  
   Future<void> _handleRefresh() async {
     setState(() {
-      familyNewsFeedList!.clear();
+      familyNewsFeedList.clear();
       isLoaded = false;
     });
-    await fetchPublicNewsFeed();
+    await _fetchPublicNewsFeed();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:  Color.fromARGB(255, 223, 228, 237),
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
         child: isLoaded
             ? ListView.builder(
                 controller: _scrollController,
-                itemCount: familyNewsFeedList!.length,
+                itemCount: familyNewsFeedList.length,
                 itemBuilder: (context, index) {
-                  FamilyNewsFeedModel newsFeed = familyNewsFeedList![index];
+                  FamilyNewsFeedModel newsFeed = familyNewsFeedList[index];
                   return Card(
                     elevation: 4.0,
                     shape: RoundedRectangleBorder(
@@ -120,46 +100,45 @@ class _FamilyNewsState extends State<FamilyNews> {
                               errorWidget: (context, url, error) => Icon(Icons.error),
                             ),
                           ),
-                          // SizedBox(height: 10),
                         ],
                         Divider(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              GestureDetector(
-                                onTap: () => onLikeButtonPressed(index),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      newsFeed.isLiked ? Icons.favorite : Icons.favorite_border,
-                                      size: 20.0,
-                                      color: newsFeed.isLiked ? Colors.red : null,
-                                    ),
-                                    SizedBox(width: 5),
-                                    Text(newsFeed.likeCount.toString()),
-                                  ],
-                                ),
-                              ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    newsFeed.showAllComments = !newsFeed.showAllComments;
-                                  });
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.comment),
-                                    SizedBox(width: 5),
-                                    Text(newsFeed.comments.length.toString()),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       GestureDetector(
+                        //         onTap: () => onLikeButtonPressed(index),
+                        //         child: Row(
+                        //           children: [
+                        //             Icon(
+                        //               newsFeed.isLiked ? Icons.favorite : Icons.favorite_border,
+                        //               size: 20.0,
+                        //               color: newsFeed.isLiked ? Colors.red : null,
+                        //             ),
+                        //             SizedBox(width: 5),
+                        //             Text(newsFeed.likeCount.toString()),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //       Spacer(),
+                        //       GestureDetector(
+                        //         onTap: () {
+                        //           setState(() {
+                        //             newsFeed.showAllComments = !newsFeed.showAllComments;
+                        //           });
+                        //         },
+                        //         child: Row(
+                        //           children: [
+                        //             Icon(Icons.comment),
+                        //             SizedBox(width: 5),
+                        //             Text(newsFeed.comments.length.toString()),
+                        //           ],
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         SizedBox(height: 10),
                       ],
                     ),

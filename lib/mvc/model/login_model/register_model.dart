@@ -1,25 +1,24 @@
 class RegisterModel {
-  RegisterModel({
-    this.id,
-    this.userId,
-    this.uniqueUserId,
-    this.name,
-    this.gender,
-    this.dateOfBirth,
-    this.password,
-    this.email,
-    this.profileImage,
-    this.mobileNo,
-    this.address,
-    this.coverImage,
-    this.hometown,
-    this.maritalStatus,
-    this.otp,
-    this.verificationToken
-  });
+  RegisterModel(
+      {this.id,
+      this.userId,
+      this.uniqueUserID,
+      this.name,
+      this.gender,
+      this.dateOfBirth,
+      this.password,
+      this.email,
+      this.profileImage,
+      this.mobileNo,
+      this.address,
+      this.coverImage,
+      this.hometown,
+      this.maritalStatus,
+      this.otp,
+      this.verificationToken});
   String? id;
   String? userId;
-  String? uniqueUserId;
+  String? uniqueUserID;
   String? name;
   String? gender;
   String? dateOfBirth;
@@ -36,7 +35,7 @@ class RegisterModel {
 
   factory RegisterModel.fromJson(Map<String, dynamic> json) => RegisterModel(
       id: json['id'],
-      uniqueUserId: json['uniqueUserId'],
+      uniqueUserID: json['uniqueUserID'],
       userId: json['userId'],
       name: json["name"],
       gender: json["gender"],
@@ -50,11 +49,10 @@ class RegisterModel {
       maritalStatus: json["maritalStatus"],
       coverImage: json["coverImage"],
       otp: json["otp"],
-      verificationToken: json["verificationToken"]
-      );
+      verificationToken: json["verificationToken"]);
   Map<String, dynamic> toJson() => {
         "id": id,
-        "uniqueUserId": uniqueUserId,
+        "uniqueUserID": uniqueUserID,
         "userId": userId,
         "name": name,
         "gender": gender,
@@ -63,11 +61,11 @@ class RegisterModel {
         "email": email,
         "profileImage": profileImage,
         "mobileNo": mobileNo,
-        "address" : address,
-        "hometown" : hometown,
-        "maritalStatus" : maritalStatus,
-        "coverImage" : coverImage,
-        "otp" : otp,
-        "verificationToken" : verificationToken
+        "address": address,
+        "hometown": hometown,
+        "maritalStatus": maritalStatus,
+        "coverImage": coverImage,
+        "otp": otp,
+        "verificationToken": verificationToken
       };
 }
