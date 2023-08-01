@@ -1,5 +1,5 @@
 import 'package:famlynk_version1/mvc/model/newsfeed_model/comment_model.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/comment_card.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment_card.dart';
 import 'package:famlynk_version1/services/newsFeedService/commentNewsFeed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';

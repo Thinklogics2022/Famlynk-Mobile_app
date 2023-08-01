@@ -42,7 +42,7 @@
 //   }
 // }
 
-import 'package:famlynk_version1/mvc/model/suggestion_model.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/suggestion_model.dart';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

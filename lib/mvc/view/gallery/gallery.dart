@@ -1,7 +1,7 @@
 import 'package:famlynk_version1/mvc/model/profile_model/gallery_model.dart';
 import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
-import 'package:famlynk_version1/services/gallery_service.dart';
+import 'package:famlynk_version1/services/profileService/gallery_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hexcolor/hexcolor.dart';
 

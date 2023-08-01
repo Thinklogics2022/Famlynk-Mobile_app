@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
-import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
-import 'package:famlynk_version1/mvc/model/updateFamMember_model.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/updateFamMember_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:famlynk_version1/services/updateFamList_service.dart';
+import 'package:famlynk_version1/services/familySevice/updateFamList_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';

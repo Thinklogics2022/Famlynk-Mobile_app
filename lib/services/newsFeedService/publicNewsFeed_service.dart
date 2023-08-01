@@ -8,16 +8,20 @@ class PublicNewsFeedService {
   String userId = '';
   String token = '';
 
-  Future<List<PublicNewsFeedModel>> getPublicNewsFeed(int pageNumber, int pageSize) async {
+  Future<List<PublicNewsFeedModel>> getPublicNewsFeed(
+      int pageNumber, int pageSize) async {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token') ?? '';
-     userId = prefs.getString('userId') ?? '';
+    userId = prefs.getString('userId') ?? '';
 
     var url = FamlynkServiceUrl.getPublicNewsFeed;
     try {
       final response = await http.get(
         Uri.parse('$url$pageNumber/$pageSize/$userId'),
-        headers: {'Authorization': 'Bearer $token'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
       );
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);

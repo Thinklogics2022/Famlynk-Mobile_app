@@ -1,10 +1,10 @@
 
-import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
 import 'package:famlynk_version1/mvc/view/familyList/famDetails.dart';
 import 'package:famlynk_version1/mvc/view/familyList/updateFamList.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
-import 'package:famlynk_version1/services/dltFamList_service.dart';
-import 'package:famlynk_version1/services/famlist_servicess.dart';
+import 'package:famlynk_version1/services/familySevice/dltFamList_service.dart';
+import 'package:famlynk_version1/services/familySevice/famlist_servicess.dart';
 import 'package:flutter/material.dart';
 
 class FamilyList extends StatefulWidget {
