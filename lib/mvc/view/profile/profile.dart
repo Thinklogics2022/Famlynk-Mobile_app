@@ -1,11 +1,10 @@
-
-
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/resetPassword.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/forgetPassword.dart';
 import 'package:famlynk_version1/mvc/view/gallery/gallery.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/mvc/view/profile/edit.dart';
-import 'package:famlynk_version1/mvc/view/profile/editPage.dart';
 import 'package:famlynk_version1/mvc/view/profile/logout.dart';
 import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
@@ -153,7 +152,7 @@ class _ProfileState extends State<Profile> {
                             )
                           ],
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 20),
                         Text(
                           "Account",
                           style: TextStyle(
@@ -223,6 +222,23 @@ class _ProfileState extends State<Profile> {
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 ProfileUserDetails()));
+                                  },
+                                ),
+                                Divider(
+                                  height: 10.0,
+                                  color: Colors.grey,
+                                ),
+                                InkWell(
+                                  child: CustomListTile(
+                                    icon: Icons.password,
+                                    text: "Reset Password",
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ResetPassword()));
                                   },
                                 ),
                               ],

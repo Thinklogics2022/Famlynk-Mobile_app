@@ -1,13 +1,14 @@
 class AddMemberModel {
   AddMemberModel(
-      { this.userId,
-       this.name,
-       this.dob,
-       this.image,
-       this.relation,
-       this.gender,
-       this.mobileNo,
-       this.email,
+      {this.userId,
+      this.name,
+      this.dob,
+      this.image,
+      this.relation,
+      this.firstLevelRelation,
+      this.gender,
+      this.mobileNo,
+      this.email,
       this.uniqueUserID,
       this.famid,
       this.secondLevelrelation,
@@ -23,6 +24,7 @@ class AddMemberModel {
   String? dob;
   String? image;
   String? relation;
+  String? firstLevelRelation;
   String? gender;
   String? mobileNo;
   String? email;
@@ -36,12 +38,14 @@ class AddMemberModel {
   String? modifiedOn;
   String? hometown;
   String? address;
+
   factory AddMemberModel.fromJson(Map<String, dynamic> json) => AddMemberModel(
       userId: json["userId"],
       name: json["name"],
       dob: json["dob"],
       image: json["image"],
       relation: json["relation"],
+      firstLevelRelation: json["firstLevelRelation"],
       gender: json["gender"],
       mobileNo: json["mobileNo"],
       email: json["email"],
@@ -61,6 +65,7 @@ class AddMemberModel {
         "dob": dob,
         "image": image,
         "relation": relation,
+        "firstLevelRelation": firstLevelRelation,
         "gender": gender,
         "mobileNo": mobileNo,
         "email": email,

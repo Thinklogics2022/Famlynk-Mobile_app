@@ -1,6 +1,6 @@
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/model/login_model/mailLogin_model.dart';
-import 'package:famlynk_version1/mvc/view/famlynkLogin/forgetpassword/frgtPswd.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/forgetPassword.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/register/register.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/login&registerService/mailLogin_Service.dart';
@@ -157,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                ForgetPasswordPage()));
+                                                ForgetPassword()));
                                   },
                                   child: Text(
                                     'Forgot Password?',
