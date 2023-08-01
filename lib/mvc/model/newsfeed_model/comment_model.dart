@@ -12,8 +12,8 @@ class CommentModel {
   String profilePicture;
   String newsFeedId;
   String comment;
-  DateTime? createdOn;
-  DateTime? modifiedOn;
+  String? createdOn;
+  String? modifiedOn;
 
   CommentModel({
     required this.userId,

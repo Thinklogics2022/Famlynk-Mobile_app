@@ -5,6 +5,7 @@ import 'package:famlynk_version1/mvc/model/addmember_model/addMember_model.dart'
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/familySevice/addMember_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -58,6 +59,7 @@ class _AddMemberState extends State<AddMember> {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 223, 231, 237),
         appBar: AppBar(
+          backgroundColor: HexColor('#0175C8'),
           title: Text(
             'Add Member',
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

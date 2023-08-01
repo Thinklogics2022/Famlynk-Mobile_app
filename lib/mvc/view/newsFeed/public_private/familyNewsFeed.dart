@@ -15,8 +15,8 @@ class FamilyNews extends StatefulWidget {
 
 class _FamilyNewsState extends State<FamilyNews> {
   bool isLoaded = false;
-  int pageNumber = 0;
-  int pageSize = 20;
+  // int pageNumber = 0;
+  // int pageSize = 20;
   bool isLiked = false;
   late List<String> comments;
   List<FamilyNewsFeedModel>? familyNewsFeedList = [];
@@ -103,105 +103,113 @@ class _FamilyNewsState extends State<FamilyNews> {
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
         child: isLoaded
-            ? ListView.builder(
-                controller: _scrollController,
-                itemCount: familyNewsFeedList!.length,
-                itemBuilder: (context, index) {
-                  FamilyNewsFeedModel newsFeed = familyNewsFeedList![index];
-                   DateTime? utcDateTime =
-                      DateTime.parse(newsFeed.createdOn.toString());
-                  DateTime localDateTime = utcDateTime.toLocal();
+            ? familyNewsFeedList!.isEmpty 
+                ? Center(
+                    child: Text(
+                      'No FamilyNews are available.',
+                      // style: TextStyle(fontSize: 18),
+                    ),
+                  )
+                : ListView.builder(
+                    controller: _scrollController,
+                    itemCount: familyNewsFeedList!.length,
+                    itemBuilder: (context, index) {
+                      FamilyNewsFeedModel newsFeed = familyNewsFeedList![index];
+                      DateTime? utcDateTime =
+                          DateTime.parse(newsFeed.createdOn.toString());
+                      DateTime localDateTime = utcDateTime.toLocal();
 
-                  String formattedDate =
-                      DateFormat('MMMM-dd-yyyy  hh:mm a').format(localDateTime);
-                  return Card(
-                    elevation: 4.0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/images/FL02.png'),
-                          ),
-                          title: Text(newsFeed.name),
-                          subtitle: Text(formattedDate),
+                      String formattedDate = DateFormat('MMMM-dd-yyyy  hh:mm a')
+                          .format(localDateTime);
+                      return Card(
+                        elevation: 4.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        Divider(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            newsFeed.description,
-                            style: TextStyle(fontSize: 16.0),
-                          ),
-                        ),
-                        if (newsFeed.photo != null) ...[
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CachedNetworkImage(
-                              imageUrl: newsFeed.photo!,
-                              placeholder: (context, url) =>
-                                  CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/images/FL02.png'),
+                              ),
+                              title: Text(newsFeed.name),
+                              subtitle: Text(formattedDate),
                             ),
-                          ),
-                        ],
-                        Divider(),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () => onLikeButtonPressed(index),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      isLiked
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      size: 20.0,
-                                      color: isLiked ? Colors.red : null,
+                            Divider(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                newsFeed.description,
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ),
+                            if (newsFeed.photo != null &&
+                                newsFeed.photo!.isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: CachedNetworkImage(
+                                  imageUrl: newsFeed.photo!,
+                                  placeholder: (context, url) =>
+                                      CircularProgressIndicator(),
+                                  errorWidget: null,
+                                ),
+                              ),
+                            Divider(),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () => onLikeButtonPressed(index),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          isLiked
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          size: 20.0,
+                                          color: isLiked ? Colors.red : null,
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(newsFeed.like.toString()),
+                                      ],
                                     ),
-                                    SizedBox(width: 5),
-                                    Text(newsFeed.like
-                                        .toString()), 
-                                  ],
-                                ),
+                                  ),
+                                  Spacer(),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CommentScreen(
+                                                    name: newsFeed.name,
+                                                    newsFeedId:
+                                                        newsFeed.newsFeedId,
+                                                    profilePicture: newsFeed
+                                                        .profilePicture
+                                                        .toString(),
+                                                  )));
+                                    },
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.chat_bubble_outline),
+                                        SizedBox(width: 6),
+                                      ],
+                                      
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Spacer(),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) => CommentScreen(
-                                            name: newsFeed.name,
-                                            newsFeedId: newsFeed.newsFeedId,
-                                            profilePicture: newsFeed
-                                                .profilePicture
-                                                .toString(),
-                                          )));
-                                },
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.chat_bubble_outline),
-                                    SizedBox(width: 5),
-                                    Text(comments.length.toString()),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(height: 10),
+                          ],
                         ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  );
-                },
-              )
+                      );
+                    },
+                  )
             : Center(
                 child: CircularProgressIndicator(),
               ),

@@ -1,20 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/comment_model.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment_card.dart';
 import 'package:famlynk_version1/services/newsFeedService/commentNewsFeed_service.dart';
-import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommentScreen extends StatefulWidget {
   CommentScreen({
-    super.key,
     required this.name,
     required this.profilePicture,
     required this.newsFeedId,
   });
-  String name;
-  String profilePicture;
-  String newsFeedId;
+
+  final String name;
+  final String profilePicture;
+  final String newsFeedId;
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
@@ -23,8 +23,8 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   final TextEditingController commentEditController = TextEditingController();
   String userId = "";
-  String name = "";
   bool isPostingComment = false;
+  List<CommentModel> commentList = [];
 
   @override
   void initState() {
@@ -36,8 +36,20 @@ class _CommentScreenState extends State<CommentScreen> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = prefs.getString('userId') ?? '';
-      name = prefs.getString('name') ?? '';
     });
+    loadComments();
+  }
+
+  Future<void> loadComments() async {
+    try {
+      CommentNewsFeedService commentService = CommentNewsFeedService();
+      List<CommentModel> comments = await commentService.getComment(widget.newsFeedId);
+      setState(() {
+        commentList = comments;
+      });
+    } catch (e) {
+      print('Error loading comments: $e');
+    }
   }
 
   Future<void> postComment() async {
@@ -51,7 +63,7 @@ class _CommentScreenState extends State<CommentScreen> {
         CommentNewsFeedService commentService = CommentNewsFeedService();
         CommentModel commentModel = CommentModel(
           userId: userId,
-          name: name,
+          name: widget.name,
           newsFeedId: widget.newsFeedId,
           profilePicture: widget.profilePicture,
           comment: commentText,
@@ -63,8 +75,9 @@ class _CommentScreenState extends State<CommentScreen> {
         setState(() {
           isPostingComment = false;
         });
+        loadComments();
       } catch (e) {
-        print('Error: $e');
+        print('Error posting comment: $e');
         setState(() {
           isPostingComment = false;
         });
@@ -78,47 +91,54 @@ class _CommentScreenState extends State<CommentScreen> {
       appBar: AppBar(
         title: Text("Comments"),
         centerTitle: true,
+        backgroundColor: HexColor('#0175C8'),
       ),
-      body: CommentCard(),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          height: kTextTabBarHeight,
-          margin:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          padding: EdgeInsets.only(left: 16, right: 8),
-          child: Row(
-            children: [
-              CircleAvatar(),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 16, right: 8),
-                  child: TextField(
-                    controller: commentEditController,
-                    decoration: InputDecoration(
-                      hintText: 'Comment as anything',
-                      border: InputBorder.none,
+      body: Column(
+        children: [
+          Expanded( 
+            child: CommentCard(newsFeedId: widget.newsFeedId),
+          ),
+          SafeArea(
+            child: Container(
+              height: kTextTabBarHeight,
+              margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              padding: EdgeInsets.only(left: 16, right: 8),
+              child: Row(
+                children: [
+                  CircleAvatar(),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16, right: 8),
+                      child: TextField(
+                        controller: commentEditController,
+                        decoration: InputDecoration(
+                          hintText: 'Comment as anything',
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  InkWell(
+                    onTap: isPostingComment ? null : postComment,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      child: isPostingComment
+                          ? CircularProgressIndicator()
+                          : Text(
+                              'Post',
+                              style: TextStyle(
+                                color: HexColor('#0175C8'),
+                              ),
+                            ),
+                    ),
+                  )
+                ],
               ),
-              InkWell(
-                onTap: isPostingComment ? null : postComment,
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-                  child: isPostingComment
-                      ? CircularProgressIndicator()
-                      : Text(
-                          'Post',
-                          style: TextStyle(
-                            color: HexColor('#0175C8'),
-                          ),
-                        ),
-                ),
-              )
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 }
+
