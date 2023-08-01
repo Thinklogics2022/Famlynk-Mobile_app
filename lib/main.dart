@@ -75,8 +75,8 @@ class _MyAppState extends State<MyApp> {
        theme: ThemeData(
         primaryColor: _primaryColor,
         hintColor: _accentColor,
-        // scaffoldBackgroundColor: Colors.grey.shade100,
-        // primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey.shade100,
+        primarySwatch: Colors.grey,
       ),
       home: LoginPage()
       //  FutureBuilder<bool>(

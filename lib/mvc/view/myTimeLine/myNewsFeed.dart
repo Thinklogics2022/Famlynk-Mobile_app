@@ -1,27 +1,25 @@
-import 'package:flutter/material.dart';
-import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
-import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
-import 'package:famlynk_version1/services/newsFeedService/publicNewsFeed_service.dart';
-import 'package:intl/intl.dart';
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/myTimeLine_model.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
+import 'package:famlynk_version1/services/profileService/myTimeLine/myTimeLine_service.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PublicNews extends StatefulWidget {
-  const PublicNews({Key? key}) : super(key: key);
+class MyNewsFeed extends StatefulWidget {
+  const MyNewsFeed({super.key});
 
   @override
-  State<PublicNews> createState() => _PublicNewsState();
+  State<MyNewsFeed> createState() => _MyNewsFeedState();
 }
 
-class _PublicNewsState extends State<PublicNews> {
+class _MyNewsFeedState extends State<MyNewsFeed> {
   bool isLoaded = false;
-  int pageNumber = 0;
-  int pageSize = 20;
   bool isLiked = false;
-  int LikedCount = 0;
   late List<String> comments;
-  List<PublicNewsFeedModel>? publicNewsFeedList = [];
+  List<MyTimeLineModel>? myTimeLineList = [];
   ScrollController _scrollController = ScrollController();
   String userId = "";
 
@@ -31,7 +29,6 @@ class _PublicNewsState extends State<PublicNews> {
     fetchData();
     comments = [];
     _scrollController.addListener(_onScroll);
-    _handleRefresh();
   }
 
   @override
@@ -42,9 +39,7 @@ class _PublicNewsState extends State<PublicNews> {
 
   void _onScroll() {
     if (_scrollController.position.atEdge &&
-        _scrollController.position.pixels != 0) {
-      loadMoreSuggestions();
-    }
+        _scrollController.position.pixels != 0) {}
   }
 
   Future<void> fetchData() async {
@@ -52,15 +47,15 @@ class _PublicNewsState extends State<PublicNews> {
     setState(() {
       userId = prefs.getString('userId') ?? '';
     });
+    await _fetchMyTimeLine();
   }
 
-  Future<void> fetchPublicNewsFeed(int pageNumber, int pageSize) async {
-    PublicNewsFeedService publicNewsFeedService = PublicNewsFeedService();
+  Future<void> _fetchMyTimeLine() async {
+    MyTimeLineService myTimeLineService = MyTimeLineService();
     try {
-      var newsFeedPublic =
-          await publicNewsFeedService.getPublicNewsFeed(pageNumber, pageSize);
+      var myNewsFeed = await myTimeLineService.getMyTimeLine();
       setState(() {
-        publicNewsFeedList!.addAll(newsFeedPublic);
+        myTimeLineList!.addAll(myNewsFeed);
         isLoaded = true;
       });
     } catch (e) {
@@ -68,34 +63,36 @@ class _PublicNewsState extends State<PublicNews> {
     }
   }
 
-  void loadMoreSuggestions() {
+  Future<void> _handleRefersh() async {
     setState(() {
-      pageNumber++;
+      myTimeLineList!.clear();
+      isLoaded = false;
     });
-    fetchPublicNewsFeed(pageNumber, pageSize);
+    await _fetchMyTimeLine();
+  }
+
+  ImageProvider<Object>? _getProfileImage(MyTimeLineModel myNewsFeeds) {
+    if (myNewsFeeds.profilePicture == null ||
+        myNewsFeeds.profilePicture.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
+    } else {
+      return CachedNetworkImageProvider(myNewsFeeds.profilePicture);
+    }
   }
 
   void onLikeButtonPressed(int index) async {
-    PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-    bool isCurrentlyLiked = newsFeed.userLikes.contains(userId);
+    MyTimeLineModel myNewsFeeds = myTimeLineList![index];
+    bool isCurrentlyLiked = myNewsFeeds.userLikes.contains(userId);
 
     try {
-      // if (isCurrentlyLiked) {
-      //   await LikeNewsFeedService().unlikeNewsFeed(newsFeed.newsFeedId);
-      // } else {
-      //   await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
-      // }
-      setState(() {
-        isLiked = !isCurrentlyLiked;
-        if (isLiked) {
-          publicNewsFeedList![index].userLikes.add(userId);
-          publicNewsFeedList![index].like++;
-        } else {
-          publicNewsFeedList![index].userLikes.remove(userId);
-          publicNewsFeedList![index].like--;
-        }
-        publicNewsFeedList = List.from(publicNewsFeedList!);
-      });
+      isLiked = isCurrentlyLiked;
+      if (isLiked) {
+        myTimeLineList![index].userLikes.add(userId);
+        myTimeLineList![index].like++;
+      } else {
+        myTimeLineList![index].userLikes.remove(userId);
+        myTimeLineList![index].like--;
+      }
     } catch (e) {
       print(e);
     }
@@ -107,41 +104,31 @@ class _PublicNewsState extends State<PublicNews> {
     });
   }
 
-  Future<void> _handleRefresh() async {
-    setState(() {
-      pageNumber = 0;
-      publicNewsFeedList!.clear();
-      isLoaded = false;
-    });
-    await fetchPublicNewsFeed(pageNumber, pageSize);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       body: RefreshIndicator(
-        onRefresh: _handleRefresh,
+        onRefresh: _handleRefersh,
         child: isLoaded
-            ? publicNewsFeedList!.isEmpty
+            ? myTimeLineList!.isEmpty 
                 ? Center(
                     child: Text(
-                      'No PublicNews are available.',
-                      style: TextStyle(fontSize: 18),
+                      'You have no Posted',
+                      // style: TextStyle(fontSize: 18),
                     ),
                   )
                 : ListView.builder(
                     controller: _scrollController,
-                    itemCount: publicNewsFeedList!.length,
+                    itemCount: myTimeLineList!.length,
                     itemBuilder: (context, index) {
-                      PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+                      MyTimeLineModel myNewsFeeds = myTimeLineList![index];
                       DateTime? utcDateTime =
-                          DateTime.parse(newsFeed.createdOn.toString());
+                          DateTime.parse(myNewsFeeds.createdOn.toString());
                       DateTime localDateTime = utcDateTime.toLocal();
 
                       String formattedDate = DateFormat('MMMM-dd-yyyy  hh:mm a')
                           .format(localDateTime);
-
                       return Card(
                         elevation: 4.0,
                         shape: RoundedRectangleBorder(
@@ -152,26 +139,25 @@ class _PublicNewsState extends State<PublicNews> {
                           children: [
                             ListTile(
                               leading: CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/images/FL02.png'),
+                                backgroundImage: _getProfileImage(myNewsFeeds),
                               ),
-                              title: Text(newsFeed.name),
+                              title: Text(myNewsFeeds.name),
                               subtitle: Text(formattedDate),
                             ),
                             Divider(),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                newsFeed.description,
+                                myNewsFeeds.description,
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ),
-                            if (newsFeed.photo != null &&
-                                newsFeed.photo!.isNotEmpty)
+                            if (myNewsFeeds.photo != null &&
+                                myNewsFeeds.photo!.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: CachedNetworkImage(
-                                  imageUrl: newsFeed.photo!,
+                                  imageUrl: myNewsFeeds.photo!,
                                   placeholder: (context, url) =>
                                       CircularProgressIndicator(),
                                   errorWidget: null,
@@ -195,8 +181,7 @@ class _PublicNewsState extends State<PublicNews> {
                                           color: isLiked ? Colors.red : null,
                                         ),
                                         SizedBox(width: 5),
-                                        Text(newsFeed.like
-                                            .toString()), 
+                                        Text(myNewsFeeds.like.toString()),
                                       ],
                                     ),
                                   ),
@@ -207,10 +192,10 @@ class _PublicNewsState extends State<PublicNews> {
                                           MaterialPageRoute(
                                               builder: (context) =>
                                                   CommentScreen(
-                                                    name: newsFeed.name,
+                                                    name: myNewsFeeds.name,
                                                     newsFeedId:
-                                                        newsFeed.newsFeedId,
-                                                    profilePicture: newsFeed
+                                                        myNewsFeeds.newsFeedId,
+                                                    profilePicture: myNewsFeeds
                                                         .profilePicture
                                                         .toString(),
                                                   )));
@@ -226,44 +211,9 @@ class _PublicNewsState extends State<PublicNews> {
                                 ],
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Text("Liked by "),
-                                  Text(
-                                    "gokul ",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  Text('and '),
-                                  Text(
-                                    "others",
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 16.0, top: 8),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Gokul',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    TextSpan(
-                                      text: 'qwdefgfd',
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 10),
+                            SizedBox(
+                              height: 10,
+                            )
                           ],
                         ),
                       );

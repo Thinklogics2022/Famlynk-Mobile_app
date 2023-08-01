@@ -1,8 +1,7 @@
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
-import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/resetPassword.dart';
-import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/forgetPassword.dart';
-import 'package:famlynk_version1/mvc/view/gallery/gallery.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
+import 'package:famlynk_version1/mvc/view/myTimeLine/myTimeLine.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/mvc/view/profile/edit.dart';
 import 'package:famlynk_version1/mvc/view/profile/logout.dart';
@@ -10,11 +9,7 @@ import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../model/profile_model/profile_model.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -98,13 +93,7 @@ class _ProfileState extends State<Profile> {
                                           : NetworkImage(profileUserModel
                                                   .profileImage
                                                   .toString())
-                                              as ImageProvider<Object>?
-
-                                  // as ImageProvider<Object>?,
-                                  ),
-// child: CircleAvatar(
-//   backgroundImage: NetworkImage(profileUserModel.profileImage.toString()),
-// ),
+                                              as ImageProvider<Object>?),
                             ),
                             SizedBox(
                               width: 20.0,
@@ -193,7 +182,7 @@ class _ProfileState extends State<Profile> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => MediaPage()),
+                                          builder: (context) => MyTimeLine()),
                                     );
                                   },
                                 ),

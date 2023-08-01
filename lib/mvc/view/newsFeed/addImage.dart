@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
 import 'package:famlynk_version1/services/newsFeedService/newsFeed_service.dart';
+import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,12 +26,16 @@ class _AddImagePageState extends State<AddImagePage> {
   late Reference ref;
   final picker = ImagePicker();
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  ProfileUserModel profileUserModel = ProfileUserModel();
+  ProfileUserService profileUserService = ProfileUserService();
+  bool isLoading = true;
 
   @override
   void initState() {
     imgRef = FirebaseFirestore.instance.collection('imageURLs');
     super.initState();
     fetchData();
+    _fetchMembers();
   }
 
   Future<void> fetchData() async {
@@ -39,47 +47,68 @@ class _AddImagePageState extends State<AddImagePage> {
     });
   }
 
-  void _postNewsFeed() async {
-    if (uploading) return;
-
-    setState(() {
-      uploading = true;
-    });
-
-    String photo = '';
-    if (_imagesFile.isNotEmpty) {
-      final imageFile = _imagesFile.first;
-      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-      Reference storageReference =
-          FirebaseStorage.instance.ref().child('profile_images/$fileName');
-      UploadTask uploadTask = storageReference.putFile(imageFile);
-      TaskSnapshot taskSnapshot = await uploadTask;
-      photo = await taskSnapshot.ref.getDownloadURL();
-    }
-
-    String profilePicture = 'assets/images/FL03.png';
-    String description = _descriptionController.text;
-
-    Map<String, dynamic> postData = {
-      'userId': userId,
-      'name': name,
-      'profilePicture': profilePicture,
-      'uniqueUserID': uniqueUserID,
-      'photo': photo,
-      'description': description,
-    };
-
-    NewsFeedService newsFeedService = NewsFeedService();
-
+  _fetchMembers() async {
     try {
-      await newsFeedService.postNewsFeed(postData);
-      Navigator.pop(context);
-    } catch (error) {
+      profileUserModel = await profileUserService.fetchMembersByUserId();
       setState(() {
-        uploading = false;
+        isLoading = false;
       });
+    } catch (e) {
+      print(e);
     }
   }
+   ImageProvider<Object>? _getProfileImage(ProfileUserModel myNewsFeeds) {
+    if (myNewsFeeds.profileImage == null ||
+        myNewsFeeds.profileImage!.isEmpty) {
+      return AssetImage('assets/images/google.png');
+    } else {
+      return CachedNetworkImageProvider(myNewsFeeds.profileImage!);
+    }
+  }
+
+void _postNewsFeed() async {
+  if (uploading) return;
+
+  setState(() {
+    uploading = true;
+  });
+
+  String photo = '';
+  if (_imagesFile.isNotEmpty) {
+    final imageFile = _imagesFile.first;
+    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    Reference storageReference =
+        FirebaseStorage.instance.ref().child('profile_images/$fileName');
+    UploadTask uploadTask = storageReference.putFile(imageFile);
+    TaskSnapshot taskSnapshot = await uploadTask;
+    photo = await taskSnapshot.ref.getDownloadURL();
+  }
+
+  String profilePicture = profileUserModel.profileImage ?? ''; 
+
+  String description = _descriptionController.text;
+
+  Map<String, dynamic> postData = {
+    'userId': userId,
+    'name': name,
+    'profilePicture': profilePicture,
+    'uniqueUserID': uniqueUserID,
+    'photo': photo,
+    'description': description,
+  };
+
+  NewsFeedService newsFeedService = NewsFeedService();
+
+  try {
+    await newsFeedService.postNewsFeed(postData);
+    Navigator.pop(context);
+  } catch (error) {
+    setState(() {
+      uploading = false;
+    });
+  }
+}
+
 
   @override
   void dispose() {
@@ -93,6 +122,7 @@ class _AddImagePageState extends State<AddImagePage> {
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       key: _scaffoldKey,
       appBar: AppBar(
+        backgroundColor: HexColor('#0175C8'),
         title: Text('Add Image'),
       ),
       body: SingleChildScrollView(
@@ -107,6 +137,7 @@ class _AddImagePageState extends State<AddImagePage> {
                   children: [
                     CircleAvatar(
                       radius: 30,
+                      backgroundImage: _getProfileImage(profileUserModel),
                     ),
                     SizedBox(width: 10),
                     Text("${name}"),

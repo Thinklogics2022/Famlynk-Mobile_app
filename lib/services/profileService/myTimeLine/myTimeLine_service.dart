@@ -1,15 +1,15 @@
 import 'dart:convert';
-import 'package:famlynk_version1/mvc/model/profile_model/gallery_model.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/myTimeLine_model.dart';
+import 'package:famlynk_version1/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../utils/utils.dart';
 
-class ShowGalleryService {
+class MyTimeLineService {
   String userId = "";
   String token = '';
   String uniqueUserID = "";
 
-  Future<List<GalleryNewsFeedModel>> getPhotoList() async {
+  Future<List<MyTimeLineModel>> getMyTimeLine() async {
     var urls = FamlynkServiceUrl.gallery;
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';
@@ -23,12 +23,11 @@ class ShowGalleryService {
           'Authorization': 'Bearer $token'
         },
       );
-
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
-          List<GalleryNewsFeedModel> PhotoList = jsonData
-              .map((json) => GalleryNewsFeedModel.fromJson(json))
+          List<MyTimeLineModel> PhotoList = jsonData
+              .map((json) => MyTimeLineModel.fromJson(json))
               .toList();
           return PhotoList;
         } else {
