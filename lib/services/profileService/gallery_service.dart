@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:famlynk_version1/mvc/model/profile_model/gallery_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../utils/utils.dart';
+import '../../utils/utils.dart';
 
 class ShowGalleryService {
   String userId = "";

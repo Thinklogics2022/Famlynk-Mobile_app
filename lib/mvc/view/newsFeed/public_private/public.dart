@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/comment.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
 import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:famlynk_version1/services/newsFeedService/publicNewsFeed_service.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +19,7 @@ class _PublicNewsState extends State<PublicNews> {
   int pageNumber = 0;
   int pageSize = 20;
   bool isLiked = false;
+  int LikedCount=0;
   late List<String> comments;
   List<PublicNewsFeedModel>? publicNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
@@ -75,48 +76,30 @@ class _PublicNewsState extends State<PublicNews> {
   }
 
   void onLikeButtonPressed(int index) async {
-  PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-  bool isCurrentlyLiked = newsFeed.userLikes.contains(userId);
+    PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+    bool isCurrentlyLiked = newsFeed.userLikes.contains(userId);
 
-  try {
-    // if (isCurrentlyLiked) {
-    //   await LikeNewsFeedService().unlikeNewsFeed(newsFeed.newsFeedId);
-    // } else {
-    //   await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
-    // }
-    setState(() {
-      isLiked = !isCurrentlyLiked;
-      if (isLiked) {
-        publicNewsFeedList![index].userLikes.add(userId);
-        publicNewsFeedList![index].like++;
-      } else {
-        publicNewsFeedList![index].userLikes.remove(userId);
-        publicNewsFeedList![index].like--;
-      }
-      publicNewsFeedList = List.from(publicNewsFeedList!);
-    });
-  } catch (e) {
-    print(e);
+    try {
+      // if (isCurrentlyLiked) {
+      //   await LikeNewsFeedService().unlikeNewsFeed(newsFeed.newsFeedId);
+      // } else {
+      //   await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
+      // }
+      setState(() {
+        isLiked = !isCurrentlyLiked;
+        if (isLiked) {
+          publicNewsFeedList![index].userLikes.add(userId);
+          publicNewsFeedList![index].like++;
+        } else {
+          publicNewsFeedList![index].userLikes.remove(userId);
+          publicNewsFeedList![index].like--;
+        }
+        publicNewsFeedList = List.from(publicNewsFeedList!);
+      });
+    } catch (e) {
+      print(e);
+    }
   }
-}
-
-
-  // Future<void> onLikeButtonPressed(int index) async {
-  //   PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-  //   try {
-  //     await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
-  //     setState(() {
-  //       isLiked = !isLiked;
-  //       if (isLiked) {
-  //         newsFeed.userLikes.add(userId);
-  //       } else {
-  //         newsFeed.userLikes.remove(userId);
-  //       }
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 
   Future<void> addComment(int index, String comment) async {
     setState(() {

@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 class EditProfileService {
   String userId = '';
   String token = "";
+  
   Future<dynamic> editProfile(ProfileUserModel data) async {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';

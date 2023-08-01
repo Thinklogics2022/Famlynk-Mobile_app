@@ -2,7 +2,7 @@ import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/addmember_model/searchAddMember_model.dart';
 import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
-import 'package:famlynk_version1/services/searchAddMumber_service.dart';
+import 'package:famlynk_version1/services/familySevice/searchAddMumber_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -1,5 +1,5 @@
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
-import 'package:famlynk_version1/services/frgtPassword_service.dart';
+import 'package:famlynk_version1/services/login&registerService/frgtPassword_service.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

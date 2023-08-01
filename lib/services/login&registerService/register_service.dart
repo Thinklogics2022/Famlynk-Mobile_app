@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
 import 'package:http/http.dart' as http;
-import '../utils/utils.dart';
+import '../../utils/utils.dart';
 
 class RegisterService {
   Future<dynamic> addRegister(RegisterModel registerModel) async {

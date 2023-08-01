@@ -3,7 +3,7 @@ import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
-import 'package:famlynk_version1/services/editProfileService.dart';
+import 'package:famlynk_version1/services/profileService/editProfileService.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

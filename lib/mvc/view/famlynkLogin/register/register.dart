@@ -2,7 +2,7 @@ import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/otp/verifyOtp.dart';
-import 'package:famlynk_version1/services/register_service.dart';
+import 'package:famlynk_version1/services/login&registerService/register_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

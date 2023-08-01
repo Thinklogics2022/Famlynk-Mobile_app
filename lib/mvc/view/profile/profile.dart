@@ -8,7 +8,7 @@ import 'package:famlynk_version1/mvc/view/profile/edit.dart';
 import 'package:famlynk_version1/mvc/view/profile/editPage.dart';
 import 'package:famlynk_version1/mvc/view/profile/logout.dart';
 import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
-import 'package:famlynk_version1/services/profile_Service.dart';
+import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

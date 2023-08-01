@@ -3,7 +3,7 @@ import 'package:famlynk_version1/mvc/model/login_model/mailLogin_model.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/forgetpassword/frgtPswd.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/register/register.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
-import 'package:famlynk_version1/services/mailLogin_Service.dart';
+import 'package:famlynk_version1/services/login&registerService/mailLogin_Service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 

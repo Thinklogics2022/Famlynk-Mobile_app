@@ -1,5 +1,5 @@
 
-import 'package:famlynk_version1/mvc/model/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
 import 'package:flutter/material.dart';
 
 class MemberDetails extends StatefulWidget {

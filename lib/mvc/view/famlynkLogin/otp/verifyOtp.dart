@@ -2,7 +2,7 @@
 
 import 'package:famlynk_version1/mvc/model/login_model/verifyOtp_model.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
-import 'package:famlynk_version1/services/verifyOtp_service.dart';
+import 'package:famlynk_version1/services/login&registerService/verifyOtp_service.dart';
 import 'package:flutter/material.dart';
 
 class OTPPage extends StatefulWidget {

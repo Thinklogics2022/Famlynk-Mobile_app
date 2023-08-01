@@ -187,9 +187,9 @@
 //   }
 // }
 
-import 'package:famlynk_version1/mvc/model/suggestion_model.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/suggestion_model.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
-import 'package:famlynk_version1/services/suggestion_services.dart';
+import 'package:famlynk_version1/services/familySevice/suggestion_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:hexcolor/hexcolor.dart';
