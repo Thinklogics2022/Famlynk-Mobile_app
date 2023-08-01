@@ -21,7 +21,7 @@ class AddMemberService {
       "gender": addMemberModel.gender,
       "mobileNo": addMemberModel.mobileNo,
       "email": addMemberModel.email,
-      "relation": addMemberModel.relation,
+      "firstLevelRelation": addMemberModel.firstLevelRelation,
       "dob": addMemberModel.dob,
       "image": addMemberModel.image,
       "userId": addMemberModel.userId,

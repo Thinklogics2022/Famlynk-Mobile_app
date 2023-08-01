@@ -35,7 +35,12 @@ class FamlynkServiceUrl {
   static const String like = baseUrl + "/newsfeed/likes/";
   static const String drpdwnAddMember =
       baseUrl + "/familymembers/getsecondlevelrelation/";
-
   static const String profileUserrr =
       baseUrl + "/register/retrievemembersbyuserid/";
+  static const String frgtPswdFormail =
+      baseUrl + "/register/retrieveregisterbyemailforpassword/";
+  static const String verifyEmail =
+      baseUrl + "/register/retrieveregisterbyemailforpassword/";
+  static const String verifyOtpforPswd =
+      baseUrl + "/register/verifyotp/";
 }

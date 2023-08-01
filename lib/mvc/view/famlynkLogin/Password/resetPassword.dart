@@ -1,16 +1,16 @@
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
-import 'package:famlynk_version1/services/login&registerService/frgtPassword_service.dart';
+import 'package:famlynk_version1/services/login&registerService/resetPasswordService.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class ForgetPasswordPage extends StatefulWidget {
-  const ForgetPasswordPage({Key? key}) : super(key: key);
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({Key? key}) : super(key: key);
 
   @override
-  _ForgetPasswordPageState createState() => _ForgetPasswordPageState();
+  _ResetPasswordState createState() => _ResetPasswordState();
 }
 
-class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
+class _ResetPasswordState extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _newPasswordController;
@@ -26,13 +26,14 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     _newPasswordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
   }
+ 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        title: const Text("Forget Password"),
+        title: const Text("Reset Password"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -184,7 +185,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text;
       final newPassword = _newPasswordController.text;
-      ForgetPasswordService.resetPassword(email, newPassword);
+      ResetPasswordService.resetPassword(email, newPassword);
       _flutterToast();
 
       Navigator.push(
