@@ -105,7 +105,7 @@ flutter:
     - assets/images/food.jpg
     - assets/images/nature.jpg
     - assets/images/lock.jpg
-    - assets/images/locks.png
+    # - assets/images/locks.png
 
   
 
