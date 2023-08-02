@@ -107,7 +107,7 @@ class _ProfileState extends State<Profile> {
                                     Text(
                                       profileUserModel.name.toString(),
                                       style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 16,fontWeight: FontWeight.bold, fontStyle: FontStyle.italic
                                       ),
                                     ),
                                   ],
@@ -115,13 +115,13 @@ class _ProfileState extends State<Profile> {
                                 Text(
                                   profileUserModel.mobileNo.toString(),
                                   style: TextStyle(
-                                      fontSize: 13, color: Colors.grey),
+                                      fontSize: 13, color: Colors.black),
                                 ),
                                 Container(
                                   width: 170,
                                   child: Text(
                                     profileUserModel.email.toString(),
-                                    style: TextStyle(color: Colors.grey),
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ),
                                 SizedBox(height: 20),
@@ -135,8 +135,10 @@ class _ProfileState extends State<Profile> {
                                                     profileUserModel:
                                                         profileUserModel)));
                                   },
-                                  child: Text("Edit Profile"),
-                                ),
+child: Text(
+  "Edit Profile",
+  style: TextStyle(color: HexColor('#FF6F20'), fontSize: 15),
+),                                ),
                               ],
                             )
                           ],
@@ -234,10 +236,9 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             TextButton(
                               onPressed: () {
@@ -249,7 +250,7 @@ class _ProfileState extends State<Profile> {
                               child: Text(
                                 "Logout",
                                 style: TextStyle(
-                                  fontSize: 20.0,
+                                  fontSize: 20.0, color: HexColor('#FF6F20')
                                 ),
                               ),
                             ),

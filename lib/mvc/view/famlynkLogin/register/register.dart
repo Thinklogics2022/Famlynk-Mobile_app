@@ -384,7 +384,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               profileImage: profileBase64 ?? "");
                           registerService.addRegister(registerModel);
                           print(registerModel.dateOfBirth);
-                          print(registerModel);
+                          print(registerModel.userId);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

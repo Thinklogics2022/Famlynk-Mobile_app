@@ -6,7 +6,7 @@ class FamlynkServiceUrl {
   static const String updateRegister =
       baseUrl + "/familymembers/createfamilymembers/{email}";
   static const String verifyOtp = baseUrl + "/register/verifyotp/";
-  static const String resendOtp = baseUrl + "/register/resend/";
+
   static const String addMember =
       baseUrl + "/familymembers/createfamilymembers/";
   static const String searchAllUser = baseUrl + "/register/retrievemembers/";
@@ -28,8 +28,7 @@ class FamlynkServiceUrl {
   static const String profileUser = baseUrl + "/register/retrieveregisterbyid/";
   static const String editProfile = baseUrl + "/register/updateregisterbyid/";
   static const String addComment = baseUrl + "/comment/createcomment";
-  static const String getComment =
-      baseUrl + "/comment/retrievecommentbyid/";
+  static const String getComment = baseUrl + "/comment/retrievecommentbyid/";
   static const String updateComment = "/comment/updatecommentbyid/{id}";
   static const String deleteComment = "/comment/deletecomment/{id}";
   static const String like = baseUrl + "/newsfeed/likes/";
@@ -41,6 +40,6 @@ class FamlynkServiceUrl {
       baseUrl + "/register/retrieveregisterbyemailforpassword/";
   static const String verifyEmail =
       baseUrl + "/register/retrieveregisterbyemailforpassword/";
-  static const String verifyOtpforPswd =
-      baseUrl + "/register/verifyotp/";
+  static const String verifyOtpforPswd = baseUrl + "/register/verifyotp/";
+  static const String resentOTP = baseUrl + "/register/resend/";
 }

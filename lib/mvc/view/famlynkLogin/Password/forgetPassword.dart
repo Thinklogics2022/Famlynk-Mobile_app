@@ -1,22 +1,19 @@
-import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/custom.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/password.dart';
 import 'package:famlynk_version1/services/forgetPswdService.dart';
-import 'package:famlynk_version1/services/forgetPswdService.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:pinput/pinput.dart';
+import 'dart:async';
 
-import '../../../../services/forgetPswdService.dart';
-
-class ForgetPassword extends StatefulWidget {
-  const ForgetPassword({Key? key}) : super(key: key);
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<ForgetPassword> createState() => _ForgetPasswordState();
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
-    RegisterModel registerModel = RegisterModel();
-
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   late TextEditingController _emailController;
   late TextEditingController _otpController;
   final _formKey = GlobalKey<FormState>();
@@ -28,22 +25,31 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     _otpController = TextEditingController();
   }
 
+  int _otpTimerSeconds = 120;
+  Timer? _otpTimer;
   bool otpVisibility = false;
 
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
-        width: 50,
-        height: 40,
-        textStyle: TextStyle(fontSize: 22, color: Colors.black),
-        decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 236, 241, 245),
-            // color: const Color.fromARGB(255, 190, 202, 211),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.transparent)));
+      width: 50,
+      height: 40,
+      textStyle: TextStyle(fontSize: 22, color: Colors.black),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 236, 241, 245),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.transparent),
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Forget Password"),
+        backgroundColor: HexColor('#0175C8'),
+        title: Text(
+          "Forget Password",
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -78,7 +84,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                               hintText: "Enter Email",
                               prefixIcon: Icon(
                                 Icons.email,
-                                color: Colors.black,
+                                color: Colors.orange,
                               ),
                               labelStyle: TextStyle(fontSize: 10),
                             ),
@@ -96,7 +102,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           onPressed: _submitForm,
                           child: Text(
                             "Send OTP",
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 20, color: Colors.blue),
                           ),
                         ),
                       ],
@@ -106,7 +112,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 SizedBox(height: 40),
                 if (otpVisibility)
                   Container(
-                    height: 130,
+                    height: 150,
                     width: 280,
                     decoration: BoxDecoration(
                       color: Colors.white,
@@ -130,10 +136,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                               length: 6,
                               defaultPinTheme: defaultPinTheme,
                               focusedPinTheme: defaultPinTheme.copyWith(
-                                  decoration: defaultPinTheme.decoration!
-                                      .copyWith(
-                                          border:
-                                              Border.all(color: Colors.blue))),
+                                decoration: defaultPinTheme.decoration!
+                                    .copyWith(
+                                        border: Border.all(color: Colors.blue)),
+                              ),
                               onCompleted: (pin) => debugPrint(pin),
                             ),
                           ),
@@ -141,21 +147,22 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
                               child: TextButton(
-                                  onPressed: _verifyOTP,
-                                  // {
-                                  //   Navigator.push(
-                                  //       context,
-                                  //       MaterialPageRoute(
-                                  //           builder: (context) => Pswd()));
-                                  // },
-                                  child: Text(
-                                    "Verify",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  )),
+                                onPressed: _verifyOTP,
+                                child: Text(
+                                  "Verify",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue),
+                                ),
+                              ),
                             ),
-                          )
+                          ),
+                          Text(
+                            "OTP will expire in $_otpTimerSeconds seconds",
+                            style:
+                                TextStyle(fontSize: 16, color: Colors.orange),
+                          ),
                         ],
                       ),
                     ),
@@ -177,20 +184,58 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       setState(() {
         otpVisibility = true;
       });
+
+      startOTPTimer();
     }
   }
 
-  void _verifyOTP() {
+  void startOTPTimer() {
+    const oneSecond = Duration(seconds: 1);
+    _otpTimer = Timer.periodic(oneSecond, (timer) {
+      setState(() {
+        if (_otpTimerSeconds > 0) {
+          _otpTimerSeconds--;
+        } else {
+          _otpTimer?.cancel();
+          _otpTimerSeconds = 120;
+          otpVisibility = false;
+        }
+      });
+    });
+  }
+
+  void _verifyOTP() async {
     if (_formKey.currentState!.validate()) {
       final otp = _otpController.text;
       ForgetPasswordService forgetPasswordService = ForgetPasswordService();
-      forgetPasswordService.getOTP(otp);
+      dynamic result = await forgetPasswordService.getOTP(otp);
       print(otp);
-      setState(() {
 
+      if (result == "OTP is correct") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Pswd(email: _emailController.text),
+          ),
+        );
+
+        _otpTimer?.cancel();
+        _otpTimerSeconds = 120;
+      } else {
+        showDialog(
+          context: context,
+          builder: (context) => CustomDialog(
+            title: "Incorrect OTP",
+            content: "Entered OTP is incorrect.",
+            buttonText: "OK",
+          ),
+        );
+      }
+
+      setState(() {
         otpVisibility = true;
       });
     }
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Pswd(email: _emailController.text)));
   }
 }
+

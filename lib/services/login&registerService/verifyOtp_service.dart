@@ -27,9 +27,9 @@ class OTPService {
   }
 
   Future<bool> resendOTP(String userId) async {
-    final prefs = await SharedPreferences.getInstance();
-    token = prefs.getString('token') ?? '';
-    var url = FamlynkServiceUrl.resendOtp;
+    var url = FamlynkServiceUrl.resentOTP;
+     final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId') ?? '';
     try {
       final response = await http.get(Uri.parse(url + userId));
       if (response.statusCode == 200) {

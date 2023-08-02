@@ -2,6 +2,7 @@ import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class ProfileUserDetails extends StatefulWidget {
   @override
@@ -63,7 +64,12 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 224, 233, 240),
       appBar: AppBar(
-        title: Text('Profile User Details'),
+        backgroundColor: HexColor('#0175C8'),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          'Profile User Details',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: isLoading
           ? Center(
@@ -79,7 +85,7 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
                     child: SingleChildScrollView(
                       child: Card(
                         elevation: 2,
-                        color: const Color.fromARGB(255, 214, 233, 243),
+                        color: const Color.fromARGB(255, 218, 224, 230),
                         child: Center(
                           child: Padding(
                             padding: const EdgeInsets.all(14),
@@ -251,7 +257,7 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
                                                     ? Row(
                                                         children: [
                                                           Icon(
-                                                            Icons.shopify,
+                                                            Icons.location_city,
                                                             size: 20,
                                                             color: Colors
                                                                 .deepOrange,

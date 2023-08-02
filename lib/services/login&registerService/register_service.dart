@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utils/utils.dart';
 
 class RegisterService {
@@ -29,11 +30,24 @@ class RegisterService {
         body: jsonEncode(obj1),
         headers: {"Content-Type": "application/json ; charset=UTF-8"},
       );
-      print(response.body);
+      if (response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        final userId = responseData['userId'];
+        await saveResponseToStorage(userId);
+        print("object");
+        print("Reg ${userId}");
+      }
+      print("Register ${response.body}");
+
       return response.body;
     } catch (e) {
       print(e);
       throw Exception(' Register : Failed to load API Data');
     }
+  }
+
+  Future<void> saveResponseToStorage(String userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userId);
   }
 }
