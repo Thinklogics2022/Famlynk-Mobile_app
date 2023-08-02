@@ -1,6 +1,6 @@
+import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment_card.dart';
 import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/comment_model.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment_card.dart';
 import 'package:famlynk_version1/services/newsFeedService/commentNewsFeed_service.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +30,7 @@ class _CommentScreenState extends State<CommentScreen> {
   void initState() {
     super.initState();
     fetchData();
+    _loadComments();
   }
 
   Future<void> fetchData() async {
@@ -37,16 +38,17 @@ class _CommentScreenState extends State<CommentScreen> {
     setState(() {
       userId = prefs.getString('userId') ?? '';
     });
-    loadComments();
   }
 
-  Future<void> loadComments() async {
+  Future<void> _loadComments() async {
     try {
       CommentNewsFeedService commentService = CommentNewsFeedService();
-      List<CommentModel> comments = await commentService.getComment(widget.newsFeedId);
+      List<CommentModel> comments =
+          await commentService.getComment(widget.newsFeedId);
       setState(() {
         commentList = comments;
       });
+      
     } catch (e) {
       print('Error loading comments: $e');
     }
@@ -59,7 +61,6 @@ class _CommentScreenState extends State<CommentScreen> {
         setState(() {
           isPostingComment = true;
         });
-
         CommentNewsFeedService commentService = CommentNewsFeedService();
         CommentModel commentModel = CommentModel(
           userId: userId,
@@ -68,14 +69,16 @@ class _CommentScreenState extends State<CommentScreen> {
           profilePicture: widget.profilePicture,
           comment: commentText,
         );
-
         await commentService.addComment(commentModel);
         commentEditController.clear();
-
+        FocusScope.of(context).unfocus();
         setState(() {
           isPostingComment = false;
         });
-        loadComments();
+        setState(() {
+          commentList.insert(0, commentModel);
+        });
+        await _loadComments();
       } catch (e) {
         print('Error posting comment: $e');
         setState(() {
@@ -95,17 +98,21 @@ class _CommentScreenState extends State<CommentScreen> {
       ),
       body: Column(
         children: [
-          Expanded( 
-            child: CommentCard(newsFeedId: widget.newsFeedId),
+          Expanded(
+            child: CommentCard(
+              newsFeedId: widget.newsFeedId,
+            ),
           ),
           SafeArea(
             child: Container(
               height: kTextTabBarHeight,
-              margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
               padding: EdgeInsets.only(left: 16, right: 8),
               child: Row(
                 children: [
-                  CircleAvatar(),
+                  CircleAvatar(
+                      backgroundImage: NetworkImage(widget.profilePicture)),
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(left: 16, right: 8),
@@ -141,4 +148,3 @@ class _CommentScreenState extends State<CommentScreen> {
     );
   }
 }
-

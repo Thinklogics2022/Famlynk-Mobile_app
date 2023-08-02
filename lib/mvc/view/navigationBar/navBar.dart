@@ -39,7 +39,7 @@ class _NavBarState extends State<NavBar> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        // automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
         leadingWidth: 30,
         actions: [
           PopupMenuButton<int>(

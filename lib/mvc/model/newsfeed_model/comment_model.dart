@@ -6,7 +6,7 @@ CommentModel commentModelFromJson(String str) =>
 String commentModelToJson(CommentModel data) => json.encode(data.toJson());
 
 class CommentModel {
-  // String id;
+  String? id;
   String userId;
   String name;
   String profilePicture;
@@ -17,7 +17,7 @@ class CommentModel {
 
   CommentModel({
     required this.userId,
-    // required this.id,
+    this.id,
     required this.name,
     required this.profilePicture,
     required this.newsFeedId,
@@ -29,7 +29,7 @@ class CommentModel {
   factory CommentModel.fromJson(Map<String, dynamic> json) {
     return CommentModel(
       userId: json['userId'],
-      // id: json['id'],
+      id: json['id'],
       name: json['name'],
       profilePicture: json['profilePicture'],
       newsFeedId: json['newsFeedId'],
@@ -42,7 +42,7 @@ class CommentModel {
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
-      // 'id': id,
+      'id': id,
       'name': name,
       'profilePicture': profilePicture,
       'newsFeedId': newsFeedId,

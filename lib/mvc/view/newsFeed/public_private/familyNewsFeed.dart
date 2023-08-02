@@ -89,6 +89,14 @@ class _FamilyNewsState extends State<FamilyNews> {
       print(e);
     }
   }
+  ImageProvider<Object>? _getProfileImage(FamilyNewsFeedModel newsFeedModel) {
+    if (newsFeedModel.profilePicture == null ||
+        newsFeedModel.profilePicture.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
+    } else {
+      return CachedNetworkImageProvider(newsFeedModel.profilePicture);
+    }
+  }
 
   Future<void> addComment(int index, String comment) async {
     setState(() {
@@ -132,7 +140,7 @@ class _FamilyNewsState extends State<FamilyNews> {
                             ListTile(
                               leading: CircleAvatar(
                                 backgroundImage:
-                                    AssetImage('assets/images/FL02.png'),
+                                    _getProfileImage(newsFeed),
                               ),
                               title: Text(newsFeed.name),
                               subtitle: Text(formattedDate),
@@ -202,6 +210,43 @@ class _FamilyNewsState extends State<FamilyNews> {
                                     ),
                                   ),
                                 ],
+                              ),
+                            ),
+                             Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text("Liked by "),
+                                  Text(
+                                    "gokul ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text('and '),
+                                  Text(
+                                    "others",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 16.0, top: 8),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Gokul',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: 'qwdefgfd',
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(height: 10),

@@ -116,6 +116,16 @@ class _PublicNewsState extends State<PublicNews> {
     await fetchPublicNewsFeed(pageNumber, pageSize);
   }
 
+  ImageProvider<Object>? _getProfileImage(
+      PublicNewsFeedModel publicNewsFeedList) {
+    if (publicNewsFeedList.profilePicture == null ||
+        publicNewsFeedList.profilePicture.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
+    } else {
+      return CachedNetworkImageProvider(publicNewsFeedList.profilePicture);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -152,8 +162,7 @@ class _PublicNewsState extends State<PublicNews> {
                           children: [
                             ListTile(
                               leading: CircleAvatar(
-                                backgroundImage:
-                                    AssetImage('assets/images/FL02.png'),
+                                backgroundImage: _getProfileImage(newsFeed),
                               ),
                               title: Text(newsFeed.name),
                               subtitle: Text(formattedDate),
@@ -195,8 +204,7 @@ class _PublicNewsState extends State<PublicNews> {
                                           color: isLiked ? Colors.red : null,
                                         ),
                                         SizedBox(width: 5),
-                                        Text(newsFeed.like
-                                            .toString()), 
+                                        Text(newsFeed.like.toString()),
                                       ],
                                     ),
                                   ),

@@ -29,8 +29,8 @@ class FamlynkServiceUrl {
   static const String editProfile = baseUrl + "/register/updateregisterbyid/";
   static const String addComment = baseUrl + "/comment/createcomment";
   static const String getComment = baseUrl + "/comment/retrievecommentbyid/";
-  static const String updateComment = "/comment/updatecommentbyid/{id}";
-  static const String deleteComment = "/comment/deletecomment/{id}";
+  static const String editComment = baseUrl + "/comment/updatecommentbyid/";
+  static const String deleteComment = baseUrl + "/comment/deletecomment/";
   static const String like = baseUrl + "/newsfeed/likes/";
   static const String drpdwnAddMember =
       baseUrl + "/familymembers/getsecondlevelrelation/";
