@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famlynk_version1/services/familySevice/updateFamList_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -69,6 +70,8 @@ class _UpdateFamListState extends State<UpdateFamList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: HexColor('#0175C8'),
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           'Update Family Member',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -92,7 +95,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "Name",
-                      prefixIcon: Icon(Icons.person),
+                      prefixIcon: Icon(Icons.person, color: Colors.orange,),
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -111,7 +114,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.person_add, color: Colors.grey, size: 25),
+                          Icon(Icons.person_add, color: Colors.orange, size: 25),
                           SizedBox(
                             width: 8,
                           ),
@@ -175,7 +178,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "DOB",
-                      prefixIcon: Icon(Icons.calendar_month),
+                      prefixIcon: Icon(Icons.calendar_month, color: Colors.orange,), 
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -208,7 +211,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "Mobile No",
-                      prefixIcon: Icon(Icons.phone),
+                      prefixIcon: Icon(Icons.phone, color: Colors.orange,),
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -228,7 +231,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "Email",
-                      prefixIcon: Icon(Icons.email),
+                      prefixIcon: Icon(Icons.email, color: Colors.orange,),
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -248,7 +251,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(bottom: 1),
                         labelText: "Relation",
-                        prefixIcon: Icon(Icons.people),
+                        prefixIcon: Icon(Icons.people, color: Colors.orange,),
                         labelStyle: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -283,7 +286,8 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   Container(
                     child: ElevatedButton(
                       onPressed: _submitForm,
-                      child: Text("Update"),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                      child: Text("Update", style: TextStyle(color: Colors.white, fontSize: 20),),
                     ),
                   )
                 ],

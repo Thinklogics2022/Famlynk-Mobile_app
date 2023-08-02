@@ -23,23 +23,35 @@ class ForgetPasswordService {
     }
   }
 
-  Future<dynamic> getOTP(String otp) async {
-    try {
-      http.Response response;
-      response = await http
-          .get(Uri.parse(FamlynkServiceUrl.verifyOtpforPswd + otp), headers: {
-        'Content-Type': 'application/json',
-      });
-      dynamic returnObject;
-      if (response.body == 'OTP is correct') {
-        print(response.body);
-        returnObject = registerModelFromJson(response.body);
+ Future<dynamic> getOTP(String otp) async {
+  try {
+    http.Response response;
+    response = await http.get(
+      Uri.parse(FamlynkServiceUrl.verifyOtpforPswd + otp),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+    );
+    dynamic returnObject;
+    if (response.body == "OTP is correct") {
+      try {
+        final jsonData = jsonDecode(response.body);
+        if (jsonData is String && jsonData == 'OTP is correct') {
+          returnObject = jsonData;
+        } else {
+          returnObject = registerModelFromJson(response.body);
+        }
+      } catch (e) {
+        returnObject = response.body;
       }
-      return returnObject;
-    } catch (e) {
-      print(e);
+    } else {
+      returnObject = "Error: ${response.statusCode}";
     }
+
+    return returnObject;
+  } catch (e) {
+    print(e);
+    return null;
   }
+}
 
   Future<void> forgetPassword(String email, String newPassword) async {
     final urls = FamlynkServiceUrl.updatePassword;

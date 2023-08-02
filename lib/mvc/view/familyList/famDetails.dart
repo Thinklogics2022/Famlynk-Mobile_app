@@ -1,6 +1,6 @@
 import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
 import 'package:flutter/material.dart';
-
+import 'package:hexcolor/hexcolor.dart';
 
 class MemberDetails extends StatefulWidget {
   MemberDetails({required this.details});
@@ -37,15 +37,19 @@ class _MemberDetailsState extends State<MemberDetails>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: const Color.fromARGB(255, 231, 238, 243),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 231, 238, 243),
       appBar: AppBar(
-        title: Text("Family Member Details"),
+        backgroundColor: HexColor('#0175C8'),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          "Family Member Details",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: AnimatedContainer(
         duration: Duration(milliseconds: 800),
-        decoration: BoxDecoration(
-    
-        ),
+        decoration: BoxDecoration(),
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 10),
@@ -77,11 +81,16 @@ class _MemberDetailsState extends State<MemberDetails>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildDetailRow("Date of Birth", widget.details.dob.toString()),
-                        _buildDetailRow("E-mail", widget.details.email.toString()),
-                        _buildDetailRow("Gender", widget.details.gender.toString()),
-                        _buildDetailRow("Mobile No", widget.details.mobileNo.toString()),
-                        _buildDetailRow("Relation", widget.details.relation.toString()),
+                        _buildDetailRow(
+                            "Date of Birth", widget.details.dob.toString()),
+                        _buildDetailRow(
+                            "E-mail", widget.details.email.toString()),
+                        _buildDetailRow(
+                            "Gender", widget.details.gender.toString()),
+                        _buildDetailRow(
+                            "Mobile No", widget.details.mobileNo.toString()),
+                        _buildDetailRow(
+                            "Relation", widget.details.relation.toString()),
                       ],
                     ),
                   ),

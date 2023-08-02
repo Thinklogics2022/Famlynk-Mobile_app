@@ -1,7 +1,9 @@
 import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/services/forgetPswdService.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class Pswd extends StatefulWidget {
   Pswd({super.key, required this.email});
@@ -27,7 +29,12 @@ class _PswdState extends State<Pswd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Password"),
+        backgroundColor: HexColor('#0175C8'),
+        title: Text(
+          "Password",
+          style: TextStyle(color: Colors.white),
+        ),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Card(
         child: Container(
@@ -41,7 +48,7 @@ class _PswdState extends State<Pswd> {
                     child: Text(
                       "Change Your Password Here...",
                       style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.blue,
                           fontWeight: FontWeight.bold,
                           fontSize: 20),
                     ),
@@ -54,7 +61,7 @@ class _PswdState extends State<Pswd> {
                       decoration: InputDecoration(
                           icon: const Icon(
                             Icons.lock,
-                            color: Colors.grey,
+                            color: Colors.blue,
                           ),
                           enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
@@ -76,12 +83,12 @@ class _PswdState extends State<Pswd> {
                               isPasswordVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
-                              color: Colors.grey,
+                              color: Colors.blue,
                             ),
                           )),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return '* New password is required';
+                          return '*New password is required';
                         }
                         if (value.length < 8) {
                           return '* Password should be at least 8 characters';
@@ -92,14 +99,14 @@ class _PswdState extends State<Pswd> {
                   ),
                   const SizedBox(height: 20),
                   Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 20, 20, 10),
+                    padding: const EdgeInsets.fromLTRB(10, 20, 20, 10),
                     child: TextFormField(
                       controller: _confirmPasswordController,
                       obscureText: !isConfirmPswdVisible,
                       decoration: InputDecoration(
                           icon: const Icon(
                             Icons.lock,
-                            color: Colors.grey,
+                            color: Colors.blue,
                           ),
                           enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
@@ -121,7 +128,7 @@ class _PswdState extends State<Pswd> {
                               isConfirmPswdVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
-                              color: Colors.grey,
+                              color: Colors.blue,
                             ),
                           )),
                       validator: (value) {
@@ -138,13 +145,23 @@ class _PswdState extends State<Pswd> {
                   const SizedBox(height: 25),
                   ElevatedButton(
                     onPressed: _submitForm,
-                    child: const Text(
-                      'Submit',
-                      style: TextStyle(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.blue,
+                      textStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
+                      padding :
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: Text(
+                      'Submit',
+                      style: TextStyle(color: Colors.white, letterSpacing: 1),
                     ),
                   ),
                 ],
@@ -163,6 +180,8 @@ class _PswdState extends State<Pswd> {
       forgetPasswordService.forgetPassword(widget.email, newPassword);
       _flutterToast();
     }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
 
   void _flutterToast() {

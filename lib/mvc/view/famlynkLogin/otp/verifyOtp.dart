@@ -1,9 +1,9 @@
-
-
+import 'dart:async';
 import 'package:famlynk_version1/mvc/model/login_model/verifyOtp_model.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/services/login&registerService/verifyOtp_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class OTPPage extends StatefulWidget {
   OTPPage({
@@ -17,13 +17,38 @@ class OTPPage extends StatefulWidget {
 class _OTPPageState extends State<OTPPage> {
   final TextEditingController _otpController = TextEditingController();
   final OTPService _otpService = OTPService();
+  Timer? _otpTimer;
+  int _otpDuration = 60; // in seconds
 
   @override
   void dispose() {
     _otpController.dispose();
+    _cancelOTPTimer();
     super.dispose();
-    _verifyOTP();
-    _resendOTP();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _startOTPTimer();
+  }
+
+  void _startOTPTimer() {
+    _cancelOTPTimer();
+    _otpTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        _otpDuration--;
+        if (_otpDuration <= 0) {
+          _cancelOTPTimer();
+        }
+      });
+    });
+  }
+
+  void _cancelOTPTimer() {
+    if (_otpTimer != null && _otpTimer!.isActive) {
+      _otpTimer!.cancel();
+    }
   }
 
   void _verifyOTP() async {
@@ -40,8 +65,10 @@ class _OTPPageState extends State<OTPPage> {
               TextButton(
                 child: Text('OK'),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LoginPage()));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPage()),
+                  );
                 },
               ),
             ],
@@ -69,8 +96,8 @@ class _OTPPageState extends State<OTPPage> {
     }
   }
 
-  void _resendOTP() async {
-    bool isResent = await _otpService.resendOTP(widget.userId.toString());
+  void _resendOTP(String userId) async {
+    bool isResent = await _otpService.resendOTP(userId);
     if (isResent) {
       showDialog(
         context: context,
@@ -82,13 +109,17 @@ class _OTPPageState extends State<OTPPage> {
               TextButton(
                 child: Text('OK'),
                 onPressed: () {
-                 Navigator.pop(context);
+                  Navigator.pop(context);
                 },
               ),
             ],
           );
         },
       );
+      setState(() {
+        _otpDuration = 60;
+      });
+      _startOTPTimer();
     } else {
       showDialog(
         context: context,
@@ -113,10 +144,14 @@ class _OTPPageState extends State<OTPPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 223, 228, 237),
+      backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
+        backgroundColor: HexColor('#0175C8'),
         automaticallyImplyLeading: false,
-        title: Text('OTP Verification'),
+        title: Text(
+          'OTP Verification',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: Center(
         child: Column(
@@ -138,20 +173,25 @@ class _OTPPageState extends State<OTPPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 50),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      _resendOTP();
-                    },
-                    child: Text("resend Otp"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    if (_otpDuration <= 0) {
+                      _resendOTP(
+                          widget.userId.toString());
+                    }
+                  },
+                  child: Text(
+                    _otpDuration > 0
+                        ? 'Resend OTP in $_otpDuration seconds'
+                        : 'Resend OTP',
+                    style: TextStyle(fontSize: 16, color: Colors.orange),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -159,11 +199,12 @@ class _OTPPageState extends State<OTPPage> {
                 print(_otpController.text);
                 _verifyOTP();
               },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              ),
               child: Text(
                 "Verify",
-                style: TextStyle(
-                  fontSize: 20.0,
-                ),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             SizedBox(height: 10),

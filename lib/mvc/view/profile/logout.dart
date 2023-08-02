@@ -1,7 +1,7 @@
-
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class LogOutPage extends StatefulWidget {
   @override
@@ -37,24 +37,29 @@ class _LogOutPageState extends State<LogOutPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "LogOut",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: HexColor('#0175C8'),
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            // Container(
-            //   height: 220,
-            //   child: HeaderWidget(220, false, Icons.abc),
-            // ),
             Container(
               child: Column(
                 children: [
                   Form(
                     key: _formKey,
                     child: Container(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(height: 100),
+                          SizedBox(height: 30),
                           ScaleTransition(
                             scale: _animation,
                             child: Image.asset(
@@ -111,9 +116,16 @@ class _LogOutPageState extends State<LogOutPage>
                                               ),
                                             );
                                           },
+                                          style: ElevatedButton.styleFrom(
+                                              primary: Colors.blue,
+                                              textStyle: TextStyle(
+                                                fontSize: 18,
+                                              )),
                                           child: Text(
                                             'Yes',
-                                            style: TextStyle(fontSize: 18),
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
                                           ),
                                         ),
                                         SizedBox(
@@ -124,14 +136,20 @@ class _LogOutPageState extends State<LogOutPage>
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) =>
-                                                    NavBar(),
+                                                builder: (context) => NavBar(),
                                               ),
                                             );
                                           },
+                                          style: ElevatedButton.styleFrom(
+                                              primary: Colors.blue,
+                                              textStyle: TextStyle(
+                                                fontSize: 18,
+                                              )),
                                           child: Text(
                                             'No',
-                                            style: TextStyle(fontSize: 18),
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
                                           ),
                                         ),
                                       ],
