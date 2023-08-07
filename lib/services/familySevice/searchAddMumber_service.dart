@@ -28,8 +28,10 @@ class SearchAddMemberService {
       "mobileNo": searchAddMemberModel.mobileNo,
       "uniqueUserID": searchAddMemberModel.uniqueUserID,
       "relation": searchAddMemberModel.relation,
+      "firstLevelRelation": searchAddMemberModel.firstLevelRelation,
+      "secondLevelRelation": searchAddMemberModel.secondLevelRelation,
+      "thirdLevelRelation": searchAddMemberModel.thirdLevelRelation,
     };
-
     try {
       print(url);
       final response = await http.post(
@@ -40,10 +42,9 @@ class SearchAddMemberService {
           'Authorization': 'Bearer $token',
         },
       );
-      print(response.statusCode);
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
+      if (response.statusCode == 200) {
         print('POST request successful');
+        print(response.body);
         return response.body;
       } else {
         print('POST request failed with status: ${response.statusCode}');
