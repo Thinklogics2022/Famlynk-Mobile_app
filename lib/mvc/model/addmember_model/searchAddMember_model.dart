@@ -17,8 +17,8 @@ class SearchAddMember {
   String uniqueUserID;
   String relation;
   String firstLevelRelation;
-  String? secondLevelRelation;
-  String? thirdLevelRelation;
+  String secondLevelRelation;
+  String thirdLevelRelation;
   String? maritalStatus;
   String? createdOn;
   String? modifiedOn;
@@ -41,8 +41,8 @@ class SearchAddMember {
     required this.uniqueUserID,
     required this.relation,
     required this.firstLevelRelation,
-    this.secondLevelRelation,
-    this.thirdLevelRelation,
+    required this.secondLevelRelation,
+    required this.thirdLevelRelation,
     this.maritalStatus,
     this.address,
     this.homeTown,

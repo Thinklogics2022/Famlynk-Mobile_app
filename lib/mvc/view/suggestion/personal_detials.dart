@@ -59,7 +59,6 @@ class _UserDetailsState extends State<UserDetails> {
   String userId = '';
   String selectedSecondLevelRelation = '';
   String selectedThirdLevelRelation = '';
-  
 
   List<String> secondLevelRelationList = [];
   List<String> thirdLevelRelationList = [];
@@ -107,11 +106,11 @@ class _UserDetailsState extends State<UserDetails> {
         gender: widget.gender,
         dob: widget.dateOfBirth,
         email: widget.email,
-        userId: widget.uniqueUserID,
+        userId: userId,
         image: widget.profileImage!,
         mobileNo: widget.mobileNo,
         uniqueUserID: widget.uniqueUserID,
-        relation: selectedFirstLevelRelation,
+        relation: '',
         firstLevelRelation: selectedFirstLevelRelation,
         secondLevelRelation: selectedSecondLevelRelation,
         thirdLevelRelation: selectedThirdLevelRelation,
@@ -181,8 +180,8 @@ class _UserDetailsState extends State<UserDetails> {
       return [];
     } else {
       return thirdLevelRelationList.map((relation) {
-        int startIndex =
-            relation.indexOf("thirdLevelRelation:") + "thirdLevelRelation:".length;
+        int startIndex = relation.indexOf("thirdLevelRelation:") +
+            "thirdLevelRelation:".length;
 
         String restOfData = relation.substring(startIndex);
 
@@ -373,7 +372,7 @@ class _UserDetailsState extends State<UserDetails> {
                           selectedThirdLevelRelation = newValue!;
                         });
                       },
-                      items:buildThirdLevelDropdownItems(),                      
+                      items: buildThirdLevelDropdownItems(),
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(

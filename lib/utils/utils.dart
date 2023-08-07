@@ -12,7 +12,7 @@ class FamlynkServiceUrl {
   static const String searchAllUser = baseUrl + "/register/retrievemembers/";
   static const String getFamilyMember =
       baseUrl + "/familymembers/retrieveFamilyMembers/";
-  static const String searchAddMember = baseUrl + "./familymembers/addfamily/";
+  static const String searchAddMember = baseUrl + "/familymembers/addfamily/";
   static const String deleteFamilyMember =
       baseUrl + "/familymembers/deletefamilymember/";
   static const String postNewsFeed = baseUrl + "/newsfeed/createnewsfeed";
