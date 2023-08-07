@@ -6,7 +6,7 @@ String searchAddMemberToJson(SearchAddMember data) =>
     json.encode(data.toJson());
 
 class SearchAddMember {
-  String famid;
+  String? famid;
   String name;
   String gender;
   String dob;
@@ -16,42 +16,67 @@ class SearchAddMember {
   String mobileNo;
   String uniqueUserID;
   String relation;
+  String firstLevelRelation;
+  String? secondLevelRelation;
+  String? thirdLevelRelation;
+  String? maritalStatus;
   String? createdOn;
   String? modifiedOn;
-  // String address;
-  // String homeTown;
-  SearchAddMember(
-      {required this.famid,
-      required this.name,
-      required this.gender,
-      required this.dob,
-      required this.email,
-      required this.userId,
-      required this.image,
-      required this.mobileNo,
-      required this.uniqueUserID,
-      required this.relation,
-      // required this.address,
-      // required this.homeTown,
-      this.createdOn,
-      this.modifiedOn});
+  String? address;
+  String? homeTown;
+  List<dynamic>? mutualConnection = [];
+  Map<String, dynamic>? notification = {};
+  String? side;
+  bool? isRegisterUser;
+
+  SearchAddMember({
+    this.famid,
+    required this.name,
+    required this.gender,
+    required this.dob,
+    required this.email,
+    required this.userId,
+    required this.image,
+    required this.mobileNo,
+    required this.uniqueUserID,
+    required this.relation,
+    required this.firstLevelRelation,
+    this.secondLevelRelation,
+    this.thirdLevelRelation,
+    this.maritalStatus,
+    this.address,
+    this.homeTown,
+    this.createdOn,
+    this.modifiedOn,
+    this.mutualConnection,
+    this.notification,
+    this.side,
+    this.isRegisterUser,
+  });
   factory SearchAddMember.fromJson(Map<String, dynamic> json) {
     return SearchAddMember(
-      famid: json["famid"],
-      name: json["name"],
-      gender: json["gender"],
-      dob: json["dob"],
-      email: json["email"],
-      userId: json["userId"],
-      image: json["image"],
-      mobileNo: json["mobileNo"],
-      uniqueUserID: json["uniqueUserID"],
-      relation: json["relation"],
-      createdOn: json["createdOn"],
-      modifiedOn: json["modifiedOn"],
-      // address: json["address"],
-      // homeTown : json["homeTown"]
-    );
+        famid: json["famid"],
+        name: json["name"],
+        gender: json["gender"],
+        dob: json["dob"],
+        email: json["email"],
+        userId: json["userId"],
+        image: json["image"],
+        mobileNo: json["mobileNo"],
+        uniqueUserID: json["uniqueUserID"],
+        relation: json["relation"],
+        createdOn: json["createdOn"],
+        modifiedOn: json["modifiedOn"],
+        address: json["address"],
+        maritalStatus: json["maritalStatus"],
+        homeTown: json["homeTown"],
+        firstLevelRelation: json["firstLevelRelation"],
+        secondLevelRelation: json["secondLevelRelation"],
+        thirdLevelRelation: json["thirdLevelRelation"],
+        notification: json['notification'],
+        mutualConnection: json['mutualConnection'],
+        side: json['side'],
+        isRegisterUser: json['isRegisterUser']);
   }
   Map<String, dynamic> toJson() => {
         "famid": famid,
@@ -66,7 +91,15 @@ class SearchAddMember {
         "relation": relation,
         "createdOn": createdOn,
         "modifiedOn": modifiedOn,
-        // "address": address,
-        // "homeTown" : homeTown
+        "maritalStatus": maritalStatus,
+        "address": address,
+        "homeTown": homeTown,
+        "firstLevelRelation": firstLevelRelation,
+        "secondLevelRelation": secondLevelRelation,
+        "thirdLevelRelation": thirdLevelRelation,
+        'notification': notification,
+        'mutualConnection': mutualConnection,
+        'side': side,
+        'isRegisterUser': isRegisterUser,
       };
 }

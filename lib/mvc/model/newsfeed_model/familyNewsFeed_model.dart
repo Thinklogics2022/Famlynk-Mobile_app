@@ -9,7 +9,7 @@ String familyNewsFeedModelToJson(FamilyNewsFeedModel data) =>
 class FamilyNewsFeedModel {
   String newsFeedId;
   String userId;
-  String profilePicture;
+  String? profilePicture;
   // String video;
   String? photo;
   int like;
@@ -24,7 +24,7 @@ class FamilyNewsFeedModel {
   FamilyNewsFeedModel({
     required this.newsFeedId,
     required this.userId,
-    required this.profilePicture,
+    this.profilePicture,
     // required this.video,
     required this.photo,
     required this.like,
