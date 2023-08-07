@@ -15,8 +15,6 @@ class FamilyNews extends StatefulWidget {
 
 class _FamilyNewsState extends State<FamilyNews> {
   bool isLoaded = false;
-  // int pageNumber = 0;
-  // int pageSize = 20;
   bool isLiked = false;
   late List<String> comments;
   List<FamilyNewsFeedModel>? familyNewsFeedList = [];
@@ -83,18 +81,19 @@ class _FamilyNewsState extends State<FamilyNews> {
           familyNewsFeedList![index].userLikes.remove(userId);
           familyNewsFeedList![index].like--;
         }
-        familyNewsFeedList = List.from(familyNewsFeedList!);
       });
     } catch (e) {
       print(e);
     }
   }
-  ImageProvider<Object>? _getProfileImage(FamilyNewsFeedModel newsFeedModel) {
-    if (newsFeedModel.profilePicture == null ||
-        newsFeedModel.profilePicture.isEmpty) {
+
+  ImageProvider<Object> _getProfileImage(FamilyNewsFeedModel newsFeedModel) {
+    final String? profilePicture = newsFeedModel.profilePicture;
+
+    if (profilePicture == null || profilePicture.isEmpty) {
       return AssetImage('assets/images/FL01.png');
     } else {
-      return CachedNetworkImageProvider(newsFeedModel.profilePicture);
+      return CachedNetworkImageProvider(profilePicture);
     }
   }
 
@@ -111,7 +110,7 @@ class _FamilyNewsState extends State<FamilyNews> {
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
         child: isLoaded
-            ? familyNewsFeedList!.isEmpty 
+            ? familyNewsFeedList!.isEmpty
                 ? Center(
                     child: Text(
                       'No FamilyNews are available.',
@@ -139,8 +138,7 @@ class _FamilyNewsState extends State<FamilyNews> {
                           children: [
                             ListTile(
                               leading: CircleAvatar(
-                                backgroundImage:
-                                    _getProfileImage(newsFeed),
+                                backgroundImage: _getProfileImage(newsFeed),
                               ),
                               title: Text(newsFeed.name),
                               subtitle: Text(formattedDate),
@@ -206,13 +204,12 @@ class _FamilyNewsState extends State<FamilyNews> {
                                         Icon(Icons.chat_bubble_outline),
                                         SizedBox(width: 6),
                                       ],
-                                      
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                             Padding(
+                            Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
                                 children: [

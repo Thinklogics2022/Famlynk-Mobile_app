@@ -77,7 +77,7 @@ class _PublicNewsState extends State<PublicNews> {
 
   void onLikeButtonPressed(int index) async {
     PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-    bool isCurrentlyLiked = newsFeed.userLikes.contains(userId);
+    bool isCurrentlyLiked = newsFeed.userLikes!.contains(userId);
 
     try {
       // if (isCurrentlyLiked) {
@@ -88,10 +88,10 @@ class _PublicNewsState extends State<PublicNews> {
       setState(() {
         isLiked = !isCurrentlyLiked;
         if (isLiked) {
-          publicNewsFeedList![index].userLikes.add(userId);
+          publicNewsFeedList![index].userLikes!.add(userId);
           publicNewsFeedList![index].like++;
         } else {
-          publicNewsFeedList![index].userLikes.remove(userId);
+          publicNewsFeedList![index].userLikes!.remove(userId);
           publicNewsFeedList![index].like--;
         }
         publicNewsFeedList = List.from(publicNewsFeedList!);
@@ -118,11 +118,12 @@ class _PublicNewsState extends State<PublicNews> {
 
   ImageProvider<Object>? _getProfileImage(
       PublicNewsFeedModel publicNewsFeedList) {
-    if (publicNewsFeedList.profilePicture == null ||
-        publicNewsFeedList.profilePicture.isEmpty) {
+    final String? profilePicture = publicNewsFeedList.profilePicture;
+    if (profilePicture == null ||
+        profilePicture.isEmpty) {
       return AssetImage('assets/images/FL01.png');
     } else {
-      return CachedNetworkImageProvider(publicNewsFeedList.profilePicture);
+      return CachedNetworkImageProvider(profilePicture);
     }
   }
 

@@ -9,32 +9,32 @@ String publicNewsFeedModelToJson(PublicNewsFeedModel data) =>
 class PublicNewsFeedModel {
   String newsFeedId;
   String userId;
-  String profilePicture;
+  String? profilePicture;
   // String video;
   String? photo;
   int like;
   String description;
   String name;
   DateTime createdOn;
-  List<String> userLikes;
-  List<String> userLikeNames;
+  List<String>? userLikes;
+  List<String>? userLikeNames;
   String uniqueUserID;
-  List<dynamic> mutualConnection;
+  List<dynamic>? mutualConnection;
 
   PublicNewsFeedModel({
     required this.newsFeedId,
     required this.userId,
-    required this.profilePicture,
+    this.profilePicture,
     // required this.video,
     required this.photo,
     required this.like,
     required this.description,
     required this.name,
     required this.createdOn,
-    required this.userLikes,
-    required this.userLikeNames,
+    this.userLikes,
+    this.userLikeNames,
     required this.uniqueUserID,
-    required this.mutualConnection,
+    this.mutualConnection,
   });
 
   factory PublicNewsFeedModel.fromJson(Map<String, dynamic> json) {

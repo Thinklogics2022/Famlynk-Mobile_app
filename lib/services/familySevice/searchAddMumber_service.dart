@@ -14,12 +14,8 @@ class SearchAddMemberService {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';
     token = prefs.getString('token') ?? '';
-    final url = Uri.parse(urls +
-        userId +
-        "/" +
-        searchAddMemberModel.uniqueUserID +
-        "/" +
-        searchAddMemberModel.relation);
+    final url =
+        Uri.parse(urls + userId + "/" + searchAddMemberModel.uniqueUserID);
 
     Map<String, dynamic> requestBody = {
       "famid": searchAddMemberModel.famid,
@@ -32,8 +28,6 @@ class SearchAddMemberService {
       "mobileNo": searchAddMemberModel.mobileNo,
       "uniqueUserID": searchAddMemberModel.uniqueUserID,
       "relation": searchAddMemberModel.relation,
-      // "createdOn": searchAddMemberModel.createdOn,
-      // "modifiedOn": searchAddMemberModel.modifiedOn,
     };
 
     try {
@@ -41,19 +35,76 @@ class SearchAddMemberService {
       final response = await http.post(
         url,
         body: jsonEncode(requestBody),
-        headers: {'Authorization': 'Bearer $token'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
       );
       print(response.statusCode);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('POST request successful');
-        // print(response.body);
         return response.body;
       } else {
         print('POST request failed with status: ${response.statusCode}');
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<List<String>> fetchSecondLevelRelations(
+      String firstLevelRelation) async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId') ?? '';
+    token = prefs.getString('token') ?? '';
+    var url = FamlynkServiceUrl.secondLevelRelation + firstLevelRelation;
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data is List<dynamic>) {
+        return data.map((relation) => relation.toString()).toList();
+      } else {
+        print('Invalid response format for second-level relations.');
+        throw Exception('Invalid response format for second-level relations.');
+      }
+    } else {
+      print('Failed to fetch second-level relations: ${response.statusCode}');
+      throw Exception('Failed to fetch second-level relations');
+    }
+  }
+
+  Future<List<String>> fetchThirdLevelRelations(
+      String secondLevelRelation) async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId') ?? '';
+    token = prefs.getString('token') ?? '';
+    var url = FamlynkServiceUrl.thirdLevelRelation + secondLevelRelation;
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      if (data is List<dynamic>) {
+        return data.map((relation) => relation.toString()).toList();
+      } else {
+        print('Invalid response format for third-level relations.');
+        throw Exception('Invalid response format for third-level relations.');
+      }
+    } else {
+      print('Failed to fetch third-level relations: ${response.statusCode}');
+      throw Exception('Failed to fetch third-level relations');
     }
   }
 }

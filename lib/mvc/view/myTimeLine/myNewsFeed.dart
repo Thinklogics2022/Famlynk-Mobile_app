@@ -72,11 +72,12 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
   }
 
   ImageProvider<Object>? _getProfileImage(MyTimeLineModel myNewsFeeds) {
-    if (myNewsFeeds.profilePicture == null ||
-        myNewsFeeds.profilePicture.isEmpty) {
+    final String? profilePicture = myNewsFeeds.profilePicture;
+    if (profilePicture == null ||
+        profilePicture.isEmpty) {
       return AssetImage('assets/images/FL01.png');
     } else {
-      return CachedNetworkImageProvider(myNewsFeeds.profilePicture);
+      return CachedNetworkImageProvider(profilePicture);
     }
   }
 
@@ -111,7 +112,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
       body: RefreshIndicator(
         onRefresh: _handleRefersh,
         child: isLoaded
-            ? myTimeLineList!.isEmpty 
+            ? myTimeLineList!.isEmpty
                 ? Center(
                     child: Text(
                       'You have no Posted',

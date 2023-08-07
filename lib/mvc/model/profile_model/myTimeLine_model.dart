@@ -9,7 +9,7 @@ String myTimeLineModelToJson(MyTimeLineModel data) =>
 class MyTimeLineModel {
   String newsFeedId;
   String userId;
-  String profilePicture;
+  String? profilePicture;
   String? photo;
   int like;
   String description;
@@ -23,7 +23,7 @@ class MyTimeLineModel {
   MyTimeLineModel({
     required this.newsFeedId,
     required this.userId,
-    required this.profilePicture,
+    this.profilePicture,
     required this.photo,
     required this.like,
     required this.description,

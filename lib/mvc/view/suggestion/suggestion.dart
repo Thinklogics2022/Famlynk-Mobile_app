@@ -187,6 +187,7 @@
 //   }
 // }
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/suggestion_model.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
 import 'package:famlynk_version1/services/familySevice/suggestion_services.dart';
@@ -207,8 +208,6 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
   bool isLoaded = false;
   String currentQuery = '';
   List<Suggestion> filteredSuggestions = [];
-  int pageNumber = 0;
-  int pageSize = 20;
   String userId = '';
   int registerMember = 0;
 
@@ -223,6 +222,10 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
   void initState() {
     super.initState();
     fetchData();
+    fetchSuggestions();
+  }
+   void loadMoreSuggestions() {
+    // pageNumber++;
     fetchSuggestions();
   }
 
@@ -240,9 +243,13 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
     }
   }
 
-  void loadMoreSuggestions() {
-    pageNumber++;
-    fetchSuggestions();
+  ImageProvider<Object> getProfileImageWithFallback(Suggestion suggestion) {
+    final String? profileImage = suggestion.profileImage;
+    if (profileImage == null || profileImage.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
+    } else {
+      return CachedNetworkImageProvider(profileImage);
+    }
   }
 
   @override
@@ -250,11 +257,14 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: HexColor('#0175C8'),
-        title: Text(
-          'Suggestions',
-          style: TextStyle(
-            color: Colors.white,
+        title: Center(
+          child: Text(
+            'Suggestions',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       ),
@@ -298,7 +308,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                 return ListTile(
                   leading: CircleAvatar(
                     backgroundImage:
-                        NetworkImage(suggestion.profileImage.toString()),
+                        getProfileImageWithFallback(suggestion),
                     backgroundColor: Colors.transparent,
                   ),
                   title: Text(suggestion.name.toString()),
@@ -336,7 +346,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                     : filteredSuggestions[index];
                 if (index == suggestionlist.length - 1 &&
                     currentQuery.isEmpty) {
-                  loadMoreSuggestions();
+                 
                 }
 
                 return InkWell(
@@ -362,7 +372,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                   child: ListTile(
                     leading: CircleAvatar(
                       backgroundImage:
-                          NetworkImage(suggestion.profileImage.toString()),
+                           getProfileImageWithFallback(suggestion),
                       backgroundColor: Colors.transparent,
                     ),
                     title: Text(suggestion.name.toString()),

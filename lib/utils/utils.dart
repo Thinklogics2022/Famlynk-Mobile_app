@@ -42,4 +42,8 @@ class FamlynkServiceUrl {
       baseUrl + "/register/retrieveregisterbyemailforpassword/";
   static const String verifyOtpforPswd = baseUrl + "/register/verifyotp/";
   static const String resentOTP = baseUrl + "/register/resend/";
+  static const String secondLevelRelation =
+      baseUrl + "/familymembers/getsecondlevelrelation/";
+  static const String thirdLevelRelation =
+      baseUrl + "/familymembers/getthirdlevelrelation/";
 }
