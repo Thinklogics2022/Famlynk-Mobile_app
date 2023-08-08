@@ -1,17 +1,26 @@
 import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
+import 'package:famlynk_version1/services/familySevice/individulaUserService.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
-class MemberDetails extends StatefulWidget {
-  MemberDetails({required this.details});
-  final FamListModel details;
+class About extends StatefulWidget {
+  About({required this.name, required this.gender, required this.dateOfBirth,required this.email,required this.uniqueUserId,required this.image, required this.userId });
+  final String name;
+   final String gender;
+    final String dateOfBirth;
+    final String userId;
+    final String uniqueUserId;
+    final String email;
+     final String image;
 
   @override
-  State<MemberDetails> createState() => _MemberDetailsState();
+  State<About> createState() => _AboutState();
 }
 
-class _MemberDetailsState extends State<MemberDetails>
-    with SingleTickerProviderStateMixin {
+class _AboutState extends State<About> with SingleTickerProviderStateMixin {
+  var isLoaded = false;
+
+  FamListModel famListModel = FamListModel();
+  IndividulaUserService individulaUserService = IndividulaUserService();
   late AnimationController _animationController;
   late Animation<double> _animation;
 
@@ -27,7 +36,9 @@ class _MemberDetailsState extends State<MemberDetails>
       curve: Curves.bounceInOut,
     );
     _animationController.forward();
+    
   }
+
 
   @override
   void dispose() {
@@ -39,14 +50,6 @@ class _MemberDetailsState extends State<MemberDetails>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 231, 238, 243),
-      appBar: AppBar(
-        backgroundColor: HexColor('#0175C8'),
-        iconTheme: IconThemeData(color: Colors.white),
-        title: Text(
-          "Family Member Details",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
       body: AnimatedContainer(
         duration: Duration(milliseconds: 800),
         decoration: BoxDecoration(),
@@ -63,14 +66,14 @@ class _MemberDetailsState extends State<MemberDetails>
                       child: CircleAvatar(
                         radius: 65,
                         backgroundImage:
-                            NetworkImage(widget.details.image.toString()),
+                            NetworkImage(widget.image.toString()),
                       ),
                     );
                   },
                 ),
                 SizedBox(height: 20),
                 Text(
-                  "${widget.details.name.toString()}",
+                  "${widget.name.toString()}",
                   style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: 8),
@@ -82,15 +85,13 @@ class _MemberDetailsState extends State<MemberDetails>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildDetailRow(
-                            "Date of Birth", widget.details.dob.toString()),
+                            "Date of Birth",widget.gender.toString()),
                         _buildDetailRow(
-                            "E-mail", widget.details.email.toString()),
+                            "E-mail", widget.email.toString()),
                         _buildDetailRow(
-                            "Gender", widget.details.gender.toString()),
-                        _buildDetailRow(
-                            "Mobile No", widget.details.mobileNo.toString()),
-                        _buildDetailRow(
-                            "Relation", widget.details.relation.toString()),
+                            "Gender", widget.gender.toString()),
+                        
+                        
                       ],
                     ),
                   ),
@@ -101,6 +102,7 @@ class _MemberDetailsState extends State<MemberDetails>
         ),
       ),
     );
+
   }
 
   Widget _buildDetailRow(String label, String value) {

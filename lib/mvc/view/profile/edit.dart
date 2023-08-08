@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
+import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/imageModel.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/profileService/editProfileService.dart';
@@ -249,7 +251,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
           .putFile(imageFile!);
       imageUrl = await storageResult.ref.getDownloadURL();
     }
-
+    ImageModel imageModel = ImageModel(
+      name: nameController.text,
+      profilePicture: imageUrl
+    );
+    
+    EditProfileService editProfileServices = EditProfileService();
+    editProfileServices.imageService(imageModel);
     ProfileUserModel profileUserModel = ProfileUserModel(
       name: nameController.text,
       email: emailController.text,

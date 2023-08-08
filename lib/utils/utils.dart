@@ -3,8 +3,8 @@ class FamlynkServiceUrl {
   static const String baseUrl = "http://192.168.1.8:8080";
   static const String createUser = baseUrl + "/register/createregister";
   static const String login = baseUrl + "/authenticate/login";
-  static const String updateRegister =
-      baseUrl + "/familymembers/createfamilymembers/{email}";
+  // static const String updateRegister =
+  // baseUrl + "/familymembers/createfamilymembers/{email}";
   static const String verifyOtp = baseUrl + "/register/verifyotp/";
 
   static const String addMember =
@@ -46,4 +46,6 @@ class FamlynkServiceUrl {
       baseUrl + "/familymembers/getsecondlevelrelation/";
   static const String thirdLevelRelation =
       baseUrl + "/familymembers/getthirdlevelrelation/";
+  static const String individualUser = baseUrl + "/register/getmemberprofile/";
+  static const String imgUrl = baseUrl + "/newsfeed/profileandnameupdate/";
 }

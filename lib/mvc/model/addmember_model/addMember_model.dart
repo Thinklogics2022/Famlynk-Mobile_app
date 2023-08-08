@@ -11,14 +11,16 @@ class AddMemberModel {
       this.email,
       this.uniqueUserID,
       this.famid,
-      this.secondLevelrelation,
-      this.thirdLevelrelation,
+      this.secondLevelRelation,
+      this.thirdLevelRelation,
       this.createdOn,
       this.modifiedOn,
       this.notification,
       this.maritalStatus,
       this.hometown,
-      this.address});
+      this.address,
+      this.isRegisterUser,
+      this.side});
   String? userId;
   String? name;
   String? dob;
@@ -29,8 +31,8 @@ class AddMemberModel {
   String? mobileNo;
   String? email;
   String? uniqueUserID;
-  String? secondLevelrelation;
-  String? thirdLevelrelation;
+  String? secondLevelRelation;
+  String? thirdLevelRelation;
   String? famid;
   String? createdOn;
   String? notification;
@@ -38,6 +40,8 @@ class AddMemberModel {
   String? modifiedOn;
   String? hometown;
   String? address;
+  String? side;
+  bool? isRegisterUser;
 
   factory AddMemberModel.fromJson(Map<String, dynamic> json) => AddMemberModel(
       userId: json["userId"],
@@ -50,15 +54,17 @@ class AddMemberModel {
       mobileNo: json["mobileNo"],
       email: json["email"],
       uniqueUserID: json["uniqueUserID"],
-      secondLevelrelation: json["secondLevelrelation"],
-      thirdLevelrelation: json["thirdLevelrelation"],
+      secondLevelRelation: json["secondLevelRelation"],
+      thirdLevelRelation: json["thirdLevelRelation"],
       createdOn: json["createdOn"],
       modifiedOn: json["modifiedOn"],
       notification: json["notification"],
       maritalStatus: json["maritalStatus"],
       hometown: json["hometown"],
       address: json["address"],
-      famid: json["famid"]);
+      famid: json["famid"],
+      side: json["side"],
+      isRegisterUser: json["isRegisterUser"]);
   Map<String, dynamic> toJson() => {
         "userId": userId,
         "name": name,
@@ -70,14 +76,16 @@ class AddMemberModel {
         "mobileNo": mobileNo,
         "email": email,
         "uniqueUserID": uniqueUserID,
-        "secondLevelrelation": secondLevelrelation,
-        "thirdLevelrelation": thirdLevelrelation,
+        "secondLevelRelation": secondLevelRelation,
+        "thirdLevelRelation": thirdLevelRelation,
         "createdOn": createdOn,
         "modifiedOn": modifiedOn,
         "maritalStatus": maritalStatus,
         "notification": notification,
         "hometown": hometown,
         "address": address,
-        "famid": famid
+        "famid": famid,
+        "isRegisterUser": isRegisterUser,
+        "side": side
       };
 }

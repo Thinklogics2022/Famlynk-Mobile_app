@@ -21,11 +21,12 @@ class AddMemberService {
       "gender": addMemberModel.gender,
       "mobileNo": addMemberModel.mobileNo,
       "email": addMemberModel.email,
-      "relation": addMemberModel.relation,
+     
+      "firstLevelRelation": addMemberModel.firstLevelRelation,
       "dob": addMemberModel.dob,
       "image": addMemberModel.image,
       "userId": addMemberModel.userId,
-      // "uniqueUserID": addMemberModel.uniqueUserID,
+     
     };
 
     try {
@@ -40,6 +41,7 @@ class AddMemberService {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         print('POST request successful');
+        print("requestBody : ${requestBody}");
         print("add : ${response.body}");
 
         return response.body;
