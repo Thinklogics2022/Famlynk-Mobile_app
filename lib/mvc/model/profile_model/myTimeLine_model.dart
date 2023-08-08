@@ -12,7 +12,7 @@ class MyTimeLineModel {
   String? profilePicture;
   String? photo;
   int like;
-  String description;
+  String? description;
   String name;
   DateTime createdOn;
   List<String> userLikes;
@@ -26,7 +26,7 @@ class MyTimeLineModel {
     this.profilePicture,
     required this.photo,
     required this.like,
-    required this.description,
+    this.description,
     required this.name,
     required this.createdOn,
     required this.userLikes,
@@ -42,7 +42,7 @@ class MyTimeLineModel {
       profilePicture: json['profilePicture'],
       photo: json['photo'],
       like:json['like'],
-      description: json['description'],
+      description: json['description'] != null ? json['description'] : '',
       name: json['name'],
       createdOn: DateTime.parse(json['createdOn']),
       userLikes: List<String>.from(json['userLikes']),

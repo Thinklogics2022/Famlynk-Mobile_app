@@ -1,4 +1,4 @@
-import 'package:famlynk_version1/mvc/view/newsFeed/addImage.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/addNewsFeed.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/public_private/familyNewsFeed.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/public_private/public.dart';
 import 'package:flutter/material.dart';

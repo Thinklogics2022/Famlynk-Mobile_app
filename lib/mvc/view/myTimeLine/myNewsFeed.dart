@@ -1,15 +1,15 @@
-// ignore_for_file: unnecessary_null_comparison
-
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:famlynk_version1/mvc/model/profile_model/myTimeLine_model.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
-import 'package:famlynk_version1/services/profileService/myTimeLine/myTimeLine_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'package:famlynk_version1/mvc/model/profile_model/myTimeLine_model.dart';
+import 'package:famlynk_version1/services/profileService/myTimeLine/myTimeLine_service.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/addNewsFeed_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyNewsFeed extends StatefulWidget {
-  const MyNewsFeed({super.key});
+  const MyNewsFeed({Key? key}) : super(key: key);
 
   @override
   State<MyNewsFeed> createState() => _MyNewsFeedState();
@@ -73,36 +73,127 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
 
   ImageProvider<Object>? _getProfileImage(MyTimeLineModel myNewsFeeds) {
     final String? profilePicture = myNewsFeeds.profilePicture;
-    if (profilePicture == null ||
-        profilePicture.isEmpty) {
+    if (profilePicture == null || profilePicture.isEmpty) {
       return AssetImage('assets/images/FL01.png');
     } else {
       return CachedNetworkImageProvider(profilePicture);
     }
   }
 
-  void onLikeButtonPressed(int index) async {
-    MyTimeLineModel myNewsFeeds = myTimeLineList![index];
-    bool isCurrentlyLiked = myNewsFeeds.userLikes.contains(userId);
+  // void onLikeButtonPressed(int index) async {
+  //   MyTimeLineModel myNewsFeeds = myTimeLineList![index];
+  //   bool isCurrentlyLiked = myNewsFeeds.userLikes.contains(userId);
 
-    try {
-      isLiked = isCurrentlyLiked;
-      if (isLiked) {
-        myTimeLineList![index].userLikes.add(userId);
-        myTimeLineList![index].like++;
-      } else {
-        myTimeLineList![index].userLikes.remove(userId);
-        myTimeLineList![index].like--;
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  //   try {
+  //     isLiked = isCurrentlyLiked;
+  //     if (isLiked) {
+  //       myTimeLineList![index].userLikes.add(userId);
+  //       myTimeLineList![index].like++;
+  //     } else {
+  //       myTimeLineList![index].userLikes.remove(userId);
+  //       myTimeLineList![index].like--;
+  //     }
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   Future<void> addComment(int index, String comment) async {
     setState(() {
       comments.add(comment);
     });
+  }
+
+  Future<void> _editMyTimeLineDescription(BuildContext context,
+      String editedDescription, MyTimeLineModel myTimeLineModel) async {
+    MyTimeLineService myTimeLineService = MyTimeLineService();
+    AddImageNewsFeedMode editMyTimeLine = AddImageNewsFeedMode(
+      newsFeedId: myTimeLineModel.newsFeedId,
+      description: editedDescription,
+      photo: myTimeLineModel.photo,
+    );
+
+    try {
+      await myTimeLineService.editMyTimeLine(editMyTimeLine);
+      Navigator.pop(context);
+      _handleRefersh();
+    } catch (e) {
+      print('Error editing Description: $e');
+    }
+  }
+
+  void _deleteMyTimeLine(MyTimeLineModel myTimeLineModel) async {
+    MyTimeLineService myTimeLineService = MyTimeLineService();
+
+    try {
+      await myTimeLineService.deleteMyTimeLine(myTimeLineModel.newsFeedId);
+      _handleRefersh();
+    } catch (e) {
+      print('Error deleting MyTimeLine: $e');
+    }
+  }
+
+  void _showDeleteConfirmation(MyTimeLineModel myTimeLineModel) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete MyTimeLine'),
+          content: Text('Are you sure you want to delete this comment?'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            Spacer(),
+            ElevatedButton(
+              onPressed: () {
+                _deleteMyTimeLine(myTimeLineModel);
+                Navigator.pop(context);
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showEditDialog(BuildContext context, MyTimeLineModel myTimeLineModel) {
+    String editedDescription = myTimeLineModel.description ?? '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Description'),
+          content: TextField(
+            onChanged: (value) {
+              editedDescription = value;
+            },
+            controller: TextEditingController(text: editedDescription),
+            decoration: InputDecoration(hintText: 'Edit your Description...'),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _editMyTimeLineDescription(
+                    context, editedDescription, myTimeLineModel);
+              },
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -124,12 +215,9 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
                     itemCount: myTimeLineList!.length,
                     itemBuilder: (context, index) {
                       MyTimeLineModel myNewsFeeds = myTimeLineList![index];
-                      DateTime? utcDateTime =
-                          DateTime.parse(myNewsFeeds.createdOn.toString());
-                      DateTime localDateTime = utcDateTime.toLocal();
+                      String formattedDate = DateFormat('MMM-dd-yyyy  hh:mm a')
+                          .format(myNewsFeeds.createdOn);
 
-                      String formattedDate = DateFormat('MMMM-dd-yyyy  hh:mm a')
-                          .format(localDateTime);
                       return Card(
                         elevation: 4.0,
                         shape: RoundedRectangleBorder(
@@ -144,12 +232,38 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
                               ),
                               title: Text(myNewsFeeds.name),
                               subtitle: Text(formattedDate),
+                              trailing: PopupMenuButton<String>(
+                                onSelected: (value) {
+                                  if (value == 'edit') {
+                                    _showEditDialog(context, myNewsFeeds);
+                                  } else if (value == 'delete') {
+                                    _showDeleteConfirmation(myNewsFeeds);
+                                  }
+                                },
+                                itemBuilder: (BuildContext context) =>
+                                    <PopupMenuEntry<String>>[
+                                  PopupMenuItem<String>(
+                                    value: 'edit',
+                                    child: ListTile(
+                                      leading: Icon(Icons.edit),
+                                      title: Text('Edit'),
+                                    ),
+                                  ),
+                                  PopupMenuItem<String>(
+                                    value: 'delete',
+                                    child: ListTile(
+                                      leading: Icon(Icons.delete),
+                                      title: Text('Delete'),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             Divider(),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                myNewsFeeds.description,
+                                myNewsFeeds.description!,
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ),
@@ -171,7 +285,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   InkWell(
-                                    onTap: () => onLikeButtonPressed(index),
+                                    onTap: () {},
                                     child: Row(
                                       children: [
                                         Icon(

@@ -111,8 +111,8 @@ class _CommentScreenState extends State<CommentScreen> {
               padding: EdgeInsets.only(left: 16, right: 8),
               child: Row(
                 children: [
-                  CircleAvatar(
-                      backgroundImage: NetworkImage(widget.profilePicture)),
+                  // CircleAvatar(
+                  //     backgroundImage: NetworkImage(widget.profilePicture)),
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(left: 16, right: 8),

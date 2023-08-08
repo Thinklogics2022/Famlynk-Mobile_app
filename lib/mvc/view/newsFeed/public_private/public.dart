@@ -161,12 +161,15 @@ class _PublicNewsState extends State<PublicNews> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: _getProfileImage(newsFeed),
+                            InkWell(
+                              onTap: (){},
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage: _getProfileImage(newsFeed),
+                                ),
+                                title: Text(newsFeed.name),
+                                subtitle: Text(formattedDate),
                               ),
-                              title: Text(newsFeed.name),
-                              subtitle: Text(formattedDate),
                             ),
                             Divider(),
                             Padding(
