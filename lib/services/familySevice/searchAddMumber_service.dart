@@ -29,8 +29,8 @@ class SearchAddMemberService {
       "uniqueUserID": searchAddMemberModel.uniqueUserID,
       "relation": searchAddMemberModel.relation,
       "firstLevelRelation": searchAddMemberModel.firstLevelRelation,
-      "secondLevelRelation": searchAddMemberModel.secondLevelRelation,
-      "thirdLevelRelation": searchAddMemberModel.thirdLevelRelation,
+      "secondLevelrelation": searchAddMemberModel.secondLevelrelation,
+      "thirdLevelrelation": searchAddMemberModel.thirdLevelrelation,
     };
     try {
       print(url);
@@ -82,7 +82,7 @@ class SearchAddMemberService {
     }
   }
 
-  Future<List<String>> fetchThirdLevelRelations(
+  Future<List<String>> fetchthirdLevelRelations(
       String secondLevelRelation) async {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';

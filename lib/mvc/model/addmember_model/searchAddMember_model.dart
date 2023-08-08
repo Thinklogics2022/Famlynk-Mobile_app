@@ -17,8 +17,8 @@ class SearchAddMember {
   String uniqueUserID;
   String relation;
   String firstLevelRelation;
-  String secondLevelRelation;
-  String thirdLevelRelation;
+  String secondLevelrelation;
+  String thirdLevelrelation;
   String? maritalStatus;
   String? createdOn;
   String? modifiedOn;
@@ -41,8 +41,8 @@ class SearchAddMember {
     required this.uniqueUserID,
     required this.relation,
     required this.firstLevelRelation,
-    required this.secondLevelRelation,
-    required this.thirdLevelRelation,
+    required this.secondLevelrelation,
+    required this.thirdLevelrelation,
     this.maritalStatus,
     this.address,
     this.homeTown,
@@ -71,8 +71,8 @@ class SearchAddMember {
         maritalStatus: json["maritalStatus"],
         homeTown: json["homeTown"],
         firstLevelRelation: json["firstLevelRelation"],
-        secondLevelRelation: json["secondLevelRelation"],
-        thirdLevelRelation: json["thirdLevelRelation"],
+        secondLevelrelation: json["secondLevelrelation"],
+        thirdLevelrelation: json["thirdLevelrelation"],
         notification: json['notification'],
         mutualConnection: json['mutualConnection'],
         side: json['side'],
@@ -95,8 +95,8 @@ class SearchAddMember {
         "address": address,
         "homeTown": homeTown,
         "firstLevelRelation": firstLevelRelation,
-        "secondLevelRelation": secondLevelRelation,
-        "thirdLevelRelation": thirdLevelRelation,
+        "secondLevelrelation": secondLevelrelation,
+        "thirdLevelrelation": thirdLevelrelation,
         'notification': notification,
         'mutualConnection': mutualConnection,
         'side': side,

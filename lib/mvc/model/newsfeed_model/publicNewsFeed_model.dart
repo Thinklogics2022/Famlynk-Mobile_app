@@ -13,7 +13,7 @@ class PublicNewsFeedModel {
   // String video;
   String? photo;
   int like;
-  String description;
+  String? description;
   String name;
   DateTime createdOn;
   List<String>? userLikes;
@@ -28,7 +28,7 @@ class PublicNewsFeedModel {
     // required this.video,
     required this.photo,
     required this.like,
-    required this.description,
+    this.description,
     required this.name,
     required this.createdOn,
     this.userLikes,
@@ -45,7 +45,7 @@ class PublicNewsFeedModel {
       // video: json['video'],
       photo: json['photo'],
       like: json['like'],
-      description: json['description'],
+      description: json['description'] != null ? json['description'] : '',
       name: json['name'],
       createdOn: DateTime.parse(json['createdOn']),
       userLikes: List<String>.from(json['userLikes']),
