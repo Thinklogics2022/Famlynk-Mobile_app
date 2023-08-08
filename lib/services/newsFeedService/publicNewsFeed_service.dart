@@ -23,6 +23,7 @@ class PublicNewsFeedService {
           'Authorization': 'Bearer $token'
         },
       );
+
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         if (jsonData['content'] != null) {
@@ -37,7 +38,11 @@ class PublicNewsFeedService {
         throw Exception('Failed to fetch data from the backend');
       }
     } catch (e) {
-      throw Exception('Failed to connect to the server: $e');
+      if (e is FormatException) {
+        throw Exception('Invalid response format: $e');
+      } else {
+        throw Exception('Failed to connect to the server: $e');
+      }
     }
   }
 }

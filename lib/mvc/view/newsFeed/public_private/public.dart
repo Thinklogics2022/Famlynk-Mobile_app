@@ -172,7 +172,7 @@ class _PublicNewsState extends State<PublicNews> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                newsFeed.description,
+                                newsFeed.description!,
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ),

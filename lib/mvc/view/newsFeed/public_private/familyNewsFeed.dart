@@ -24,7 +24,7 @@ class _FamilyNewsState extends State<FamilyNews> {
   @override
   void initState() {
     super.initState();
-    _fetchPublicNewsFeed();
+    _fetchFamilyNewsFeed();
     comments = [];
     _scrollController.addListener(_onScroll);
   }
@@ -47,25 +47,26 @@ class _FamilyNewsState extends State<FamilyNews> {
     });
   }
 
-  Future<void> _fetchPublicNewsFeed() async {
-    FamilyNewsFeedService familyNewsFeedService = FamilyNewsFeedService();
-    try {
-      var newsFeedFamily = await familyNewsFeedService.getFamilyNewsFeed();
-      setState(() {
-        familyNewsFeedList!.addAll(newsFeedFamily!);
-        isLoaded = true;
-      });
-    } catch (e) {
-      print('Error: $e');
-    }
+  Future<void> _fetchFamilyNewsFeed() async {
+  FamilyNewsFeedService familyNewsFeedService = FamilyNewsFeedService();
+  try {
+    var newsFeedFamily = await familyNewsFeedService.getFamilyNewsFeed();
+    setState(() {
+      familyNewsFeedList!.addAll(newsFeedFamily!);
+      isLoaded = true;
+    });
+  } catch (e) {
+    print('Error fetching family news feed: $e');
   }
+}
+
 
   Future<void> _handleRefresh() async {
     setState(() {
       familyNewsFeedList!.clear();
       isLoaded = false;
     });
-    await _fetchPublicNewsFeed();
+    await _fetchFamilyNewsFeed();
   }
 
   void onLikeButtonPressed(int index) async {
@@ -147,7 +148,7 @@ class _FamilyNewsState extends State<FamilyNews> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                newsFeed.description,
+                                newsFeed.description!,
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ),

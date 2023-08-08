@@ -112,8 +112,8 @@ class _UserDetailsState extends State<UserDetails> {
         uniqueUserID: widget.uniqueUserID,
         relation: '',
         firstLevelRelation: selectedFirstLevelRelation,
-        secondLevelRelation: selectedSecondLevelRelation,
-        thirdLevelRelation: selectedThirdLevelRelation,
+        secondLevelrelation: selectedSecondLevelRelation,
+        thirdLevelrelation: selectedThirdLevelRelation,
       );
       searchAddMemberService.searchAddMemberPost(searchAddMemberModel);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -157,7 +157,7 @@ class _UserDetailsState extends State<UserDetails> {
     SearchAddMemberService searchAddMemberService = SearchAddMemberService();
     try {
       List<String> fetchedThirdLevelRelations = await searchAddMemberService
-          .fetchThirdLevelRelations(secondLevelRelation);
+          .fetchthirdLevelRelations(secondLevelRelation);
 
       setState(() {
         selectedSecondLevelRelation = secondLevelRelation;

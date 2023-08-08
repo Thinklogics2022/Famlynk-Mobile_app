@@ -12,15 +12,18 @@ class FamilyNewsFeedService {
     userId = prefs.getString('userId') ?? '';
     token = prefs.getString('token') ?? '';
 
-    var url = FamlynkServiceUrl.getFamilyNewsFeed;
+    var url = FamlynkServiceUrl.getFamilyNewsFeed + userId;
+    print(url);
     try {
       final response = await http.get(
-        Uri.parse('$url/$userId'), // Make sure to add a slash before userId
+        Uri.parse('$url'), // Make sure to add a slash before userId
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
       );
+      print('Response status code: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
