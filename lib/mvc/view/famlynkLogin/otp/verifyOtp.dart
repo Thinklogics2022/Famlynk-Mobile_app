@@ -18,7 +18,7 @@ class _OTPPageState extends State<OTPPage> {
   final TextEditingController _otpController = TextEditingController();
   final OTPService _otpService = OTPService();
   Timer? _otpTimer;
-  int _otpDuration = 60; // in seconds
+  int _otpDuration = 120;
 
   @override
   void dispose() {
@@ -117,7 +117,7 @@ class _OTPPageState extends State<OTPPage> {
         },
       );
       setState(() {
-        _otpDuration = 60;
+        _otpDuration = 120;
       });
       _startOTPTimer();
     } else {
@@ -180,8 +180,7 @@ class _OTPPageState extends State<OTPPage> {
                 TextButton(
                   onPressed: () {
                     if (_otpDuration <= 0) {
-                      _resendOTP(
-                          widget.userId.toString());
+                      _resendOTP(widget.userId.toString());
                     }
                   },
                   child: Text(

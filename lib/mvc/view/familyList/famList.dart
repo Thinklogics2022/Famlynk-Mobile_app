@@ -1,10 +1,12 @@
 import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
-import 'package:famlynk_version1/mvc/view/familyList/famDetails.dart';
+import 'package:famlynk_version1/mvc/view/familyList/about.dart';
+import 'package:famlynk_version1/mvc/view/familyList/tabBarPage.dart';
 import 'package:famlynk_version1/mvc/view/familyList/updateFamList.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/familySevice/dltFamList_service.dart';
 import 'package:famlynk_version1/services/familySevice/famlist_servicess.dart';
 import 'package:flutter/material.dart';
+
 
 class FamilyList extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class FamilyList extends StatefulWidget {
 }
 
 class _FamilyListState extends State<FamilyList> {
+  
   var isLoaded = false;
   List<FamListModel> familyList = [];
   DltMemberService dltMemberService = DltMemberService();
@@ -102,7 +105,11 @@ class _FamilyListState extends State<FamilyList> {
                                               ),
                                             );
                                           },
-                                          child: Text("edit",style: TextStyle(color: Colors.blue),),
+                                          child: Text(
+                                            "edit",
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          ),
                                         ),
                                       ),
                                       PopupMenuItem(
@@ -120,7 +127,11 @@ class _FamilyListState extends State<FamilyList> {
                                                 .uniqueUserID
                                                 .toString());
                                           },
-                                          child: Text("delete", style: TextStyle(color: Colors.blue),),
+                                          child: Text(
+                                            "delete",
+                                            style:
+                                                TextStyle(color: Colors.blue),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -134,8 +145,10 @@ class _FamilyListState extends State<FamilyList> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => MemberDetails(
-                                      details: familyList[index])));
+                                  builder: (context) =>
+                                      TabBarPage(uniqueUserId:(familyList[index]
+                                                .uniqueUserID
+                                                .toString()) )));
                         },
                       );
                     },

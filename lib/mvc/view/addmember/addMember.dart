@@ -307,6 +307,7 @@ class _AddMemberState extends State<AddMember> {
         AddMemberModel addMemberModel = AddMemberModel(
           name: _name.text,
           gender: _selectedGender,
+          firstLevelRelation: dropdownValue1,
           relation: dropdownValue1,
           dob: _dateinput.text,
           userId: userId,

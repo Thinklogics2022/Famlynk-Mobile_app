@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/suggestion_model.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/updateFamMember_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -35,6 +36,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
   TextEditingController email = TextEditingController();
   TextEditingController dateinput = TextEditingController();
 
+
   String _selectedGender = '';
   String dropdownValue1 = 'Select Relation';
   String? profilBase64;
@@ -57,12 +59,12 @@ class _UpdateFamListState extends State<UpdateFamList> {
   void initState() {
     super.initState();
     name.text = widget.updateMember!.name.toString();
+    _selectedGender = widget.updateMember!.gender.toString();
     phNumber.text = widget.updateMember!.mobileNo.toString();
     email.text = widget.updateMember!.email.toString();
     dateinput.text = widget.updateMember!.dob.toString();
     profilBase64 = widget.updateMember!.image.toString();
-    _selectedGender = widget.updateMember!.gender.toString();
-    dropdownValue1 = widget.updateMember!.relation.toString();
+    // dropdownValue1 = widget.updateMember!.relation.toString();
     fetchData();
   }
 
@@ -95,7 +97,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "Name",
-                      prefixIcon: Icon(Icons.person, color: Colors.orange,),
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.orange,
+                      ),
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -110,11 +115,14 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   ),
                   SizedBox(height: 15),
                   Column(
+                  
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.person_add, color: Colors.orange, size: 25),
+                        
+                          Icon(Icons.person_add,
+                              color: Colors.orange, size: 25),
                           SizedBox(
                             width: 8,
                           ),
@@ -178,7 +186,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "DOB",
-                      prefixIcon: Icon(Icons.calendar_month, color: Colors.orange,), 
+                      prefixIcon: Icon(
+                        Icons.calendar_month,
+                        color: Colors.orange,
+                      ),
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -211,7 +222,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "Mobile No",
-                      prefixIcon: Icon(Icons.phone, color: Colors.orange,),
+                      prefixIcon: Icon(
+                        Icons.phone,
+                        color: Colors.orange,
+                      ),
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -231,7 +245,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.only(bottom: 1),
                       labelText: "Email",
-                      prefixIcon: Icon(Icons.email, color: Colors.orange,),
+                      prefixIcon: Icon(
+                        Icons.email,
+                        color: Colors.orange,
+                      ),
                       labelStyle: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -248,10 +265,14 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   SizedBox(height: 20),
                   Container(
                     child: DropdownButtonFormField(
+                      
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.only(bottom: 1),
                         labelText: "Relation",
-                        prefixIcon: Icon(Icons.people, color: Colors.orange,),
+                        prefixIcon: Icon(
+                          Icons.people,
+                          color: Colors.orange,
+                        ),
                         labelStyle: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -286,8 +307,12 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   Container(
                     child: ElevatedButton(
                       onPressed: _submitForm,
-                      style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                      child: Text("Update", style: TextStyle(color: Colors.white, fontSize: 20),),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue),
+                      child: Text(
+                        "Update",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ),
                   )
                 ],
@@ -319,9 +344,9 @@ class _UpdateFamListState extends State<UpdateFamList> {
         uniqueUserID: widget.updateMember!.uniqueUserID,
         relation: dropdownValue1,
         image: imageUrl);
-    print(updateFamMemberModel.userId);
-    print(updateFamMemberModel.image);
-    print(updateFamMemberModel.name);
+    // print(updateFamMemberModel.userId);
+    // print(updateFamMemberModel.image);
+    // print(updateFamMemberModel.name);
     UpdateFamListService updateFamListService = UpdateFamListService();
 
     updateFamListService.updateFamMember(updateFamMemberModel);

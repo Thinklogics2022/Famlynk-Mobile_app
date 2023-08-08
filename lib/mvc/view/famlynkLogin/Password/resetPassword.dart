@@ -57,17 +57,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                   // ),
                   CircleAvatar(
                     radius: 65,
-                    backgroundImage: AssetImage(
-                      "assets/images/locks.png",
-                    ),
+                    // backgroundImage: AssetImage(
+                    // "assets/images/locks.png",
+                    // ),
                   ),
                   SizedBox(height: 25),
                   emailField(),
                   const SizedBox(height: 20),
-newPasswordField(),
-                   SizedBox(height: 20),
-confirmPasswordField(),
-                   SizedBox(height: 25),
+                  newPasswordField(),
+                  SizedBox(height: 20),
+                  confirmPasswordField(),
+                  SizedBox(height: 25),
                   ElevatedButton(
                     onPressed: _submitForm,
                     style: ElevatedButton.styleFrom(primary: Colors.blue),

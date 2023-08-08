@@ -3,10 +3,7 @@ import 'dart:convert';
 RegisterModel registerModelFromJson(String str) =>
     RegisterModel.fromJson(json.decode(str));
 
-String registerModelToJson(RegisterModel data) =>
-    json.encode(data.toJson());
-
-
+String registerModelToJson(RegisterModel data) => json.encode(data.toJson());
 
 class RegisterModel {
   RegisterModel(
@@ -58,9 +55,8 @@ class RegisterModel {
       hometown: json["hometown"],
       maritalStatus: json["maritalStatus"],
       coverImage: json["coverImage"],
-      otp: json["otp"], 
-      verificationToken: json["verificationToken"]
-      );
+      otp: json["otp"],
+      verificationToken: json["verificationToken"]);
   Map<String, dynamic> toJson() => {
         "id": id,
         "uniqueUserID": uniqueUserID,

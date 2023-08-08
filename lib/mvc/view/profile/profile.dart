@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/resetPassword.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
@@ -28,6 +29,16 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     _fetchMembers();
+  }
+
+  ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
+    if (profileUserModel.profileImage == null ||
+        profileUserModel.profileImage!.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
+    } else {
+      return CachedNetworkImageProvider(
+          profileUserModel.profileImage.toString());
+    }
   }
 
   _fetchMembers() async {
@@ -84,16 +95,22 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
+                              // child: CircleAvatar(
+                              //     backgroundImage:
+                              //         profileUserModel.profileImage == null
+                              //             // profileUserModel.profileImage
+                              //             //     is String
+                              //             ? AssetImage('assets/images/FL01.png')
+                              //             : NetworkImage(profileUserModel
+                              //                     .profileImage
+                              //                     .toString())
+                              //
+                              //        as ImageProvider<Object>?),
+
                               child: CircleAvatar(
-                                  backgroundImage:
-                                      profileUserModel.profileImage == null
-                                          // profileUserModel.profileImage
-                                          //     is String
-                                          ? AssetImage('assets/images/FL01.png')
-                                          : NetworkImage(profileUserModel
-                                                  .profileImage
-                                                  .toString())
-                                              as ImageProvider<Object>?),
+                                backgroundImage:
+                                    _getProfileImage(profileUserModel),
+                              ),
                             ),
                             SizedBox(
                               width: 20.0,
@@ -107,8 +124,9 @@ class _ProfileState extends State<Profile> {
                                     Text(
                                       profileUserModel.name.toString(),
                                       style: TextStyle(
-                                        fontSize: 16,fontWeight: FontWeight.bold, fontStyle: FontStyle.italic
-                                      ),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          fontStyle: FontStyle.italic),
                                     ),
                                   ],
                                 ),
@@ -135,10 +153,13 @@ class _ProfileState extends State<Profile> {
                                                     profileUserModel:
                                                         profileUserModel)));
                                   },
-child: Text(
-  "Edit Profile",
-  style: TextStyle(color: HexColor('#FF6F20'), fontSize: 15),
-),                                ),
+                                  child: Text(
+                                    "Edit Profile",
+                                    style: TextStyle(
+                                        color: HexColor('#FF6F20'),
+                                        fontSize: 15),
+                                  ),
+                                ),
                               ],
                             )
                           ],
@@ -250,8 +271,7 @@ child: Text(
                               child: Text(
                                 "Logout",
                                 style: TextStyle(
-                                  fontSize: 20.0, color: HexColor('#FF6F20')
-                                ),
+                                    fontSize: 20.0, color: HexColor('#FF6F20')),
                               ),
                             ),
                           ],

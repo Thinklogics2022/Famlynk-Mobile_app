@@ -22,6 +22,7 @@ class RegisterService {
       "maritalStatus": registerModel.maritalStatus,
       "coverImage": registerModel.coverImage,
       "otp": registerModel.otp,
+      
       "verificationToken": registerModel.verificationToken
     };
     try {

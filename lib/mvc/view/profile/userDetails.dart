@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +40,15 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+   ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
+    if (profileUserModel.profileImage == null ||
+        profileUserModel.profileImage!.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
+    } else {
+      return CachedNetworkImageProvider(
+          profileUserModel.profileImage.toString());
+    }
   }
 
   _fetchMembers() async {
@@ -102,11 +112,9 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
                                         Center(
                                           child: CircleAvatar(
                                             radius: 55,
-                                            backgroundImage: NetworkImage(
-                                                profileUserModel.profileImage
-                                                    .toString()),
+                                            backgroundImage: _getProfileImage(profileUserModel)),
                                           ),
-                                        ),
+                                        
                                         SizedBox(height: 10),
                                         Row(
                                           children: [
