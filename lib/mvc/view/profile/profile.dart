@@ -79,8 +79,8 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(height: 20.0),
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.start,
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                               height: 120,
@@ -113,7 +113,7 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                             SizedBox(
-                              width: 20.0,
+                              width: 20,
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

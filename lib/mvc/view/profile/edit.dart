@@ -8,6 +8,7 @@ import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/profileService/editProfileService.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -64,7 +65,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        title: Text("Edit Profile"),
+        backgroundColor: HexColor('#0175C8'),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          "Edit Profile",
+          style: TextStyle(color: Colors.white),
+        ),
         elevation: 1,
         leading: IconButton(
           icon: Icon(
@@ -226,11 +232,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(height: 35),
               ElevatedButton(
                   onPressed: submitForm,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: HexColor('#0175C8'),
+                  ),
                   child: Text(
-                    "SAVE",
+                    "Update",
                     style: TextStyle(
-                      fontSize: 14,
-                      letterSpacing: 2.2,
+                      fontSize: 20,
+                      
                       color: Colors.white,
                     ),
                   )),
@@ -251,11 +260,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
           .putFile(imageFile!);
       imageUrl = await storageResult.ref.getDownloadURL();
     }
-    ImageModel imageModel = ImageModel(
-      name: nameController.text,
-      profilePicture: imageUrl
-    );
-    
+    ImageModel imageModel =
+        ImageModel(name: nameController.text, profilePicture: imageUrl);
+
     EditProfileService editProfileServices = EditProfileService();
     editProfileServices.imageService(imageModel);
     ProfileUserModel profileUserModel = ProfileUserModel(

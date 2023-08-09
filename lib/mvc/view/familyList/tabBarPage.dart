@@ -1,12 +1,11 @@
-import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
+import 'package:famlynk_version1/mvc/model/familyMembers/individualUserModel.dart';
 import 'package:famlynk_version1/mvc/view/familyList/family.dart';
 import 'package:famlynk_version1/mvc/view/familyList/about.dart';
-import 'package:famlynk_version1/mvc/view/myTimeLine/photo.dart';
-import 'package:famlynk_version1/mvc/view/myTimeLine/myNewsFeed.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import '../../../services/familySevice/individulaUserService.dart';
+import 'mutualConnection.dart';
 
 class TabBarPage extends StatefulWidget {
   const TabBarPage({Key? key, required this.uniqueUserId}) : super(key: key);
@@ -18,25 +17,24 @@ class TabBarPage extends StatefulWidget {
 
 class _TabBarPageState extends State<TabBarPage>
     with SingleTickerProviderStateMixin {
-  FamListModel famListModel = FamListModel();
+  IndividualUserModel individualUserModel = IndividualUserModel();
   IndividulaUserService individulaUserService = IndividulaUserService();
   late TabController _tabController;
   bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     fetchFamilyMembers(widget.uniqueUserId);
   }
 
   fetchFamilyMembers(String uniqueUserID) async {
     try {
-      famListModel = await individulaUserService
+      individualUserModel = await individulaUserService
           .individulaUserService(widget.uniqueUserId);
       setState(() {
         isLoading = false;
       });
-      print(famListModel.relation);
     } catch (e) {
       print(e);
     }
@@ -63,7 +61,9 @@ class _TabBarPageState extends State<TabBarPage>
           tabs: [
             Tab(icon: Icon(Icons.account_box), text: "About"),
             Tab(icon: Icon(Icons.people), text: "Family"),
+            Tab(icon:  Icon(Icons.connected_tv), text: "Mutual Connection"),
           ],
+
           labelPadding: EdgeInsets.symmetric(horizontal: 2),
           unselectedLabelColor: Colors.white,
           labelColor: HexColor('#FF6F20'),
@@ -73,15 +73,16 @@ class _TabBarPageState extends State<TabBarPage>
         controller: _tabController,
         children: [
           About(
-            name: famListModel.name.toString(),
-            gender: famListModel.gender.toString(),
-            dateOfBirth: famListModel.dob.toString(),
-            email: famListModel.email.toString(),
-            uniqueUserId: famListModel.uniqueUserID.toString(),
-            userId: famListModel.userId.toString(),
-            image: famListModel.image.toString(),
+            name: individualUserModel.name.toString(),
+            gender: individualUserModel.gender.toString(),
+            dateOfBirth: individualUserModel.dateOfBirth.toString(),
+            email: individualUserModel.email.toString(),
+            uniqueUserId: individualUserModel.uniqueUserID.toString(),
+            userId: individualUserModel.userId.toString(),
+            image: individualUserModel.profileImage.toString(),
           ),
-          Family(userId: famListModel.userId.toString())
+          Family(userId: individualUserModel.userId.toString()),
+          MutualConnection(uniqueUserId: widget.uniqueUserId)
         ],
       ),
     );

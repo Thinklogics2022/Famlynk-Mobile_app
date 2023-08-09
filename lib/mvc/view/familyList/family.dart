@@ -1,7 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../services/familySevice/famDetailService.dart';
 import '../../../services/familySevice/individulaUserService.dart';
 import '../../model/familyMembers/famlist_modelss.dart';
 
@@ -29,7 +27,7 @@ class _FamilyState extends State<Family> {
     if (familyList.isEmpty) {
       try {
         familyList = await individulaUserService.familyService(widget.userId);
- if (familyList.isNotEmpty) {
+        if (familyList.isNotEmpty) {
           familyList = familyList.sublist(1);
         }
         setState(() {
@@ -92,88 +90,8 @@ class _FamilyState extends State<Family> {
           : Center(
               child: CircularProgressIndicator(),
             ),
-
-    
     );
   }
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
-// // import 'package:flutter/material.dart';
-
-
-// // class About extends StatefulWidget {
-// //   const About({super.key, required this.details});
-// //   final FamListModel details;
-
-// //   @override
-// //   State<About> createState() => _AboutState();
-// // }
-
-// // class _AboutState extends State<About> {
-// //   var isLoaded = false;
-
-// //   FamListModel famListModel = FamListModel();
-// //   bool isLoading = true;
-
-// //   @override
-// //   void initState() {
-// //     super.initState();
-// //     // fetchAPI();
-// //   }
-
- 
-// // // fetchAPI() async {
-// // //     try {
-// // //       famListModel = await famDetailsService.famDetails();
-// // //       setState(() {
-// // //         isLoading = false;
-// // //       });
-// // //     } catch (e) {
-// // //       print(e);
-// // //     }
-// // //   }
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return Scaffold(
-// //       body: Container(
-// //         child: Column(
-// //           children: [Text(
-// //           widget.details.dob.toString()
-// //           )],
-// //         ),
-// //       ),
-// //     );
-// //   }
-// // }

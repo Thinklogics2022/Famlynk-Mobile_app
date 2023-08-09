@@ -15,11 +15,12 @@ class UpdateFamListService {
       "gender": data.gender,
       "mobileNo": data.mobileNo,
       "email": data.email,
-      "relation": data.relation,
+      // "relation": data.relation,
       "dob": data.dob,
       "image": data.image,
       "famid": data.famid,
       "userId": data.userId,
+      "firstLevelRelation" : data.firstLevelRelation,
       "uniqueUserID": data.uniqueUserID
     };
 
@@ -34,7 +35,7 @@ class UpdateFamListService {
       );
 
       if (response.statusCode == 200 || response.statusCode == 202) {
-        // print(response.body);
+        print("update : ${response.body}");
         return response.body;
       } else {
         print("Update request failed with : ${response.statusCode}");

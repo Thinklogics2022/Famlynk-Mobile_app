@@ -14,9 +14,6 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
     with SingleTickerProviderStateMixin {
   ProfileUserModel profileUserModel = ProfileUserModel();
   ProfileUserService profileUserService = ProfileUserService();
-  bool isVisibleHomeTown = true;
-  bool isVisibleAddress = true;
-  bool isVisibleMaritalStatus = true;
   bool isLoading = true;
 
   late AnimationController _controller;
@@ -41,7 +38,8 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
     _controller.dispose();
     super.dispose();
   }
-   ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
+
+  ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
     if (profileUserModel.profileImage == null ||
         profileUserModel.profileImage!.isEmpty) {
       return AssetImage('assets/images/FL01.png');
@@ -111,23 +109,30 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
                                       children: [
                                         Center(
                                           child: CircleAvatar(
-                                            radius: 55,
-                                            backgroundImage: _getProfileImage(profileUserModel)),
-                                          ),
-                                        
+                                              radius: 55,
+                                              backgroundImage: _getProfileImage(
+                                                  profileUserModel)),
+                                        ),
                                         SizedBox(height: 10),
                                         Row(
                                           children: [
-                                            Icon(
-                                              Icons.person,
-                                              size: 20,
-                                              color: Colors.deepOrange,
-                                            ),
-                                            SizedBox(width: 12),
-                                            Text(
-                                              profileUserModel.name.toString(),
-                                              style: TextStyle(fontSize: 20),
-                                            ),
+                                            Container(
+                                                child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.person,
+                                                  size: 20,
+                                                  color: Colors.deepOrange,
+                                                ),
+                                                SizedBox(width: 12),
+                                                Text(
+                                                  profileUserModel.name
+                                                      .toString(),
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                ),
+                                              ],
+                                            )),
                                           ],
                                         ),
                                         SizedBox(height: 12),
