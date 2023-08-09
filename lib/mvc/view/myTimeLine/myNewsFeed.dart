@@ -1,6 +1,7 @@
+import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import 'package:hexcolor/hexcolor.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/myTimeLine_model.dart';
 import 'package:famlynk_version1/services/profileService/myTimeLine/myTimeLine_service.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/addNewsFeed_model.dart';
@@ -80,23 +81,25 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
     }
   }
 
-  // void onLikeButtonPressed(int index) async {
-  //   MyTimeLineModel myNewsFeeds = myTimeLineList![index];
-  //   bool isCurrentlyLiked = myNewsFeeds.userLikes.contains(userId);
+  void onLikeButtonPressed(int index) async {
+    MyTimeLineModel myNewsFeeds = myTimeLineList![index];
 
-  //   try {
-  //     isLiked = isCurrentlyLiked;
-  //     if (isLiked) {
-  //       myTimeLineList![index].userLikes.add(userId);
-  //       myTimeLineList![index].like++;
-  //     } else {
-  //       myTimeLineList![index].userLikes.remove(userId);
-  //       myTimeLineList![index].like--;
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+    try {
+      await LikeNewsFeedService().likeNewsFeed(myNewsFeeds.newsFeedId);
+
+      setState(() {
+        if (myNewsFeeds.userLikes.contains(userId)) {
+          myNewsFeeds.userLikes.remove(userId);
+          myNewsFeeds.like--;
+        } else {
+          myNewsFeeds.userLikes.add(userId);
+          myNewsFeeds.like++;
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future<void> addComment(int index, String comment) async {
     setState(() {
@@ -285,15 +288,18 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () => onLikeButtonPressed(index),
                                     child: Row(
                                       children: [
                                         Icon(
-                                          isLiked
+                                          myNewsFeeds.userLikes.contains(userId)
                                               ? Icons.favorite
                                               : Icons.favorite_border,
                                           size: 20.0,
-                                          color: isLiked ? Colors.red : null,
+                                          color: myNewsFeeds.userLikes
+                                                  .contains(userId)
+                                              ? HexColor('#FF6F20')
+                                              : null,
                                         ),
                                         SizedBox(width: 5),
                                         Text(myNewsFeeds.like.toString()),

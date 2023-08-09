@@ -16,7 +16,7 @@ class PublicNewsFeedModel {
   String? description;
   String name;
   DateTime createdOn;
-  List<String>? userLikes;
+  List<String> userLikes;
   List<String>? userLikeNames;
   String uniqueUserID;
   List<dynamic>? mutualConnection;
@@ -31,7 +31,7 @@ class PublicNewsFeedModel {
     this.description,
     required this.name,
     required this.createdOn,
-    this.userLikes,
+    required this.userLikes,
     this.userLikeNames,
     required this.uniqueUserID,
     this.mutualConnection,

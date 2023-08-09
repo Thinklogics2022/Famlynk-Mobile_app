@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/familyNewsFeed_model.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
 import 'package:famlynk_version1/services/newsFeedService/familyNewsFeed_services.dart';
+import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,18 +50,17 @@ class _FamilyNewsState extends State<FamilyNews> {
   }
 
   Future<void> _fetchFamilyNewsFeed() async {
-  FamilyNewsFeedService familyNewsFeedService = FamilyNewsFeedService();
-  try {
-    var newsFeedFamily = await familyNewsFeedService.getFamilyNewsFeed();
-    setState(() {
-      familyNewsFeedList!.addAll(newsFeedFamily!);
-      isLoaded = true;
-    });
-  } catch (e) {
-    print('Error fetching family news feed: $e');
+    FamilyNewsFeedService familyNewsFeedService = FamilyNewsFeedService();
+    try {
+      var newsFeedFamily = await familyNewsFeedService.getFamilyNewsFeed();
+      setState(() {
+        familyNewsFeedList!.addAll(newsFeedFamily!);
+        isLoaded = true;
+      });
+    } catch (e) {
+      print('Error fetching family news feed: $e');
+    }
   }
-}
-
 
   Future<void> _handleRefresh() async {
     setState(() {
@@ -71,16 +72,17 @@ class _FamilyNewsState extends State<FamilyNews> {
 
   void onLikeButtonPressed(int index) async {
     FamilyNewsFeedModel newsfeed = familyNewsFeedList![index];
-    bool isCurrentlyLiked = newsfeed.userLikes.contains(userId);
+
     try {
+      await LikeNewsFeedService().likeNewsFeed(newsfeed.newsFeedId);
+
       setState(() {
-        isLiked = !isCurrentlyLiked;
-        if (isLiked) {
-          familyNewsFeedList![index].userLikes.add(userId);
-          familyNewsFeedList![index].like++;
+        if (newsfeed.userLikes.contains(userId)) {
+          newsfeed.userLikes.remove(userId);
+          newsfeed.like--;
         } else {
-          familyNewsFeedList![index].userLikes.remove(userId);
-          familyNewsFeedList![index].like--;
+          newsfeed.userLikes.add(userId);
+          newsfeed.like++;
         }
       });
     } catch (e) {
@@ -138,7 +140,7 @@ class _FamilyNewsState extends State<FamilyNews> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundImage: _getProfileImage(newsFeed),
@@ -177,11 +179,14 @@ class _FamilyNewsState extends State<FamilyNews> {
                                     child: Row(
                                       children: [
                                         Icon(
-                                          isLiked
+                                          newsFeed.userLikes.contains(userId)
                                               ? Icons.favorite
                                               : Icons.favorite_border,
                                           size: 20.0,
-                                          color: isLiked ? Colors.red : null,
+                                          color: newsFeed.userLikes
+                                                  .contains(userId)
+                                              ? HexColor('#FF6F20')
+                                              : null,
                                         ),
                                         SizedBox(width: 5),
                                         Text(newsFeed.like.toString()),

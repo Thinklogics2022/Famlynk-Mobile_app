@@ -3,6 +3,7 @@ import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.d
 import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
 import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:famlynk_version1/services/newsFeedService/publicNewsFeed_service.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,25 +77,18 @@ class _PublicNewsState extends State<PublicNews> {
   }
 
   void onLikeButtonPressed(int index) async {
-    PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
-    bool isCurrentlyLiked = newsFeed.userLikes!.contains(userId);
+    PublicNewsFeedModel newsfeed = publicNewsFeedList![index];
 
     try {
-      // if (isCurrentlyLiked) {
-      //   await LikeNewsFeedService().unlikeNewsFeed(newsFeed.newsFeedId);
-      // } else {
-      //   await LikeNewsFeedService().likeNewsFeed(newsFeed.newsFeedId);
-      // }
-      setState(() {
-        isLiked = !isCurrentlyLiked;
-        if (isLiked) {
-          publicNewsFeedList![index].userLikes!.add(userId);
-          publicNewsFeedList![index].like++;
+      await LikeNewsFeedService().likeNewsFeed(newsfeed.newsFeedId);
+     setState(() {
+        if (newsfeed.userLikes.contains(userId)) {
+          newsfeed.userLikes.remove(userId);
+          newsfeed.like--;
         } else {
-          publicNewsFeedList![index].userLikes!.remove(userId);
-          publicNewsFeedList![index].like--;
+          newsfeed.userLikes.add(userId);
+          newsfeed.like++;
         }
-        publicNewsFeedList = List.from(publicNewsFeedList!);
       });
     } catch (e) {
       print(e);
@@ -200,12 +194,15 @@ class _PublicNewsState extends State<PublicNews> {
                                     onTap: () => onLikeButtonPressed(index),
                                     child: Row(
                                       children: [
-                                        Icon(
-                                          isLiked
+                                         Icon(
+                                          newsFeed.userLikes.contains(userId)
                                               ? Icons.favorite
                                               : Icons.favorite_border,
                                           size: 20.0,
-                                          color: isLiked ? Colors.red : null,
+                                          color: newsFeed.userLikes
+                                                  .contains(userId)
+                                              ? HexColor('#FF6F20')
+                                              : null,
                                         ),
                                         SizedBox(width: 5),
                                         Text(newsFeed.like.toString()),
