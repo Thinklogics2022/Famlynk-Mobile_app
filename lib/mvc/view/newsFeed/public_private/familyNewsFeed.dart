@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:famlynk_version1/mvc/model/newsfeed_model/familyNewsFeed_model.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/like/like.dart';
 import 'package:famlynk_version1/services/newsFeedService/familyNewsFeed_services.dart';
-import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +19,7 @@ class _FamilyNewsState extends State<FamilyNews> {
   bool isLoaded = false;
   bool isLiked = false;
   late List<String> comments;
-  List<FamilyNewsFeedModel>? familyNewsFeedList = [];
+  List<NewsFeedModel>? familyNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
   String userId = "";
 
@@ -28,6 +28,7 @@ class _FamilyNewsState extends State<FamilyNews> {
     super.initState();
     _fetchFamilyNewsFeed();
     comments = [];
+    fetchData();
     _scrollController.addListener(_onScroll);
   }
 
@@ -71,26 +72,34 @@ class _FamilyNewsState extends State<FamilyNews> {
   }
 
   void onLikeButtonPressed(int index) async {
-    FamilyNewsFeedModel newsfeed = familyNewsFeedList![index];
-
+    NewsFeedModel myNewsFeeds = familyNewsFeedList![index];
+    setState(() {
+      if (myNewsFeeds.userLikes.contains(userId)) {
+        myNewsFeeds.userLikes.remove(userId);
+        myNewsFeeds.like--;
+      } else {
+        myNewsFeeds.userLikes.add(userId);
+        myNewsFeeds.like++;
+      }
+    });
+    LikesNewsFeed likesNewsFeed = LikesNewsFeed();
     try {
-      await LikeNewsFeedService().likeNewsFeed(newsfeed.newsFeedId);
-
+      await likesNewsFeed.handleLike(myNewsFeeds, () {});
+    } catch (e) {
       setState(() {
-        if (newsfeed.userLikes.contains(userId)) {
-          newsfeed.userLikes.remove(userId);
-          newsfeed.like--;
+        if (myNewsFeeds.userLikes.contains(userId)) {
+          myNewsFeeds.userLikes.remove(userId);
+          myNewsFeeds.like--;
         } else {
-          newsfeed.userLikes.add(userId);
-          newsfeed.like++;
+          myNewsFeeds.userLikes.add(userId);
+          myNewsFeeds.like++;
         }
       });
-    } catch (e) {
-      print(e);
+      print('Error liking news feed: $e');
     }
   }
 
-  ImageProvider<Object> _getProfileImage(FamilyNewsFeedModel newsFeedModel) {
+  ImageProvider<Object> _getProfileImage(NewsFeedModel newsFeedModel) {
     final String? profilePicture = newsFeedModel.profilePicture;
 
     if (profilePicture == null || profilePicture.isEmpty) {
@@ -124,7 +133,7 @@ class _FamilyNewsState extends State<FamilyNews> {
                     controller: _scrollController,
                     itemCount: familyNewsFeedList!.length,
                     itemBuilder: (context, index) {
-                      FamilyNewsFeedModel newsFeed = familyNewsFeedList![index];
+                      NewsFeedModel newsFeed = familyNewsFeedList![index];
                       DateTime? utcDateTime =
                           DateTime.parse(newsFeed.createdOn.toString());
                       DateTime localDateTime = utcDateTime.toLocal();
@@ -157,6 +166,7 @@ class _FamilyNewsState extends State<FamilyNews> {
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ),
+                            
                             if (newsFeed.photo != null &&
                                 newsFeed.photo!.isNotEmpty)
                               Padding(

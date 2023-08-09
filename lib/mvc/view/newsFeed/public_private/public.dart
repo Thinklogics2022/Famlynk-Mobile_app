@@ -1,7 +1,7 @@
+import 'package:famlynk_version1/mvc/view/newsFeed/like/like.dart';
 import 'package:flutter/material.dart';
-import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
-import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:famlynk_version1/services/newsFeedService/publicNewsFeed_service.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
@@ -22,7 +22,7 @@ class _PublicNewsState extends State<PublicNews> {
   bool isLiked = false;
   int LikedCount = 0;
   late List<String> comments;
-  List<PublicNewsFeedModel>? publicNewsFeedList = [];
+  List<NewsFeedModel>? publicNewsFeedList = [];
   ScrollController _scrollController = ScrollController();
   String userId = "";
 
@@ -77,21 +77,30 @@ class _PublicNewsState extends State<PublicNews> {
   }
 
   void onLikeButtonPressed(int index) async {
-    PublicNewsFeedModel newsfeed = publicNewsFeedList![index];
-
+    NewsFeedModel myNewsFeeds = publicNewsFeedList![index];
+    setState(() {
+      if (myNewsFeeds.userLikes.contains(userId)) {
+        myNewsFeeds.userLikes.remove(userId);
+        myNewsFeeds.like--;
+      } else {
+        myNewsFeeds.userLikes.add(userId);
+        myNewsFeeds.like++;
+      }
+    });
+    LikesNewsFeed likesNewsFeed = LikesNewsFeed();
     try {
-      await LikeNewsFeedService().likeNewsFeed(newsfeed.newsFeedId);
-     setState(() {
-        if (newsfeed.userLikes.contains(userId)) {
-          newsfeed.userLikes.remove(userId);
-          newsfeed.like--;
+      await likesNewsFeed.handleLike(myNewsFeeds, () {});
+    } catch (e) {
+      setState(() {
+        if (myNewsFeeds.userLikes.contains(userId)) {
+          myNewsFeeds.userLikes.remove(userId);
+          myNewsFeeds.like--;
         } else {
-          newsfeed.userLikes.add(userId);
-          newsfeed.like++;
+          myNewsFeeds.userLikes.add(userId);
+          myNewsFeeds.like++;
         }
       });
-    } catch (e) {
-      print(e);
+      print('Error liking news feed: $e');
     }
   }
 
@@ -110,11 +119,9 @@ class _PublicNewsState extends State<PublicNews> {
     await fetchPublicNewsFeed(pageNumber, pageSize);
   }
 
-  ImageProvider<Object>? _getProfileImage(
-      PublicNewsFeedModel publicNewsFeedList) {
+  ImageProvider<Object>? _getProfileImage(NewsFeedModel publicNewsFeedList) {
     final String? profilePicture = publicNewsFeedList.profilePicture;
-    if (profilePicture == null ||
-        profilePicture.isEmpty) {
+    if (profilePicture == null || profilePicture.isEmpty) {
       return AssetImage('assets/images/FL01.png');
     } else {
       return CachedNetworkImageProvider(profilePicture);
@@ -139,12 +146,12 @@ class _PublicNewsState extends State<PublicNews> {
                     controller: _scrollController,
                     itemCount: publicNewsFeedList!.length,
                     itemBuilder: (context, index) {
-                      PublicNewsFeedModel newsFeed = publicNewsFeedList![index];
+                      NewsFeedModel newsFeed = publicNewsFeedList![index];
                       DateTime? utcDateTime =
                           DateTime.parse(newsFeed.createdOn.toString());
                       DateTime localDateTime = utcDateTime.toLocal();
 
-                      String formattedDate = DateFormat('MMMM-dd-yyyy  hh:mm a')
+                      String formattedDate = DateFormat('MMM-dd-yyyy  hh:mm a')
                           .format(localDateTime);
 
                       return Card(
@@ -156,7 +163,7 @@ class _PublicNewsState extends State<PublicNews> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              onTap: (){},
+                              onTap: () {},
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundImage: _getProfileImage(newsFeed),
@@ -179,6 +186,8 @@ class _PublicNewsState extends State<PublicNews> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: CachedNetworkImage(
                                   imageUrl: newsFeed.photo!,
+                                  // width: MediaQuery.of(context).size.width * 1,
+                                  // height: MediaQuery.of(context).size.height * .4,
                                   placeholder: (context, url) =>
                                       CircularProgressIndicator(),
                                   errorWidget: null,
@@ -194,7 +203,7 @@ class _PublicNewsState extends State<PublicNews> {
                                     onTap: () => onLikeButtonPressed(index),
                                     child: Row(
                                       children: [
-                                         Icon(
+                                        Icon(
                                           newsFeed.userLikes.contains(userId)
                                               ? Icons.favorite
                                               : Icons.favorite_border,
@@ -227,8 +236,7 @@ class _PublicNewsState extends State<PublicNews> {
                                     child: Row(
                                       children: [
                                         Icon(Icons.chat_bubble_outline),
-                                        SizedBox(width: 5),
-                                        Text(comments.length.toString()),
+                                        SizedBox(width: 6),
                                       ],
                                     ),
                                   ),

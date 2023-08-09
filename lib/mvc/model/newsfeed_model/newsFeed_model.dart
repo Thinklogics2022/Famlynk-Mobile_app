@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-PublicNewsFeedModel publicNewsFeedModelFromJson(String str) =>
-    PublicNewsFeedModel.fromJson(json.decode(str));
+NewsFeedModel publicNewsFeedModelFromJson(String str) =>
+    NewsFeedModel.fromJson(json.decode(str));
 
-String publicNewsFeedModelToJson(PublicNewsFeedModel data) =>
+String publicNewsFeedModelToJson(NewsFeedModel data) =>
     json.encode(data.toJson());
 
-class PublicNewsFeedModel {
+class NewsFeedModel {
   String newsFeedId;
   String userId;
   String? profilePicture;
@@ -21,7 +21,7 @@ class PublicNewsFeedModel {
   String uniqueUserID;
   List<dynamic>? mutualConnection;
 
-  PublicNewsFeedModel({
+  NewsFeedModel({
     required this.newsFeedId,
     required this.userId,
     this.profilePicture,
@@ -37,8 +37,8 @@ class PublicNewsFeedModel {
     this.mutualConnection,
   });
 
-  factory PublicNewsFeedModel.fromJson(Map<String, dynamic> json) {
-    return PublicNewsFeedModel(
+  factory NewsFeedModel.fromJson(Map<String, dynamic> json) {
+    return NewsFeedModel(
       newsFeedId: json['newsFeedId'],
       userId: json['userId'],
       profilePicture: json['profilePicture'],

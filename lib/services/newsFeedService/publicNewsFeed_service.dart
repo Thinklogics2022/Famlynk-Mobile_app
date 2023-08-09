@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:famlynk_version1/mvc/model/newsfeed_model/publicNewsFeed_model.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +8,7 @@ class PublicNewsFeedService {
   String userId = '';
   String token = '';
 
-  Future<List<PublicNewsFeedModel>> getPublicNewsFeed(
+  Future<List<NewsFeedModel>> getPublicNewsFeed(
       int pageNumber, int pageSize) async {
     final prefs = await SharedPreferences.getInstance();
     token = prefs.getString('token') ?? '';
@@ -27,8 +27,8 @@ class PublicNewsFeedService {
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         if (jsonData['content'] != null) {
-          List<PublicNewsFeedModel> newsFeedList = (jsonData['content'] as List)
-              .map((data) => PublicNewsFeedModel.fromJson(data))
+          List<NewsFeedModel> newsFeedList = (jsonData['content'] as List)
+              .map((data) => NewsFeedModel.fromJson(data))
               .toList();
           return newsFeedList;
         } else {

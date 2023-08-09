@@ -1,4 +1,4 @@
-import 'package:famlynk_version1/mvc/model/profile_model/myTimeLine_model.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:flutter/material.dart';
 import 'package:famlynk_version1/services/profileService/myTimeLine/myTimeLine_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,7 +9,7 @@ class PhotoPage extends StatefulWidget {
 }
 
 class _PhotoPageState extends State<PhotoPage> {
-  List<MyTimeLineModel> mediaList = [];
+  List<NewsFeedModel> mediaList = [];
   bool isLoading = true;
 
   @override
@@ -53,7 +53,7 @@ class _PhotoPageState extends State<PhotoPage> {
     );
   }
 
-  Widget _buildMediaGridView(List<MyTimeLineModel> mediaList) {
+  Widget _buildMediaGridView(List<NewsFeedModel> mediaList) {
     final padding = EdgeInsets.symmetric(
       horizontal: MediaQuery.of(context).size.width * 0.01,
       vertical: MediaQuery.of(context).size.width * 0.01,
@@ -73,7 +73,7 @@ class _PhotoPageState extends State<PhotoPage> {
     );
   }
 
-  Widget _buildImage(MyTimeLineModel media) {
+  Widget _buildImage(NewsFeedModel media) {
     return CachedNetworkImage(
       imageUrl: media.photo!,
       fit: BoxFit.cover,
