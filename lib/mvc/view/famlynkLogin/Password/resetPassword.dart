@@ -57,9 +57,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                   // ),
                   CircleAvatar(
                     radius: 65,
-                    // backgroundImage: AssetImage(
-                    // "assets/images/locks.png",
-                    // ),
+                    backgroundImage: AssetImage(
+                    "assets/images/lock.jpg",
+                    ),
                   ),
                   SizedBox(height: 25),
                   emailField(),
@@ -95,7 +95,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       decoration: InputDecoration(
         icon: const Icon(
           Icons.email,
-          color: Colors.blue,
+           color: Color.fromARGB(255, 121, 174, 220),
         ),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
@@ -125,7 +125,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       decoration: InputDecoration(
           icon: const Icon(
             Icons.lock,
-            color: Colors.blue,
+             color: Color.fromARGB(255, 121, 174, 220),
           ),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
@@ -145,7 +145,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             },
             child: Icon(
               isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-              color: Colors.blue,
+              color: Color.fromARGB(255, 121, 174, 220),
             ),
           )),
       validator: (value) {
@@ -167,7 +167,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       decoration: InputDecoration(
           icon: const Icon(
             Icons.lock,
-            color: Colors.blue,
+            color: Color.fromARGB(255, 121, 174, 220),
           ),
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
@@ -187,7 +187,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             },
             child: Icon(
               isConfirmPswdVisible ? Icons.visibility : Icons.visibility_off,
-              color: Colors.blue,
+               color: Color.fromARGB(255, 121, 174, 220),
             ),
           )),
       validator: (value) {

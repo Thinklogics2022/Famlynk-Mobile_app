@@ -52,4 +52,5 @@ class FamlynkServiceUrl {
       baseUrl + "/familymembers/getthirdlevelrelation/";
   static const String individualUser = baseUrl + "/register/getmemberprofile/";
   static const String imgUrl = baseUrl + "/newsfeed/profileandnameupdate/";
+  static const String mutualConnection = baseUrl + "/familymembers/getmutualconnection/";
 }

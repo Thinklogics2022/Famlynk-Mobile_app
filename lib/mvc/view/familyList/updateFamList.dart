@@ -31,6 +31,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
+
   TextEditingController name = TextEditingController();
   TextEditingController phNumber = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -64,7 +65,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
     email.text = widget.updateMember!.email.toString();
     dateinput.text = widget.updateMember!.dob.toString();
     profilBase64 = widget.updateMember!.image.toString();
-    // dropdownValue1 = widget.updateMember!.relation.toString();
+    dropdownValue1 = widget.updateMember!.relation.toString();
     fetchData();
   }
 
@@ -144,7 +145,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                           Row(
                             children: [
                               Radio(
-                                value: 'female',
+                                value: 'Female',
                                 groupValue: _selectedGender,
                                 onChanged: (value) {
                                   setState(() {
@@ -159,7 +160,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                           Row(
                             children: [
                               Radio(
-                                value: 'others',
+                                value: 'Others',
                                 groupValue: _selectedGender,
                                 onChanged: (value) {
                                   setState(() {
@@ -342,11 +343,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
         email: email.text,
         userId: widget.updateMember!.userId,
         uniqueUserID: widget.updateMember!.uniqueUserID,
-        relation: dropdownValue1,
+        // relation: dropdownValue1,
+        firstLevelRelation: dropdownValue1,
         image: imageUrl);
-    // print(updateFamMemberModel.userId);
-    // print(updateFamMemberModel.image);
-    // print(updateFamMemberModel.name);
+   
     UpdateFamListService updateFamListService = UpdateFamListService();
 
     updateFamListService.updateFamMember(updateFamMemberModel);

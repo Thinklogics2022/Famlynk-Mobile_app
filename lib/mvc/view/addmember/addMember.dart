@@ -308,7 +308,6 @@ class _AddMemberState extends State<AddMember> {
           name: _name.text,
           gender: _selectedGender,
           firstLevelRelation: dropdownValue1,
-          relation: dropdownValue1,
           dob: _dateinput.text,
           userId: userId,
           email: _email.text,

@@ -20,7 +20,7 @@ class RegisterModel {
       this.address,
       this.coverImage,
       this.hometown,
-      this.maritalStatus,
+      this.maritalStatus, 
       this.otp,
       this.verificationToken});
   String? id;
