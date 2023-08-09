@@ -1,8 +1,9 @@
-import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
+import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/like/like.dart';
+// import 'package:famlynk_version1/services/newsFeedService/likeNewsFeed_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:famlynk_version1/mvc/model/profile_model/myTimeLine_model.dart';
 import 'package:famlynk_version1/services/profileService/myTimeLine/myTimeLine_service.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/addNewsFeed_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,7 +21,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
   bool isLoaded = false;
   bool isLiked = false;
   late List<String> comments;
-  List<MyTimeLineModel>? myTimeLineList = [];
+  List<NewsFeedModel>? myTimeLineList = [];
   ScrollController _scrollController = ScrollController();
   String userId = "";
 
@@ -72,7 +73,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
     await _fetchMyTimeLine();
   }
 
-  ImageProvider<Object>? _getProfileImage(MyTimeLineModel myNewsFeeds) {
+  ImageProvider<Object>? _getProfileImage(NewsFeedModel myNewsFeeds) {
     final String? profilePicture = myNewsFeeds.profilePicture;
     if (profilePicture == null || profilePicture.isEmpty) {
       return AssetImage('assets/images/FL01.png');
@@ -82,11 +83,20 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
   }
 
   void onLikeButtonPressed(int index) async {
-    MyTimeLineModel myNewsFeeds = myTimeLineList![index];
-
+    NewsFeedModel myNewsFeeds = myTimeLineList![index];
+    setState(() {
+      if (myNewsFeeds.userLikes.contains(userId)) {
+        myNewsFeeds.userLikes.remove(userId);
+        myNewsFeeds.like--;
+      } else {
+        myNewsFeeds.userLikes.add(userId);
+        myNewsFeeds.like++;
+      }
+    });
+    LikesNewsFeed likesNewsFeed = LikesNewsFeed();
     try {
-      await LikeNewsFeedService().likeNewsFeed(myNewsFeeds.newsFeedId);
-
+      await likesNewsFeed.handleLike(myNewsFeeds, () {});
+    } catch (e) {
       setState(() {
         if (myNewsFeeds.userLikes.contains(userId)) {
           myNewsFeeds.userLikes.remove(userId);
@@ -96,8 +106,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
           myNewsFeeds.like++;
         }
       });
-    } catch (e) {
-      print(e);
+      print('Error liking news feed: $e');
     }
   }
 
@@ -108,7 +117,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
   }
 
   Future<void> _editMyTimeLineDescription(BuildContext context,
-      String editedDescription, MyTimeLineModel myTimeLineModel) async {
+      String editedDescription, NewsFeedModel myTimeLineModel) async {
     MyTimeLineService myTimeLineService = MyTimeLineService();
     AddImageNewsFeedMode editMyTimeLine = AddImageNewsFeedMode(
       newsFeedId: myTimeLineModel.newsFeedId,
@@ -125,7 +134,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
     }
   }
 
-  void _deleteMyTimeLine(MyTimeLineModel myTimeLineModel) async {
+  void _deleteMyTimeLine(NewsFeedModel myTimeLineModel) async {
     MyTimeLineService myTimeLineService = MyTimeLineService();
 
     try {
@@ -136,7 +145,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
     }
   }
 
-  void _showDeleteConfirmation(MyTimeLineModel myTimeLineModel) {
+  void _showDeleteConfirmation(NewsFeedModel myTimeLineModel) {
     showDialog(
       context: context,
       builder: (context) {
@@ -164,7 +173,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
     );
   }
 
-  void _showEditDialog(BuildContext context, MyTimeLineModel myTimeLineModel) {
+  void _showEditDialog(BuildContext context, NewsFeedModel myTimeLineModel) {
     String editedDescription = myTimeLineModel.description ?? '';
 
     showDialog(
@@ -217,7 +226,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
                     controller: _scrollController,
                     itemCount: myTimeLineList!.length,
                     itemBuilder: (context, index) {
-                      MyTimeLineModel myNewsFeeds = myTimeLineList![index];
+                      NewsFeedModel myNewsFeeds = myTimeLineList![index];
                       String formattedDate = DateFormat('MMM-dd-yyyy  hh:mm a')
                           .format(myNewsFeeds.createdOn);
 
@@ -324,8 +333,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
                                     child: Row(
                                       children: [
                                         Icon(Icons.chat_bubble_outline),
-                                        SizedBox(width: 5),
-                                        Text(comments.length.toString()),
+                                        SizedBox(width: 6),
                                       ],
                                     ),
                                   ),
