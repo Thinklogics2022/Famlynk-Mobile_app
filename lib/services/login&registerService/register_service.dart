@@ -34,9 +34,12 @@ class RegisterService {
       if (response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
         final userId = responseData['userId'];
-        await saveResponseToStorage(userId);
+                final uniqueUserID = responseData['uniqueUserID'];
+
+        await saveResponseToStorage(userId, uniqueUserID);
         print("object");
         print("Reg ${userId}");
+         print("Reg ${uniqueUserID}");
       }
       print("Register ${response.body}");
 
@@ -47,8 +50,8 @@ class RegisterService {
     }
   }
 
-  Future<void> saveResponseToStorage(String userId) async {
+  Future<void> saveResponseToStorage(String userId, uniqueUserId) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userId', userId);
+    await prefs.setString('userId', userId );
   }
 }

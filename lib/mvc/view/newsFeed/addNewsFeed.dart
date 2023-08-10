@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profileModel.dart';
 import 'package:famlynk_version1/services/newsFeedService/newsFeed_service.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:firebase_storage/firebase_storage.dart';
