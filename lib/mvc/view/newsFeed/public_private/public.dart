@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/view/familyList/mutualConnection.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/like/like.dart';
 import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
@@ -163,7 +164,14 @@ class _PublicNewsState extends State<PublicNews> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MutualConnection(
+                                            uniqueUserId:
+                                                newsFeed.uniqueUserID)));
+                              },
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundImage: _getProfileImage(newsFeed),

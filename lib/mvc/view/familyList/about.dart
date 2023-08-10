@@ -86,7 +86,7 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
               decoration: BoxDecoration(),
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 50, 20, 10),
+                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 10),
                   child: Column(
                     children: [
                       AnimatedBuilder(
@@ -106,7 +106,7 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                       Text(
                         "${widget.name.toString()}",
                         style: TextStyle(
-                            fontSize: 25,
+                            fontSize: 27,
                             fontWeight: FontWeight.bold,
                             fontStyle: FontStyle.italic),
                       ),
@@ -114,27 +114,21 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                       Card(
                         elevation: 4,
                         child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ignore: unnecessary_null_comparison
-                              if (widget.dateOfBirth != null)
-                                _buildDetailRow(
-                                  "Date of Birth",
-                                  widget.dateOfBirth.toString(),
-                                ),
-                              SizedBox(height: 12),
-                              _buildDetailRow(
-                                "Email",
-                                widget.email.toString(),
-                              ),
-                              SizedBox(height: 12),
-                              _buildDetailRow(
-                                "Gender",
-                                widget.gender.toString(),
-                              ),
-                            ],
+                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 30),
+                          child: Center(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (widget.dateOfBirth.isNotEmpty)
+                                  Text(widget.dateOfBirth, style: TextStyle(fontSize: 17),),
+                                SizedBox(height: 12),
+                                if (widget.email.isNotEmpty)
+                                  Text(widget.email, style: TextStyle(fontSize: 17),),
+                                SizedBox(height: 12),
+                                if (widget.gender.isNotEmpty)
+                                  Text(widget.gender, style: TextStyle(fontSize: 17),),
+                              ],
+                            ),
                           ),
                         ),
                       ),
