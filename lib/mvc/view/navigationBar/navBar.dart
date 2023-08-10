@@ -2,6 +2,7 @@ import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/familyTree/famTree.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/newsFeed.dart';
+import 'package:famlynk_version1/mvc/view/profile/notification/notification.dart';
 import 'package:famlynk_version1/mvc/view/profile/profile.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/suggestion.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,12 @@ class _NavBarState extends State<NavBar> {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Notifications()));
+                      },
                       child: Row(
                         children: [
                           Icon(

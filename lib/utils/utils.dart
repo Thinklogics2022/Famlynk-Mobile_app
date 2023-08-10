@@ -22,10 +22,8 @@ class FamlynkServiceUrl {
   static const String updatePassword =
       baseUrl + "/register/updatepasswordbyemail/";
   static const String myNewsFeed = baseUrl + "/newsfeed/retrieveusernewsfeed/";
-  static const String myNewsFeedEdit =
-      baseUrl + "/newsfeed/updatenewsfeed/";
-  static const String myNewsFeedDelete =
-      baseUrl + "/newsfeed/deletenewsfeed/";
+  static const String myNewsFeedEdit = baseUrl + "/newsfeed/updatenewsfeed/";
+  static const String myNewsFeedDelete = baseUrl + "/newsfeed/deletenewsfeed/";
   static const String profileUser = baseUrl + "/register/retrieveregisterbyid/";
   static const String editProfile = baseUrl + "/register/updateregisterbyid/";
   static const String addComment = baseUrl + "/comment/createcomment";
@@ -49,5 +47,7 @@ class FamlynkServiceUrl {
       baseUrl + "/familymembers/getthirdlevelrelation/";
   static const String individualUser = baseUrl + "/register/getmemberprofile/";
   static const String imgUrl = baseUrl + "/newsfeed/profileandnameupdate/";
-  static const String mutualConnection = baseUrl + "/familymembers/getmutualconnection/";
+  static const String mutualConnection =
+      baseUrl + "/familymembers/getmutualconnection/";
+  static const String notification = baseUrl + "/notify/retrievenotifybyuniqueuserid/";
 }

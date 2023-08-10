@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/resetPassword.dart';
-import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profileModel.dart';
 import 'package:famlynk_version1/mvc/view/myTimeLine/myTimeLine.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/mvc/view/profile/edit.dart';

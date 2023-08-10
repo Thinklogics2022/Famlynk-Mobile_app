@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/imageModel.dart';
-import 'package:famlynk_version1/mvc/model/profile_model/profile_model.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profileModel.dart';
 import 'package:famlynk_version1/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
