@@ -194,8 +194,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(height: 25),
               buildTextField("Home Town", homeTownController, Icons.home),
               buildTextField("Address", addressController, Icons.location_city),
-              // buildTextField("MaritalStatus", maritalStatusController,
-              //     Icons.child_care_outlined),
+          
               Container(
                 child: DropdownButtonFormField(
                   decoration: InputDecoration(
@@ -354,11 +353,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           backgroundImage: NetworkImage(
                               widget.profileUserModel!.profileImage.toString()),
                         ),
-                        //   child: Icon(
-                        //   Icons.person,
-                        //   color: const Color.fromARGB(255, 153, 179, 201),
-                        //   size: 100,
-                        // ))
+                       
                       )
                     : Image.file(
                         imageFile!,

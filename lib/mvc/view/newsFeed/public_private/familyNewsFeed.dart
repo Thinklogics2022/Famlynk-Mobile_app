@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
+import 'package:famlynk_version1/mvc/view/familyList/mutualConnection.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/like/like.dart';
 import 'package:famlynk_version1/services/newsFeedService/familyNewsFeed_services.dart';
@@ -149,7 +150,14 @@ class _FamilyNewsState extends State<FamilyNews> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MutualConnection(
+                                            uniqueUserId:
+                                                newsFeed.uniqueUserID)));
+                              },
                               child: ListTile(
                                 leading: CircleAvatar(
                                   backgroundImage: _getProfileImage(newsFeed),
@@ -166,7 +174,6 @@ class _FamilyNewsState extends State<FamilyNews> {
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ),
-                            
                             if (newsFeed.photo != null &&
                                 newsFeed.photo!.isNotEmpty)
                               Padding(

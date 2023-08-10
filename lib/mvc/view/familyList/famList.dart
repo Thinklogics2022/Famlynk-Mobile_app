@@ -1,5 +1,4 @@
 import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
-import 'package:famlynk_version1/mvc/view/familyList/about.dart';
 import 'package:famlynk_version1/mvc/view/familyList/tabBarPage.dart';
 import 'package:famlynk_version1/mvc/view/familyList/updateFamList.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
@@ -57,8 +56,10 @@ class _FamilyListState extends State<FamilyList> {
                 : ListView.builder(
                     itemCount: familyList.length,
                     itemBuilder: (context, index) {
-                      final isEditable = familyList[index].isRegisterUser != true;
+                      final isEditable =
+                          familyList[index].registerUser == false;
 
+                      print("RS USER :${familyList[index].registerUser}");
                       return InkWell(
                         child: Card(
                           child: Container(
@@ -81,7 +82,8 @@ class _FamilyListState extends State<FamilyList> {
                                 SizedBox(width: 20),
                                 Container(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         familyList[index].name.toString(),
@@ -89,7 +91,9 @@ class _FamilyListState extends State<FamilyList> {
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      Text(familyList[index].relation.toString()),
+                                      Text(familyList[index]
+                                          .relation
+                                          .toString()),
                                     ],
                                   ),
                                 ),
@@ -106,31 +110,60 @@ class _FamilyListState extends State<FamilyList> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       UpdateFamList(
-                                                    updateMember: familyList[index],
+                                                    updateMember:
+                                                        familyList[index],
                                                   ),
                                                 ),
                                               );
                                             },
                                             child: Text(
                                               "edit",
-                                              style: TextStyle(color: Colors.blue),
+                                              style:
+                                                  TextStyle(color: Colors.blue),
                                             ),
                                           ),
                                         ),
-                                      PopupMenuItem(
-                                        child: TextButton(
-                                          onPressed: () {
-                                            _showMyDialog(
-                                              familyList[index].userId.toString(),
-                                              familyList[index].uniqueUserID.toString(),
-                                            );
-                                          },
-                                          child: Text(
-                                            "delete",
-                                            style: TextStyle(color: Colors.blue),
+                                      if (!isEditable)
+                                        PopupMenuItem(
+                                          child: TextButton(
+                                            onPressed: () {
+                                              // _showMyDialog(
+                                              //   familyList[index]
+                                              //       .userId
+                                              //       .toString(),
+                                              //   familyList[index]
+                                              //       .uniqueUserID
+                                              //       .toString(),
+                                              // );
+                                            },
+                                            child: Text(
+                                              "remove",
+                                              style: TextStyle(
+                                                  color: Colors
+                                                      .red), // You can customize the color
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      if (isEditable)
+                                        PopupMenuItem(
+                                          child: TextButton(
+                                            onPressed: () {
+                                              _showMyDialog(
+                                                familyList[index]
+                                                    .userId
+                                                    .toString(),
+                                                familyList[index]
+                                                    .uniqueUserID
+                                                    .toString(),
+                                              );
+                                            },
+                                            child: Text(
+                                              "delete",
+                                              style:
+                                                  TextStyle(color: Colors.blue),
+                                            ),
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 ),

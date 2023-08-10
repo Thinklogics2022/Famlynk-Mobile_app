@@ -61,9 +61,8 @@ class _TabBarPageState extends State<TabBarPage>
           tabs: [
             Tab(icon: Icon(Icons.account_box), text: "About"),
             Tab(icon: Icon(Icons.people), text: "Family"),
-            Tab(icon:  Icon(Icons.connected_tv), text: "Mutual Connection"),
+            Tab(icon: Icon(Icons.connected_tv), text: "Mutual Connection"),
           ],
-
           labelPadding: EdgeInsets.symmetric(horizontal: 2),
           unselectedLabelColor: Colors.white,
           labelColor: HexColor('#FF6F20'),
@@ -71,16 +70,16 @@ class _TabBarPageState extends State<TabBarPage>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          About(
-            name: individualUserModel.name.toString(),
-            gender: individualUserModel.gender.toString(),
-            dateOfBirth: individualUserModel.dateOfBirth.toString(),
-            email: individualUserModel.email.toString(),
-            uniqueUserId: individualUserModel.uniqueUserID.toString(),
-            userId: individualUserModel.userId.toString(),
-            image: individualUserModel.profileImage.toString(),
-          ),
+       children: [
+    About(
+      name: individualUserModel.name ?? "", 
+      gender: individualUserModel.gender ?? "", 
+      dateOfBirth: individualUserModel.dateOfBirth ?? "",
+      email: individualUserModel.email ?? "", 
+      uniqueUserId: individualUserModel.uniqueUserID ?? "v", 
+      userId: individualUserModel.userId ?? "",
+      image: individualUserModel.profileImage ?? "", 
+    ),
           Family(userId: individualUserModel.userId.toString()),
           MutualConnection(uniqueUserId: widget.uniqueUserId)
         ],

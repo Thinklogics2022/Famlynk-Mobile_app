@@ -222,6 +222,7 @@ class _AddMemberState extends State<AddMember> {
           filled: true,
           hintText: 'Enter Mobile Number',
           hintStyle: TextStyle(color: Colors.grey[500])),
+             keyboardType: TextInputType.phone,
       validator: (value) {
         if (value!.isEmpty) {
           return "*mobile number is required";
@@ -231,7 +232,7 @@ class _AddMemberState extends State<AddMember> {
         }
         return null;
       },
-      keyboardType: TextInputType.phone,
+   
     );
   }
 
