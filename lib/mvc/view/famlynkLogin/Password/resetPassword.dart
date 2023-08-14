@@ -31,7 +31,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 223, 228, 237),
+      // backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
         backgroundColor: HexColor('#0175C8'),
         iconTheme: IconThemeData(color: Colors.white),
@@ -58,7 +58,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   CircleAvatar(
                     radius: 65,
                     backgroundImage: AssetImage(
-                    "assets/images/lock.jpg",
+                    "assets/images/img1.jpg",
                     ),
                   ),
                   SizedBox(height: 25),
@@ -95,7 +95,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       decoration: InputDecoration(
         icon: const Icon(
           Icons.email,
-           color: Color.fromARGB(255, 121, 174, 220),
+             color: Color.fromARGB(255, 121, 174, 220),
         ),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),

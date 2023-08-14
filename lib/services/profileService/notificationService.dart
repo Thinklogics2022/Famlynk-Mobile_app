@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/notificationModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,7 +8,7 @@ import '../../utils/utils.dart';
 class NotificationService {
   String uniqueUserID = "";
   String token = '';
-
+  String userId = '';
   Future<List<NotificationModel>> notificationService() async {
     var urls = FamlynkServiceUrl.notification;
     final prefs = await SharedPreferences.getInstance();
@@ -20,8 +21,8 @@ class NotificationService {
       );
 
       if (response.statusCode == 200) {
-        print("notification : ${response.body}");
-        
+        print("notification (show): ${response.body}");
+
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           List<NotificationModel> notifications =
@@ -37,4 +38,60 @@ class NotificationService {
       throw Exception('Failed to connect to the server: $e');
     }
   }
+
+  Future<dynamic> acceptNotificationService(
+      String fromUniqueUserId, String relation, String toUniqueUserId) async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId') ?? '';
+    token = prefs.getString("token") ?? '';
+
+    try {
+      http.Response response;
+      response = await http.get(
+          Uri.parse(FamlynkServiceUrl.acceptNotification +
+              userId +
+              "/" +
+              fromUniqueUserId +
+              "/" +
+              relation +
+              "/" +
+              toUniqueUserId),
+          headers: {'Authorization': 'Bearer $token'});
+      dynamic returnObject;
+
+      if (response.statusCode == 200) {
+        print("profile : ${response.body}");
+        returnObject = famListModelFromJson(response.body);
+      }
+      return returnObject;
+    } catch (e) {
+      print(e);
+    }
+  }
+  
+
+  Future<dynamic> declineNotificationService(
+      String fromUserId, String toUniqueUserId) async {
+    final prefs = await SharedPreferences.getInstance();
+    userId = prefs.getString('userId') ?? '';
+    token = prefs.getString("token") ?? '';
+
+    try {
+      http.Response response;
+      response = await http.delete(
+          Uri.parse(FamlynkServiceUrl.declineNotification +
+             fromUserId + "/" + toUniqueUserId),
+          headers: {'Authorization': 'Bearer $token'});
+      dynamic returnObject;
+
+      if (response.statusCode == 200) {
+        print("profile (decline): ${response.body}");
+        returnObject = famListModelFromJson(response.body);
+      }
+      return returnObject;
+    } catch (e) {
+      print(e);
+    }
+  }
+ 
 }

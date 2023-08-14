@@ -68,14 +68,14 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         backgroundColor: HexColor('#0175C8'),
-        title: Center(
-          child: Text(
-            'Suggestions',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+        iconTheme: IconThemeData(color: Colors.white),
+        centerTitle: true,
+        title: Text(
+          'Suggestions',
+          style: TextStyle(
+            color: Colors.white,
           ),
         ),
       ),

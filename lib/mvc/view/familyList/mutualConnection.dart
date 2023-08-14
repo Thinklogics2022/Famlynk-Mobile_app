@@ -12,10 +12,10 @@ class MutualConnection extends StatefulWidget {
 }
 
 class _MutualConnectionState extends State<MutualConnection> {
-  List<FamListModel> familyList = [];
+  List<FamListModel> familyLists = [];
   MutualService mutualService = MutualService();
 
-  var isLoaded = true;
+  var isLoaded = false;
   @override
   void initState() {
     super.initState();
@@ -23,12 +23,12 @@ class _MutualConnectionState extends State<MutualConnection> {
   }
 
   Future<void> fetchFamilyMembers(String uniqueUserId) async {
-    if (familyList.isEmpty) {
+    if (familyLists.isEmpty) {
       try {
-        familyList = await mutualService.mutualService(uniqueUserId);
+        familyLists = await mutualService.mutualService(uniqueUserId);
 
         setState(() {
-          isLoaded = false;
+          isLoaded = true;
         });
       } catch (e) {
         print(e);
@@ -39,26 +39,45 @@ class _MutualConnectionState extends State<MutualConnection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: isLoaded
-            ? familyList.isEmpty
-                ?  Center(
-                child: CircularProgressIndicator()
-              )
-                :
-                 ListView.builder(
-                    itemCount: familyList.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(child: Card(
-                        child: Column(
-                          children: [
-                            Text(familyList[index].name.toString())
-                          ],
+      body: isLoaded
+          ? familyLists.isEmpty
+              ? Center(child: Text("No more mutual connections"))
+              : GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 1,
+                  ),
+                  itemCount: familyLists.length,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          child: Column(
+                            children: [
+                              SizedBox(height: 10),
+                              CircleAvatar(
+                                radius: 45,
+                                backgroundImage: NetworkImage(
+                                    familyLists[index].image.toString()),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                familyLists[index].name.toString(),
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Text(familyLists[index].relation.toString()),
+                            ],
+                          ),
                         ),
-                      ));
-                    })
-            : Center(
-                child: Text("No more mutual connection"),
-              )
-              );
+                      ),
+                    );
+                  },
+                )
+          : Center(child: CircularProgressIndicator()),
+    );
   }
 }

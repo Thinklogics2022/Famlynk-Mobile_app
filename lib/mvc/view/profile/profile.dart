@@ -6,6 +6,7 @@ import 'package:famlynk_version1/mvc/view/myTimeLine/myTimeLine.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/mvc/view/profile/edit.dart';
 import 'package:famlynk_version1/mvc/view/profile/logout.dart';
+import 'package:famlynk_version1/mvc/view/profile/notification/notification.dart';
 import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:flutter/gestures.dart';
@@ -95,18 +96,6 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              // child: CircleAvatar(
-                              //     backgroundImage:
-                              //         profileUserModel.profileImage == null
-                              //             // profileUserModel.profileImage
-                              //             //     is String
-                              //             ? AssetImage('assets/images/FL01.png')
-                              //             : NetworkImage(profileUserModel
-                              //                     .profileImage
-                              //                     .toString())
-                              //
-                              //        as ImageProvider<Object>?),
-
                               child: CircleAvatar(
                                 backgroundImage:
                                     _getProfileImage(profileUserModel),
@@ -218,6 +207,13 @@ class _ProfileState extends State<Profile> {
                                     icon: Icons.notification_add,
                                     text: "Notification",
                                   ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Notifications()));
+                                  },
                                 ),
                                 Divider(
                                   height: 10.0,

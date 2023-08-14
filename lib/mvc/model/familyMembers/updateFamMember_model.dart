@@ -19,8 +19,8 @@ class UpdateFamMemberModel {
       this.email,
       this.uniqueUserID,
       this.famid,
-      this.secondLevelRelation,
-      this.thirdLevelRelation,
+      this.secondLevelrelation,
+      this.thirdLevelrelation,
       this.createdOn,
       this.modifiedOn,
       this.notification,
@@ -39,8 +39,8 @@ class UpdateFamMemberModel {
   String? mobileNo;
   String? email;
   String? uniqueUserID;
-  String? secondLevelRelation;
-  String? thirdLevelRelation;
+  String? secondLevelrelation;
+  String? thirdLevelrelation;
   String? famid;
   String? createdOn;
   String? notification;
@@ -62,8 +62,8 @@ class UpdateFamMemberModel {
       mobileNo: json["mobileNo"],
       email: json["email"],
       uniqueUserID: json["uniqueUserID"],
-      secondLevelRelation: json["secondLevelRelation"],
-      thirdLevelRelation: json["thirdLevelRelation"],
+      secondLevelrelation: json["secondLevelrelation"],
+      thirdLevelrelation: json["thirdLevelrelation"],
       createdOn: json["createdOn"],
       modifiedOn: json["modifiedOn"],
       notification: json["notification"],
@@ -84,8 +84,8 @@ class UpdateFamMemberModel {
         "mobileNo": mobileNo,
         "email": email,
         "uniqueUserID": uniqueUserID,
-        "secondLevelRelation": secondLevelRelation,
-        "thirdLevelRelation": thirdLevelRelation,
+        "secondLevelrelation": secondLevelrelation,
+        "thirdLevelrelation": thirdLevelrelation,
         "createdOn": createdOn,
         "modifiedOn": modifiedOn,
         "maritalStatus": maritalStatus,
