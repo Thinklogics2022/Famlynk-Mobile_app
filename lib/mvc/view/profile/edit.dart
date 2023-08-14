@@ -194,7 +194,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(height: 25),
               buildTextField("Home Town", homeTownController, Icons.home),
               buildTextField("Address", addressController, Icons.location_city),
-          
               Container(
                 child: DropdownButtonFormField(
                   decoration: InputDecoration(
@@ -238,7 +237,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     "Update",
                     style: TextStyle(
                       fontSize: 20,
-                      
                       color: Colors.white,
                     ),
                   )),
@@ -353,7 +351,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           backgroundImage: NetworkImage(
                               widget.profileUserModel!.profileImage.toString()),
                         ),
-                       
                       )
                     : Image.file(
                         imageFile!,

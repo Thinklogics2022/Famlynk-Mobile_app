@@ -102,7 +102,7 @@ class _AddMemberState extends State<AddMember> {
                     ElevatedButton(
                       onPressed: _submitForm,
                       style: ElevatedButton.styleFrom(
-          backgroundColor: HexColor('#0175C8')),
+                          backgroundColor: HexColor('#0175C8')),
                       child: Text(
                         'Submit',
                         style: TextStyle(
@@ -209,31 +209,32 @@ class _AddMemberState extends State<AddMember> {
 
   Widget buildPhoneNumberField() {
     return TextFormField(
-      controller: _phNumber,
-      decoration: InputDecoration(
-          icon: Icon(Icons.phone),
-          enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade400),
-          ),
-          fillColor: Colors.grey.shade200,
-          filled: true,
-          hintText: 'Enter Mobile Number',
-          hintStyle: TextStyle(color: Colors.grey[500])),
-             keyboardType: TextInputType.phone,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return "*mobile number is required";
-        }
-        if (value.length != 10) {
-          return "Mobile number must be 10 digits";
-        }
-        return null;
-      },
-   
-    );
+        controller: _phNumber,
+        decoration: InputDecoration(
+            icon: Icon(Icons.phone),
+            enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+            fillColor: Colors.grey.shade200,
+            filled: true,
+            hintText: 'Enter Mobile Number',
+            hintStyle: TextStyle(color: Colors.grey[500])),
+        keyboardType: TextInputType.phone,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "*mobile number is required";
+          }
+          if (value.length < 10) {
+            return "*mobile number must be 10";
+          }
+          if (value.length > 10) {
+            return "*mobile number must be 10";
+          }
+          return null;
+        });
   }
 
   Widget buildEmailField() {

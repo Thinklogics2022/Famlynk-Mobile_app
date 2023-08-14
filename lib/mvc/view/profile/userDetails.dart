@@ -158,10 +158,15 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
                                                 color: Colors.deepOrange,
                                               ),
                                               SizedBox(width: 12),
-                                              Text(
-                                                profileUserModel.email
-                                                    .toString(),
-                                                style: TextStyle(fontSize: 20),
+                                              Expanded(
+                                                child: Text(
+                                                  profileUserModel.email
+                                                      .toString(),
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -306,6 +311,3 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
     );
   }
 }
-
-
-

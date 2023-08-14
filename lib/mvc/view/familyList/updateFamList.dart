@@ -343,7 +343,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
         email: email.text,
         userId: widget.updateMember!.userId,
         uniqueUserID: widget.updateMember!.uniqueUserID,
-        // relation: dropdownValue1,
+        relation: dropdownValue1,
         firstLevelRelation: dropdownValue1,
         image: imageUrl);
    

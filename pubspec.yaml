@@ -68,6 +68,8 @@ dependencies:
   comment_box: ^0.0.18
   pinput: ^2.3.0
   
+ 
+  
   
 
   
@@ -105,6 +107,7 @@ flutter:
     - assets/images/food.jpg
     - assets/images/nature.jpg
     - assets/images/lock.jpg
+    - assets/images/img1.jpg
     
 
   

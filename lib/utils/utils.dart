@@ -1,6 +1,6 @@
 class FamlynkServiceUrl {
   // static const String baseUrl = "http://3.6.49.2:8080";
-  static const String baseUrl = "http://192.168.1.8:8080";
+  static const String baseUrl = "http://192.168.1.23:8080";
   static const String createUser = baseUrl + "/register/createregister";
   static const String login = baseUrl + "/authenticate/login";
   static const String verifyOtp = baseUrl + "/register/verifyotp/";
@@ -49,5 +49,9 @@ class FamlynkServiceUrl {
   static const String imgUrl = baseUrl + "/newsfeed/profileandnameupdate/";
   static const String mutualConnection =
       baseUrl + "/familymembers/getmutualconnection/";
-  static const String notification = baseUrl + "/notify/retrievenotifybyuniqueuserid/";
+  static const String notification =
+      baseUrl + "/notify/retrievenotifybyuniqueuserid/";
+  static const String acceptNotification =
+      baseUrl + "/notify/acceptFamilyMember/";
+  static const String declineNotification = baseUrl + "/familymembers/declinefamilymember/";
 }
