@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/notificationModel.dart';
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/resetPassword.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profileModel.dart';
@@ -8,6 +9,7 @@ import 'package:famlynk_version1/mvc/view/profile/edit.dart';
 import 'package:famlynk_version1/mvc/view/profile/logout.dart';
 import 'package:famlynk_version1/mvc/view/profile/notification/notification.dart';
 import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
+import 'package:famlynk_version1/services/profileService/notificationService.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -21,15 +23,19 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  int notificationCount = 0;
+
+  List<NotificationModel> notificationModel = [];
+  NotificationService notificationService = NotificationService();
   ProfileUserModel profileUserModel = ProfileUserModel();
   ProfileUserService profileUserService = ProfileUserService();
   bool isLoading = true;
   var imageFile;
-
   @override
   void initState() {
     super.initState();
     _fetchMembers();
+    fetchAPI();
   }
 
   ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
@@ -50,6 +56,20 @@ class _ProfileState extends State<Profile> {
       });
     } catch (e) {
       print(e);
+    }
+  }
+
+  Future<void> fetchAPI() async {
+    if (notificationModel.isEmpty) {
+      try {
+        notificationModel = await notificationService.notificationService();
+
+        setState(() {
+          isLoading = true;
+        });
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -80,7 +100,6 @@ class _ProfileState extends State<Profile> {
                         ),
                         SizedBox(height: 20.0),
                         Row(
-                          // crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
@@ -202,19 +221,37 @@ class _ProfileState extends State<Profile> {
                                   height: 10.0,
                                   color: Colors.grey,
                                 ),
-                                InkWell(
-                                  child: CustomListTile(
-                                    icon: Icons.notification_add,
-                                    text: "Notification",
-                                  ),
-                                  onTap: () {
-                                    Navigator.push(
+                                GestureDetector(
+                                  onTap: () async {
+                                    await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 Notifications()));
                                   },
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.notifications,
+                                          color: HexColor('#FF6F20')),
+                                      SizedBox(width: 17),
+                                      Text("Notifications",
+                                          style: TextStyle(fontSize: 16))
+                                    ],
+                                  ),
                                 ),
+                                // InkWell(
+                                //   child: CustomListTile(
+                                //     icon: Icons.notifications,
+                                //     text: "Notification",
+                                //   ),
+                                //   onTap: () {
+                                //     Navigator.push(
+                                //         context,
+                                //         MaterialPageRoute(
+                                //             builder: (context) =>
+                                //                 Notifications()));
+                                //   },
+                                // ),
                                 Divider(
                                   height: 10.0,
                                   color: Colors.grey,

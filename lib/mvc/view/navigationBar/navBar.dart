@@ -1,10 +1,12 @@
 import 'package:famlynk_version1/constants/constVariables.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/notificationModel.dart';
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/familyTree/famTree.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/newsFeed.dart';
 import 'package:famlynk_version1/mvc/view/profile/notification/notification.dart';
 import 'package:famlynk_version1/mvc/view/profile/profile.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/suggestion.dart';
+import 'package:famlynk_version1/services/profileService/notificationService.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,8 +21,18 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  List<NotificationModel> notificationModel = [];
+  NotificationService notificationService = NotificationService();
+  var isLoading = false;
+  // int _notificationCount = 0;
   int _selectedIndex = 0;
   MyProperties myProperties = MyProperties();
+  @override
+  void initState() {
+    super.initState();
+
+    fetchAPI();
+  }
 
   final List<Widget> _pages = [
     FamlynkNewsFeed(),
@@ -35,6 +47,20 @@ class _NavBarState extends State<NavBar> {
     });
   }
 
+  Future<void> fetchAPI() async {
+    if (notificationModel.isEmpty) {
+      try {
+        notificationModel = await notificationService.notificationService();
+
+        setState(() {
+          isLoading = true;
+        });
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +69,37 @@ class _NavBarState extends State<NavBar> {
         automaticallyImplyLeading: false,
         leadingWidth: 30,
         actions: [
+          // Row(
+            // children: [
+            //   IconButton(
+            //       onPressed: () {
+            //         Navigator.push(context,
+            //             MaterialPageRoute(builder: (context) => AddMember()));
+            //       },
+            //       icon: Icon(Icons.person_add_alt_1)),
+            //   SizedBox(width: 7),
+            //   IconButton(
+            //       onPressed: () {
+            //         Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (context) => Notifications()));
+            //       },
+            //       icon: Badge(
+            //           label: Text(notificationModel.length.toString()),
+            //           child: Icon(Icons.notifications))),
+            //                         SizedBox(width: 7),
+            //   IconButton(
+            //       onPressed: () {
+            //         Navigator.push(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (context) => SuggestionScreen()));
+            //       },
+            //       icon: Icon(Icons.search)),
+            //   SizedBox(width: 13)
+            // ],
+          // )
           PopupMenuButton<int>(
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -86,17 +143,54 @@ class _NavBarState extends State<NavBar> {
                       },
                       child: Row(
                         children: [
-                          Icon(
-                            Icons.notification_add,
-                            color: Colors.black,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Notification",
-                            style: TextStyle(color: Colors.black),
+                          GestureDetector(
+                            onTap: () async {
+                              // setState(() {
+                              //   _notificationCount = notificationModel.length;
+                              //   print(
+                              //       "notification length ${notificationModel.length}");
+                              // }
+                              // );
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Notifications()));
+                            },
+                            child: Row(
+                              children: [
+                                Badge(
+                                  label: Text(notificationModel.length.toString()),
+                                  child: Icon(
+                                    Icons.notifications,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Notification",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
+                      // child: Row(
+                      //   children: [
+                      //     Badge(
+                      //       label: Text(notificationModel.length.toString()),
+                      //       child: Icon(
+                      //         Icons.notifications,
+                      //         color: Colors.black,
+                      //       ),
+                      //     ),
+                      //     SizedBox(width: 10),
+                      //     Text(
+                      //       "Notification",
+                      //       style: TextStyle(color: Colors.black),
+                      //     ),
+                      //   ],
+                      // ),
                     ),
                   ],
                 ),

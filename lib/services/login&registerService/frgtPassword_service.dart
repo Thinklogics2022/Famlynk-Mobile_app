@@ -14,13 +14,15 @@ class ForgetPasswordService {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: jsonEncode({'password': newPassword}),
+        body: jsonEncode(
+          {'password': newPassword},
+        ),
       );
 
       if (response.statusCode == 200) {
+        print("frgt pswd : ${response.body}");
         print("Password updated successfully");
-      } else {
-      }
+      } else {}
     } catch (e) {
       print("Error occurred while resetting password: $e");
     }
