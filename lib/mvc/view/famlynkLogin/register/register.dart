@@ -1,5 +1,6 @@
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/custom.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/otp/verifyOtp.dart';
 import 'package:famlynk_version1/services/login&registerService/register_service.dart';
@@ -39,6 +40,22 @@ class _RegisterPageState extends State<RegisterPage> {
     return regex.hasMatch(phoneNumber);
   }
 
+  bool showErrorPopup = false;
+
+  void showEmailExistsPopup() {
+    setState(() {
+      showErrorPopup = true;
+      showDialog(
+          context: context,
+          builder: (context) => CustomDialog(
+                title: "Register",
+                content: "Email already exists",
+                buttonText: "OK",
+              ));
+    });
+  }
+
+  
   var profileBase64;
   bool isPasswordVisible = false;
   bool isConfirmPswdVisible = false;
@@ -358,49 +375,55 @@ class _RegisterPageState extends State<RegisterPage> {
                       }),
                   SizedBox(height: 35),
                   Container(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: myProperties.buttonColor,
-                      ),
-                      onPressed: () {
-                        RegisterService registerService = RegisterService();
-                        if (_formKey.currentState!.validate()) {
-                          RegisterModel registerModel = RegisterModel(
-                              id: "",
-                              uniqueUserID: "",
-                              userId: "",
-                              address: "",
-                              maritalStatus: "",
-                              hometown: "",
-                              otp: "",
-                              verificationToken: "",
-                              coverImage: "",
-                              name: _nameController.text,
-                              gender: _selectedGender,
-                              dateOfBirth: _dateinput.text,
-                              password: _passwordController.text,
-                              email: _emailController.text,
-                              mobileNo: _phnController.text,
-                              profileImage: profileBase64 ?? "");
-                          registerService.addRegister(registerModel);
-                          print(registerModel.dateOfBirth);
-                          print(registerModel.userId);
+                      child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: myProperties.buttonColor,
+                    ),
+                    onPressed: () async {
+                      RegisterService registerService = RegisterService();
+                      if (_formKey.currentState!.validate()) {
+                        RegisterModel registerModel = RegisterModel(
+                            id: "",
+                            uniqueUserID: "",
+                            userId: "",
+                            address: "",
+                            maritalStatus: "",
+                            hometown: "",
+                            otp: "",
+                            verificationToken: "",
+                            coverImage: "",
+                            name: _nameController.text,
+                            gender: _selectedGender,
+                            dateOfBirth: _dateinput.text,
+                            password: _passwordController.text,
+                            email: _emailController.text,
+                            mobileNo: _phnController.text,
+                            profileImage: profileBase64 ?? "");
+                        registerService.addRegister(registerModel);
+                        final response =
+                            await registerService.addRegister(registerModel);
+
+                        print(registerModel.dateOfBirth);
+                        print(registerModel.userId);
+                        if (response == "Email already exists") {
+                          showEmailExistsPopup();
+                        } else {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OTPPage()));
+                            context,
+                            MaterialPageRoute(builder: (context) => OTPPage()),
+                          );
                         }
-                      },
-                      child: Text(
-                        'Register',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
+                      }
+                    },
+                    child: Text(
+                      'Register',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                       ),
                     ),
-                  ),
+                  )),
                 ],
               ),
             ),

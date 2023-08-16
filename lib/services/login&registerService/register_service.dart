@@ -45,7 +45,7 @@ class RegisterService {
 
       return response.body;
     } catch (e) {
-      print(e);
+      print("Reg error ${e}");
       throw Exception(' Register : Failed to load API Data');
     }
   }

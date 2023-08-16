@@ -29,6 +29,7 @@ class _MyTimeLineState extends State<MyTimeLine> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: HexColor('#0175C8'),
         title: Text('MyTimeLine',style: TextStyle(color: Colors.white),),
         bottom: TabBar(
