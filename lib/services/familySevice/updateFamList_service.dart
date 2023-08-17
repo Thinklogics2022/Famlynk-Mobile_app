@@ -23,7 +23,6 @@ class UpdateFamListService {
       "firstLevelRelation": data.firstLevelRelation,
       "uniqueUserID": data.uniqueUserID
     };
-
     try {
       var response = await http.put(
         Uri.parse(FamlynkServiceUrl.updateFamilyMember + data.famid.toString()),

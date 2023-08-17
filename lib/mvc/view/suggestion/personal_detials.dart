@@ -112,8 +112,8 @@ class _UserDetailsState extends State<UserDetails> {
         uniqueUserID: widget.uniqueUserID,
         relation: '',
         firstLevelRelation: selectedFirstLevelRelation,
-        secondLevelrelation: selectedSecondLevelRelation,
-        thirdLevelrelation: selectedThirdLevelRelation,
+        secondLevelRelation: selectedSecondLevelRelation,
+        thirdLevelRelation: selectedThirdLevelRelation,
       );
       searchAddMemberService.searchAddMemberPost(searchAddMemberModel);
       ScaffoldMessenger.of(context).showSnackBar(

@@ -82,7 +82,7 @@ class _LogOutPageState extends State<LogOutPage>
                                     spreadRadius: 5,
                                     blurRadius: 7,
                                     offset: Offset(
-                                        0, 3), // changes position of shadow
+                                        0, 3), 
                                   ),
                                 ],
                               ),
@@ -133,7 +133,7 @@ class _LogOutPageState extends State<LogOutPage>
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
-                                            Navigator.push(
+                                            Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) => NavBar(),

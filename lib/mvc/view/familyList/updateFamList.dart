@@ -31,15 +31,15 @@ class _UpdateFamListState extends State<UpdateFamList> {
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
-
   TextEditingController name = TextEditingController();
   TextEditingController phNumber = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController dateinput = TextEditingController();
 
-
   String _selectedGender = '';
-  String dropdownValue1 = 'Select Relation';
+  String dropdownValue1 = '';
+
+  // String dropdownValue = 'Select Relation';
   String? profilBase64;
   String userId = "";
 
@@ -66,6 +66,13 @@ class _UpdateFamListState extends State<UpdateFamList> {
     dateinput.text = widget.updateMember!.dob.toString();
     profilBase64 = widget.updateMember!.image.toString();
     dropdownValue1 = widget.updateMember!.relation.toString();
+    if (relation.contains(widget.updateMember!.relation)) {
+      dropdownValue1 = widget.updateMember!.relation.toString();
+    }
+    {
+      dropdownValue1 = "Select Relation";
+    }
+
     fetchData();
   }
 
@@ -116,12 +123,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   ),
                   SizedBox(height: 15),
                   Column(
-                  
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Row(
                         children: [
-                        
                           Icon(Icons.person_add,
                               color: Colors.orange, size: 25),
                           SizedBox(
@@ -265,45 +270,43 @@ class _UpdateFamListState extends State<UpdateFamList> {
                   ),
                   SizedBox(height: 20),
                   Container(
-                    child: DropdownButtonFormField(
-                      
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.only(bottom: 1),
-                        labelText: "Relation",
-                        prefixIcon: Icon(
-                          Icons.people,
-                          color: Colors.orange,
-                        ),
-                        labelStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintStyle: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                      child: DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(bottom: 1),
+                      labelText: "Relation",
+                      prefixIcon: Icon(
+                        Icons.people,
+                        color: Colors.orange,
                       ),
-                      dropdownColor: Color.fromARGB(255, 255, 255, 255),
-                      value: dropdownValue1,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          dropdownValue1 = newValue!;
-                        });
-                      },
-                      items: relation
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        );
-                      }).toList(),
+                      labelStyle: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintStyle: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
+                    dropdownColor: Color.fromARGB(255, 255, 255, 255),
+                    value: dropdownValue1, // Use the updated dropdownValue1
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue1 = newValue!;
+                      });
+                    },
+                    items:
+                        relation.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(
+                          value,
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      );
+                    }).toList(),
+                  )),
                   SizedBox(height: 35),
                   Container(
                     child: ElevatedButton(
@@ -343,10 +346,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
         email: email.text,
         userId: widget.updateMember!.userId,
         uniqueUserID: widget.updateMember!.uniqueUserID,
-        relation: dropdownValue1,
+        relation: widget.updateMember!.relation,
         firstLevelRelation: dropdownValue1,
         image: imageUrl);
-   
+
     UpdateFamListService updateFamListService = UpdateFamListService();
 
     updateFamListService.updateFamMember(updateFamMemberModel);

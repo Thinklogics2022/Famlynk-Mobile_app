@@ -60,7 +60,7 @@ class NotificationService {
       dynamic returnObject;
 
       if (response.statusCode == 200) {
-        print("profile : ${response.body}");
+        print("profile accept : ${response.body}");
         returnObject = famListModelFromJson(response.body);
       }
       return returnObject;

@@ -81,7 +81,7 @@ class _FamilyState extends State<Family> {
                                                 fontWeight: FontWeight.bold),
                                           ),
                                           Text(familyList[index]
-                                              .relation
+                                              .firstLevelRelation
                                               .toString()),
                                         ],
                                       ),

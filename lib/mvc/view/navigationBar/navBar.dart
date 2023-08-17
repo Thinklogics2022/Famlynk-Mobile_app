@@ -24,6 +24,7 @@ class _NavBarState extends State<NavBar> {
   List<NotificationModel> notificationModel = [];
   NotificationService notificationService = NotificationService();
   var isLoading = false;
+ 
   // int _notificationCount = 0;
   int _selectedIndex = 0;
   MyProperties myProperties = MyProperties();
@@ -33,6 +34,9 @@ class _NavBarState extends State<NavBar> {
 
     fetchAPI();
   }
+  // ignore: unused_field
+  int _badgeCount = 0; 
+  
 
   final List<Widget> _pages = [
     FamlynkNewsFeed(),
@@ -51,7 +55,7 @@ class _NavBarState extends State<NavBar> {
     if (notificationModel.isEmpty) {
       try {
         notificationModel = await notificationService.notificationService();
-
+ _updateBadgeCount();
         setState(() {
           isLoading = true;
         });
@@ -59,6 +63,11 @@ class _NavBarState extends State<NavBar> {
         print(e);
       }
     }
+  }
+   void _updateBadgeCount() {
+    setState(() {
+      _badgeCount = notificationModel.length;
+    });
   }
 
   @override
@@ -70,35 +79,35 @@ class _NavBarState extends State<NavBar> {
         leadingWidth: 30,
         actions: [
           // Row(
-            // children: [
-            //   IconButton(
-            //       onPressed: () {
-            //         Navigator.push(context,
-            //             MaterialPageRoute(builder: (context) => AddMember()));
-            //       },
-            //       icon: Icon(Icons.person_add_alt_1)),
-            //   SizedBox(width: 7),
-            //   IconButton(
-            //       onPressed: () {
-            //         Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) => Notifications()));
-            //       },
-            //       icon: Badge(
-            //           label: Text(notificationModel.length.toString()),
-            //           child: Icon(Icons.notifications))),
-            //                         SizedBox(width: 7),
-            //   IconButton(
-            //       onPressed: () {
-            //         Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) => SuggestionScreen()));
-            //       },
-            //       icon: Icon(Icons.search)),
-            //   SizedBox(width: 13)
-            // ],
+          // children: [
+          //   IconButton(
+          //       onPressed: () {
+          //         Navigator.push(context,
+          //             MaterialPageRoute(builder: (context) => AddMember()));
+          //       },
+          //       icon: Icon(Icons.person_add_alt_1)),
+          //   SizedBox(width: 7),
+          //   IconButton(
+          //       onPressed: () {
+          //         Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) => Notifications()));
+          //       },
+          //       icon: Badge(
+          //           label: Text(notificationModel.length.toString()),
+          //           child: Icon(Icons.notifications))),
+          //                         SizedBox(width: 7),
+          //   IconButton(
+          //       onPressed: () {
+          //         Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) => SuggestionScreen()));
+          //       },
+          //       icon: Icon(Icons.search)),
+          //   SizedBox(width: 13)
+          // ],
           // )
           PopupMenuButton<int>(
             itemBuilder: (context) => [
@@ -134,63 +143,35 @@ class _NavBarState extends State<NavBar> {
                 value: 2,
                 child: Row(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Notifications()));
-                      },
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              // setState(() {
-                              //   _notificationCount = notificationModel.length;
-                              //   print(
-                              //       "notification length ${notificationModel.length}");
-                              // }
-                              // );
-                              await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Notifications()));
-                            },
-                            child: Row(
-                              children: [
-                                Badge(
-                                  label: Text(notificationModel.length.toString()),
-                                  child: Icon(
-                                    Icons.notifications,
-                                    color: Colors.black,
-                                  ),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () async {
+                    
+                            await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Notifications()));
+                          },
+                          child: Row(
+                            children: [
+                              Badge(
+                                label:
+                                    Text(_badgeCount.toString()),
+                                child: Icon(
+                                  Icons.notifications,
+                                  color: Colors.black,
                                 ),
-                                SizedBox(width: 10),
-                                Text(
-                                  "Notification",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                "Notification",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      // child: Row(
-                      //   children: [
-                      //     Badge(
-                      //       label: Text(notificationModel.length.toString()),
-                      //       child: Icon(
-                      //         Icons.notifications,
-                      //         color: Colors.black,
-                      //       ),
-                      //     ),
-                      //     SizedBox(width: 10),
-                      //     Text(
-                      //       "Notification",
-                      //       style: TextStyle(color: Colors.black),
-                      //     ),
-                      //   ],
-                      // ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
