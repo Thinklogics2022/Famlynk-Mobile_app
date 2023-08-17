@@ -92,7 +92,7 @@ class _FamilyListState extends State<FamilyList> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(familyList[index]
-                                          .relation
+                                          .firstLevelRelation
                                           .toString()),
                                     ],
                                   ),
@@ -127,20 +127,19 @@ class _FamilyListState extends State<FamilyList> {
                                         PopupMenuItem(
                                           child: TextButton(
                                             onPressed: () {
-                                              // _showMyDialog(
-                                              //   familyList[index]
-                                              //       .userId
-                                              //       .toString(),
-                                              //   familyList[index]
-                                              //       .uniqueUserID
-                                              //       .toString(),
-                                              // );
+                                              _showMyDialog(
+                                                familyList[index]
+                                                    .userId
+                                                    .toString(),
+                                                familyList[index]
+                                                    .uniqueUserID
+                                                    .toString(),
+                                              );
                                             },
                                             child: Text(
                                               "remove",
-                                              style: TextStyle(
-                                                  color: Colors
-                                                      .red), // You can customize the color
+                                              style:
+                                                  TextStyle(color: Colors.red),
                                             ),
                                           ),
                                         ),

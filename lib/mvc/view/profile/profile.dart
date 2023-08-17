@@ -35,7 +35,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     _fetchMembers();
-    fetchAPI();
+
   }
 
   ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
@@ -239,19 +239,7 @@ class _ProfileState extends State<Profile> {
                                     ],
                                   ),
                                 ),
-                                // InkWell(
-                                //   child: CustomListTile(
-                                //     icon: Icons.notifications,
-                                //     text: "Notification",
-                                //   ),
-                                //   onTap: () {
-                                //     Navigator.push(
-                                //         context,
-                                //         MaterialPageRoute(
-                                //             builder: (context) =>
-                                //                 Notifications()));
-                                //   },
-                                // ),
+                                
                                 Divider(
                                   height: 10.0,
                                   color: Colors.grey,

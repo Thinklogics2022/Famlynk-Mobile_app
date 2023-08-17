@@ -17,19 +17,22 @@ class FamListModel {
   String? email;
   String? uniqueUserID;
   bool? registerUser;
+  String? firstLevelRelation;
 
-  FamListModel(
-      {this.famid,
-      this.userId,
-      this.name,
-      this.dob,
-      this.image,
-      this.relation,
-      this.gender,
-      this.mobileNo,
-      this.email,
-      this.uniqueUserID,
-      this.registerUser});
+  FamListModel({
+    this.famid,
+    this.userId,
+    this.name,
+    this.dob,
+    this.image,
+    this.relation,
+    this.gender,
+    this.mobileNo,
+    this.email,
+    this.uniqueUserID,
+    this.registerUser,
+    this.firstLevelRelation,
+  });
 
   factory FamListModel.fromJson(Map<String, dynamic> json) => FamListModel(
       famid: json["famid"],
@@ -42,7 +45,9 @@ class FamListModel {
       mobileNo: json["mobileNo"],
       email: json["email"],
       uniqueUserID: json["uniqueUserID"],
-      registerUser: json["registerUser"]);
+      registerUser: json["registerUser"],
+      firstLevelRelation : json["firstLevelRelation"]
+      );
 
   Map<String, dynamic> toJson() => {
         "famid": famid,
@@ -55,6 +60,7 @@ class FamListModel {
         "mobileNo": mobileNo,
         "email": email,
         "uniqueUserID": uniqueUserID,
-        "registerUser": registerUser
+        "registerUser": registerUser,
+        "firstLevelRelation" : firstLevelRelation
       };
 }

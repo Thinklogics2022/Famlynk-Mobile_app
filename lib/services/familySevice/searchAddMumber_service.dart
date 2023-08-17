@@ -29,8 +29,8 @@ class SearchAddMemberService {
       "uniqueUserID": searchAddMemberModel.uniqueUserID,
       "relation": searchAddMemberModel.relation,
       "firstLevelRelation": searchAddMemberModel.firstLevelRelation,
-      "secondLevelrelation": searchAddMemberModel.secondLevelrelation,
-      "thirdLevelrelation": searchAddMemberModel.thirdLevelrelation,
+      "secondLevelrelation": searchAddMemberModel.secondLevelRelation,
+      "thirdLevelrelation": searchAddMemberModel.thirdLevelRelation,
     };
     try {
       print(url);

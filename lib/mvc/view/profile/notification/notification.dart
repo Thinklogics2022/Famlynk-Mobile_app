@@ -1,3 +1,5 @@
+import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/profileService/notificationService.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -17,7 +19,7 @@ class Notifications extends StatefulWidget {
 class _NotificationsState extends State<Notifications> {
   List<NotificationModel> notificationModel = [];
   NotificationService notificationService = NotificationService();
-  var isLoaded = true;
+  var isLoaded = false;
   String userId = "";
   @override
   void initState() {
@@ -54,7 +56,9 @@ class _NotificationsState extends State<Notifications> {
       ),
       body: isLoaded
           ? notificationModel.isEmpty
-              ? Center(child: Text("No more Notifications"))
+              ? Center(
+                  child: Text(
+                    'No more notifications',))
               : ListView.builder(
                   itemCount: notificationModel.length,
                   itemBuilder: (context, index) {
@@ -120,6 +124,11 @@ class _NotificationsState extends State<Notifications> {
                                         SizedBox(width: 30),
                                         ElevatedButton(
                                             onPressed: () {
+                                              // Navigator.push(
+                                              //     context,
+                                              //     MaterialPageRoute(
+                                              //         builder: (context) =>
+                                              //             FamilyList()));
                                               notificationService
                                                   .declineNotificationService(
                                                       notificationModel[index]
@@ -128,11 +137,6 @@ class _NotificationsState extends State<Notifications> {
                                                       notificationModel[index]
                                                           .toUniqueUserId
                                                           .toString());
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Notifications()));
                                             },
                                             style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.red),
@@ -148,7 +152,7 @@ class _NotificationsState extends State<Notifications> {
                       ),
                     );
                   },
-                )
+                     )
           : Center(
               child: CircularProgressIndicator(),
             ),
