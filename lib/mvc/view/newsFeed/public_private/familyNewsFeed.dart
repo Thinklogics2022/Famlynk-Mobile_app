@@ -7,6 +7,8 @@ import 'package:famlynk_version1/services/newsFeedService/familyNewsFeed_service
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FamilyNews extends StatefulWidget {
@@ -127,7 +129,6 @@ class _FamilyNewsState extends State<FamilyNews> {
                 ? Center(
                     child: Text(
                       'No FamilyNews are available.',
-                      // style: TextStyle(fontSize: 18),
                     ),
                   )
                 : ListView.builder(
@@ -168,7 +169,7 @@ class _FamilyNewsState extends State<FamilyNews> {
                             ),
                             Divider(),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(10),
                               child: Text(
                                 newsFeed.description!,
                                 style: TextStyle(fontSize: 16.0),
@@ -177,12 +178,51 @@ class _FamilyNewsState extends State<FamilyNews> {
                             if (newsFeed.photo != null &&
                                 newsFeed.photo!.isNotEmpty)
                               Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CachedNetworkImage(
-                                  imageUrl: newsFeed.photo!,
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
-                                  errorWidget: null,
+                                padding: const EdgeInsets.all(1),
+                                child: GestureDetector(
+                                  onDoubleTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            PhotoViewGallery.builder(
+                                          itemCount: 1,
+                                          builder: (context, index) {
+                                            return PhotoViewGalleryPageOptions(
+                                              imageProvider:
+                                                  CachedNetworkImageProvider(
+                                                      newsFeed.photo!),
+                                              minScale: PhotoViewComputedScale
+                                                      .contained *
+                                                  0.3,
+                                              maxScale: PhotoViewComputedScale
+                                                      .covered *
+                                                  1.8,
+                                              initialScale:
+                                                  PhotoViewComputedScale
+                                                      .contained,
+                                              heroAttributes:
+                                                  PhotoViewHeroAttributes(
+                                                      tag: newsFeed.photo!),
+                                            );
+                                          },
+                                          backgroundDecoration: BoxDecoration(
+                                            color: Colors.black,
+                                          ),
+                                          pageController: PageController(),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    height: 300,
+                                    width: 550,
+                                    child: CachedNetworkImage(
+                                      imageUrl: newsFeed.photo!,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: null,
+                                    ),
+                                  ),
                                 ),
                               ),
                             Divider(),
@@ -193,21 +233,24 @@ class _FamilyNewsState extends State<FamilyNews> {
                                 children: [
                                   InkWell(
                                     onTap: () => onLikeButtonPressed(index),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          newsFeed.userLikes.contains(userId)
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          size: 20.0,
-                                          color: newsFeed.userLikes
-                                                  .contains(userId)
-                                              ? HexColor('#FF6F20')
-                                              : null,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(newsFeed.like.toString()),
-                                      ],
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            newsFeed.userLikes.contains(userId)
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            size: 25,
+                                            color: newsFeed.userLikes
+                                                    .contains(userId)
+                                                ? HexColor('#FF6F20')
+                                                : null,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(newsFeed.like.toString()),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Spacer(),

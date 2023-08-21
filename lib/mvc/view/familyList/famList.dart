@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
 import 'package:famlynk_version1/mvc/view/familyList/tabBarPage.dart';
 import 'package:famlynk_version1/mvc/view/familyList/updateFamList.dart';
@@ -18,6 +19,8 @@ class _FamilyListState extends State<FamilyList> {
   DltMemberService dltMemberService = DltMemberService();
   ShowFamilyMemberService _familyMemberService = ShowFamilyMemberService();
   String userId = "";
+
+ 
 
   @override
   void initState() {
@@ -41,6 +44,33 @@ class _FamilyListState extends State<FamilyList> {
         print(e);
       }
     }
+  }
+
+  Widget defaultImage(String image, String name, int index) {
+    if (image.isNotEmpty) {
+      return CircleAvatar(
+        radius: 40,
+        backgroundImage: NetworkImage(image),
+      );
+    } else {
+      return CircleAvatar(
+        radius: 40,
+        backgroundColor: backgroundColors[index % backgroundColors.length],
+        child: Text(
+          name.isNotEmpty ? name[0].toUpperCase() : "?",
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+  }
+
+  String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
   }
 
   @override
@@ -68,105 +98,110 @@ class _FamilyListState extends State<FamilyList> {
                               borderRadius: BorderRadius.circular(14),
                               color: Color.fromARGB(255, 221, 232, 232),
                             ),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CircleAvatar(
-                                    radius: 35,
-                                    backgroundImage: NetworkImage(
-                                        familyList[index].image.toString()),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: defaultImage(
+                                      familyList[index]
+                                          .image
+                                          .toString(),
+                                      familyList[index].name.toString(),
+                                      index, // Pass the index here
+                                    ),
                                   ),
-                                ),
-                                SizedBox(width: 20),
-                                Container(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        familyList[index].name.toString(),
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(familyList[index]
-                                          .firstLevelRelation
-                                          .toString()),
-                                    ],
+                                  SizedBox(width: 20),
+                                  Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          familyList[index].name.toString(),
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(capitalizeFirstLetter(
+                                            familyList[index]
+                                                .firstLevelRelation
+                                                .toString())),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Spacer(),
-                                Center(
-                                  child: PopupMenuButton(
-                                    itemBuilder: (BuildContext context) => [
-                                      if (isEditable)
-                                        PopupMenuItem(
-                                          child: TextButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      UpdateFamList(
-                                                    updateMember:
-                                                        familyList[index],
+                                  Spacer(),
+                                  Center(
+                                    child: PopupMenuButton(
+                                      itemBuilder: (BuildContext context) => [
+                                        if (isEditable)
+                                          PopupMenuItem(
+                                            child: TextButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UpdateFamList(
+                                                      updateMember:
+                                                          familyList[index],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                            child: Text(
-                                              "edit",
-                                              style:
-                                                  TextStyle(color: Colors.blue),
+                                                );
+                                              },
+                                              child: Text(
+                                                "Edit",
+                                                style:
+                                                    TextStyle(color: Colors.blue),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      if (!isEditable)
-                                        PopupMenuItem(
-                                          child: TextButton(
-                                            onPressed: () {
-                                              _showMyDialog(
-                                                familyList[index]
-                                                    .userId
-                                                    .toString(),
-                                                familyList[index]
-                                                    .uniqueUserID
-                                                    .toString(),
-                                              );
-                                            },
-                                            child: Text(
-                                              "remove",
-                                              style:
-                                                  TextStyle(color: Colors.red),
+                                        if (!isEditable)
+                                          PopupMenuItem(
+                                            child: TextButton(
+                                              onPressed: () {
+                                                _showMyDialog(
+                                                  familyList[index]
+                                                      .userId
+                                                      .toString(),
+                                                  familyList[index]
+                                                      .uniqueUserID
+                                                      .toString(),
+                                                );
+                                              },
+                                              child: Text(
+                                                "remove",
+                                                style:
+                                                    TextStyle(color: Colors.red),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      if (isEditable)
-                                        PopupMenuItem(
-                                          child: TextButton(
-                                            onPressed: () {
-                                              _showMyDialog(
-                                                familyList[index]
-                                                    .userId
-                                                    .toString(),
-                                                familyList[index]
-                                                    .uniqueUserID
-                                                    .toString(),
-                                              );
-                                            },
-                                            child: Text(
-                                              "delete",
-                                              style:
-                                                  TextStyle(color: Colors.blue),
+                                        if (isEditable)
+                                          PopupMenuItem(
+                                            child: TextButton(
+                                              onPressed: () {
+                                                _showMyDialog(
+                                                  familyList[index]
+                                                      .userId
+                                                      .toString(),
+                                                  familyList[index]
+                                                      .uniqueUserID
+                                                      .toString(),
+                                                );
+                                              },
+                                              child: Text(
+                                                "Delete",
+                                                style:
+                                                    TextStyle(color: Colors.blue),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -72,6 +72,8 @@ class _UserDetailsState extends State<UserDetails> {
     });
   }
 
+  String? firstLevelRelationError;
+
   @override
   void initState() {
     super.initState();
@@ -166,12 +168,6 @@ class _UserDetailsState extends State<UserDetails> {
       });
     } catch (e) {
       print("Error fetching relations: $e");
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Text('Error fetching relations.'),
-      //     duration: Duration(seconds: 2),
-      //   ),
-      // );
     }
   }
 
@@ -202,31 +198,30 @@ class _UserDetailsState extends State<UserDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: HexColor('#0175C8'),
-        title: Center(
-          child: Text(
-            'Family Details',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+        centerTitle: true,
+        title: Text(
+          'Family Details',
+          style: TextStyle(
+            color: Colors.white,
           ),
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.lightBlue,
-              Color.fromARGB(255, 223, 228, 237),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     colors: [
+        //       Colors.lightBlue,
+        //       Color.fromARGB(255, 223, 228, 237),
+        //     ],
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //   ),
+        // ),
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(14),
             child: Card(
               elevation: 8,
               shape: RoundedRectangleBorder(
@@ -296,11 +291,14 @@ class _UserDetailsState extends State<UserDetails> {
                               style: TextStyle(fontSize: 18),
                             ),
                             SizedBox(width: 10),
-                            Text(
-                              '${widget.email}',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey,
+                            Expanded(
+                              child: Text(
+                                '${widget.email}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.grey,
+                                ),
                               ),
                             ),
                           ],
@@ -311,6 +309,8 @@ class _UserDetailsState extends State<UserDetails> {
                     DropdownButtonFormField<String>(
                       decoration: InputDecoration(
                         labelText: 'First Level Relation',
+                        errorText:
+                            firstLevelRelationError, // Set the error text here
                       ),
                       value: selectedFirstLevelRelation,
                       onChanged: (newValue) {
@@ -318,6 +318,8 @@ class _UserDetailsState extends State<UserDetails> {
                           selectedFirstLevelRelation = newValue!;
                           selectedSecondLevelRelation = '';
                           updateSecondRelations(selectedFirstLevelRelation);
+                          firstLevelRelationError =
+                              null; // Reset the error message
                         });
                       },
                       items: relationship.map((relation) {
@@ -376,7 +378,21 @@ class _UserDetailsState extends State<UserDetails> {
                     ),
                     SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: () => addToFamily(),
+                      onPressed: () {
+                        if (selectedFirstLevelRelation == null ||
+                            selectedFirstLevelRelation.isEmpty ||
+                            selectedFirstLevelRelation == "none") {
+                          setState(() {
+                            firstLevelRelationError =
+                                'Please select a valid first level relation';
+                          });
+                        } else {
+                          setState(() {
+                            firstLevelRelationError = null;
+                          });
+                          addToFamily();
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         shape: RoundedRectangleBorder(

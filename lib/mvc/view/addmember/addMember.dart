@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/addmember_model/addMember_model.dart';
+import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/custom.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/familySevice/addMember_service.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 import 'package:image_picker/image_picker.dart';
@@ -22,6 +23,7 @@ class _AddMemberState extends State<AddMember> {
   final firebase_storage.Reference storageRef =
       firebase_storage.FirebaseStorage.instance.ref();
   File? imageFile;
+  bool isLoading = false;
   MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
@@ -100,10 +102,15 @@ class _AddMemberState extends State<AddMember> {
                     buildRelationDropdown(),
                     SizedBox(height: 35),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: HexColor('#0175C8'),
-                      ),
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: HexColor('#0175C8'),
+                    //   ),
+                    //   onPressed: _submitForm,
+                    //   child: Text("Submit"),
+
                       onPressed: _isLoading ? null : _submitForm,
+                      style: ElevatedButton.styleFrom(backgroundColor: HexColor('#0175C8'),
+                      ),
                       child: _isLoading
                           ? CircularProgressIndicator(
                               valueColor:
@@ -218,9 +225,9 @@ class _AddMemberState extends State<AddMember> {
             TextPosition(offset: _phNumber.text.length));
       }
     });
-     return TextFormField(
-            controller: _phNumber,
-            decoration: InputDecoration(
+    return TextFormField(
+        controller: _phNumber,
+        decoration: InputDecoration(
             icon: Icon(Icons.phone),
             enabledBorder: const OutlineInputBorder(
               borderSide: BorderSide(color: Colors.white),
@@ -232,8 +239,8 @@ class _AddMemberState extends State<AddMember> {
             filled: true,
             hintText: 'Enter Mobile Number',
             hintStyle: TextStyle(color: Colors.grey[500])),
-            keyboardType: TextInputType.phone,
-            validator: (value) {
+        keyboardType: TextInputType.phone,
+        validator: (value) {
           if (value!.isEmpty) {
             return "*mobile number is required";
           }
@@ -333,8 +340,22 @@ class _AddMemberState extends State<AddMember> {
             builder: (context) => NavBar(),
           ),
         );
-      }
+      } else
+        _showImageNotSelectedDialog();
     }
+  }
+
+  Future<void> _showImageNotSelectedDialog() async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomDialog(
+          title: "Image Select",
+          content: "Image is required",
+          buttonText: "ok",
+        );
+      },
+    );
   }
 
   Widget imageprofile() {

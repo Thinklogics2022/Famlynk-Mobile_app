@@ -120,13 +120,22 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 if (widget.dateOfBirth.isNotEmpty)
-                                  Text(widget.dateOfBirth, style: TextStyle(fontSize: 17),),
+                                  Text(
+                                    widget.dateOfBirth,
+                                    style: TextStyle(fontSize: 17),
+                                  ),
                                 SizedBox(height: 12),
                                 if (widget.email.isNotEmpty)
-                                  Text(widget.email, style: TextStyle(fontSize: 17),),
+                                  Text(
+                                    widget.email,
+                                    style: TextStyle(fontSize: 17),
+                                  ),
                                 SizedBox(height: 12),
                                 if (widget.gender.isNotEmpty)
-                                  Text(widget.gender, style: TextStyle(fontSize: 17),),
+                                  Text(
+                                    widget.gender,
+                                    style: TextStyle(fontSize: 17),
+                                  ),
                               ],
                             ),
                           ),
@@ -140,25 +149,25 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
     );
   }
 
-  Widget _buildDetailRow(String label, String value) {
-   
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        children: [
-          Text(
-            "$label :",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              value,
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildDetailRow(String label, String value) {
+
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 8),
+  //     child: Row(
+  //       children: [
+  //         Text(
+  //           "$label :",
+  //           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+  //         ),
+  //         SizedBox(width: 10),
+  //         Expanded(
+  //           child: Text(
+  //             value,
+  //             style: TextStyle(fontSize: 18),
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

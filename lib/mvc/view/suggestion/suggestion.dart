@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/suggestion_model.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
 import 'package:famlynk_version1/services/familySevice/suggestion_services.dart';
@@ -35,7 +36,8 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
     fetchData();
     fetchSuggestions();
   }
-   void loadMoreSuggestions() {
+
+  void loadMoreSuggestions() {
     // pageNumber++;
     fetchSuggestions();
   }
@@ -118,8 +120,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
               itemBuilder: (context, suggestion) {
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundImage:
-                        getProfileImageWithFallback(suggestion),
+                    backgroundImage: getProfileImageWithFallback(suggestion),
                     backgroundColor: Colors.transparent,
                   ),
                   title: Text(suggestion.name.toString()),
@@ -156,9 +157,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                     ? suggestionlist[index]
                     : filteredSuggestions[index];
                 if (index == suggestionlist.length - 1 &&
-                    currentQuery.isEmpty) {
-                 
-                }
+                    currentQuery.isEmpty) {}
 
                 return InkWell(
                   onTap: () {
@@ -182,9 +181,12 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                   },
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundImage:
-                           getProfileImageWithFallback(suggestion),
+                      backgroundImage: getProfileImageWithFallback(suggestion),
                       backgroundColor: Colors.transparent,
+                      child: suggestion.profileImage == null ||
+                              suggestion.profileImage!.isEmpty
+                          ? NameAvatar(name: suggestion.name.toString())
+                          : null,
                     ),
                     title: Text(suggestion.name.toString()),
                   ),
