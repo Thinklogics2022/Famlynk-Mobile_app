@@ -54,4 +54,6 @@ class FamlynkServiceUrl {
   static const String acceptNotification =
       baseUrl + "/notify/acceptFamilyMember/";
   static const String declineNotification = baseUrl + "/familymembers/declinefamilymember/";
+  static const String familyTree =
+      baseUrl + "/familymembers/getFamilyTree/";
 }

@@ -41,7 +41,7 @@ class _NavBarState extends State<NavBar> {
   final List<Widget> _pages = [
     FamlynkNewsFeed(),
     FamilyList(),
-    CircleAvatarLayout(),
+    FamilyTree(),
     Profile(),
   ];
 
@@ -309,3 +309,4 @@ class _NavBarState extends State<NavBar> {
     );
   }
 }
+
