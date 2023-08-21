@@ -2,11 +2,9 @@ import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/famlist_modelss.dart';
-import 'package:famlynk_version1/mvc/model/familyMembers/suggestion_model.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/updateFamMember_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:famlynk_version1/services/familySevice/updateFamList_service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -65,10 +63,10 @@ class _UpdateFamListState extends State<UpdateFamList> {
     email.text = widget.updateMember!.email.toString();
     dateinput.text = widget.updateMember!.dob.toString();
     profilBase64 = widget.updateMember!.image.toString();
-    dropdownValue1 = widget.updateMember!.relation.toString();
-    if (relation.contains(widget.updateMember!.relation)) {
-      dropdownValue1 = widget.updateMember!.relation.toString();
-    }
+    dropdownValue1 = widget.updateMember!.firstLevelRelation.toString();
+    if (relation.contains(widget.updateMember!.firstLevelRelation)) {
+      dropdownValue1 = widget.updateMember!.firstLevelRelation.toString();
+    } else
     {
       dropdownValue1 = "Select Relation";
     }
@@ -346,7 +344,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
         email: email.text,
         userId: widget.updateMember!.userId,
         uniqueUserID: widget.updateMember!.uniqueUserID,
-        relation: widget.updateMember!.relation,
+        relation: dropdownValue1,
         firstLevelRelation: dropdownValue1,
         image: imageUrl);
 

@@ -35,7 +35,6 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     _fetchMembers();
-
   }
 
   ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
@@ -145,9 +144,12 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 Container(
                                   width: 170,
-                                  child: Text(
-                                    profileUserModel.email.toString(),
-                                    style: TextStyle(color: Colors.black),
+                                  child: Expanded(
+                                    child: Text(
+                                      profileUserModel.email.toString(),
+                                      style: TextStyle(color: Colors.black),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 20),
@@ -221,6 +223,7 @@ class _ProfileState extends State<Profile> {
                                   height: 10.0,
                                   color: Colors.grey,
                                 ),
+                                SizedBox(height: 5),
                                 GestureDetector(
                                   onTap: () async {
                                     await Navigator.push(
@@ -239,7 +242,7 @@ class _ProfileState extends State<Profile> {
                                     ],
                                   ),
                                 ),
-                                
+                                SizedBox(height: 5),
                                 Divider(
                                   height: 10.0,
                                   color: Colors.grey,

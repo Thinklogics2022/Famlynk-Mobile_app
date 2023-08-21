@@ -119,10 +119,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     const SizedBox(height: 30),
                     Text(
-                      'A family bond is priceless!',
+                      'A family bond is priceless !!!',
                       style: TextStyle(
                           color: myProperties.textColor,
-                          fontSize: 20,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 25),
@@ -179,8 +179,10 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Text(
                                       'Forgot Password?',
                                       style: TextStyle(
-                                        color: myProperties.buttonColor,
+                                    
+                                        color:   HexColor('#FF6F20'),
                                         fontWeight: FontWeight.bold,
+                                        fontSize: 17, 
                                       ),
                                     ),
                                   ),
@@ -201,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
                                       )
                                     : Text(
                                         'Login',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(color: Colors.white, fontSize: 22),
                                       ),
                               ),
                             ),
@@ -230,7 +232,7 @@ class _LoginPageState extends State<LoginPage> {
                                         child: Text(
                                           'Register now',
                                           style: TextStyle(
-                                            color: myProperties.buttonColor,
+                                            color: HexColor('#FF6F20'),
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),

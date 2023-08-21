@@ -7,6 +7,8 @@ import 'package:famlynk_version1/services/newsFeedService/publicNewsFeed_service
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PublicNews extends StatefulWidget {
@@ -192,13 +194,49 @@ class _PublicNewsState extends State<PublicNews> {
                                 newsFeed.photo!.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: CachedNetworkImage(
-                                  imageUrl: newsFeed.photo!,
-                                  // width: MediaQuery.of(context).size.width * 1,
-                                  // height: MediaQuery.of(context).size.height * .4,
-                                  placeholder: (context, url) =>
-                                      CircularProgressIndicator(),
-                                  errorWidget: null,
+                                child: GestureDetector(
+                                  onDoubleTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PhotoViewGallery.builder(
+                                                    itemCount: 1,
+                                                    builder: (context, index) {
+                                                      return PhotoViewGalleryPageOptions(
+                                                          imageProvider:
+                                                              CachedNetworkImageProvider(
+                                                                  newsFeed
+                                                                      .photo!),
+                                                          minScale:
+                                                              PhotoViewComputedScale
+                                                                      .contained *
+                                                                  0.8,
+                                                          maxScale:
+                                                              PhotoViewComputedScale
+                                                                      .covered *
+                                                                  2,
+                                                          initialScale:
+                                                              PhotoViewComputedScale
+                                                                  .contained,
+                                                          heroAttributes:
+                                                              PhotoViewHeroAttributes(
+                                                                  tag: newsFeed
+                                                                      .photo!));
+                                                    })));
+                                  },
+                                  child: Container(
+                                    height: 250,
+                                    width: 550,
+                                    child: CachedNetworkImage(
+                                      imageUrl: newsFeed.photo!,
+                                      // width: MediaQuery.of(context).size.width * 1,
+                                      // height: MediaQuery.of(context).size.height * .4,
+                                      placeholder: (context, url) =>
+                                          CircularProgressIndicator(),
+                                      errorWidget: null,
+                                    ),
+                                  ),
                                 ),
                               ),
                             Divider(),
@@ -211,15 +249,19 @@ class _PublicNewsState extends State<PublicNews> {
                                     onTap: () => onLikeButtonPressed(index),
                                     child: Row(
                                       children: [
-                                        Icon(
-                                          newsFeed.userLikes.contains(userId)
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
-                                          size: 20.0,
-                                          color: newsFeed.userLikes
-                                                  .contains(userId)
-                                              ? HexColor('#FF6F20')
-                                              : null,
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 0, 0, 0),
+                                          child: Icon(
+                                            newsFeed.userLikes.contains(userId)
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            size: 25.0,
+                                            color: newsFeed.userLikes
+                                                    .contains(userId)
+                                                ? HexColor('#FF6F20')
+                                                : null,
+                                          ),
                                         ),
                                         SizedBox(width: 5),
                                         Text(newsFeed.like.toString()),

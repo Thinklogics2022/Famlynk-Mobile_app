@@ -39,6 +39,11 @@ class _FamilyState extends State<Family> {
     }
   }
 
+  String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,9 +85,10 @@ class _FamilyState extends State<Family> {
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.bold),
                                           ),
-                                          Text(familyList[index]
-                                              .firstLevelRelation
-                                              .toString()),
+                                          // Text(familyList[index]
+                                          //     .firstLevelRelation
+                                          //     .toString()),
+                                          Text(capitalizeFirstLetter(familyList[index].firstLevelRelation.toString()))
                                         ],
                                       ),
                                     ]))));

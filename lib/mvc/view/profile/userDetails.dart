@@ -39,7 +39,7 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
     );
     _fetchMembers();
     _animation = CurvedAnimation(
-        parent: _animationController, curve: Curves.easeInOutCubic);
+        parent: _animationController, curve: Curves.bounceInOut);
     _animationController.forward();
   }
 

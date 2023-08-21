@@ -43,6 +43,29 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
+  Widget buildProfileImage(String profileImage, String name) {
+    if (profileImage.isNotEmpty) {
+      return CircleAvatar(
+        radius: 45,
+        backgroundImage: NetworkImage(profileImage),
+      );
+    } else {
+      
+      return CircleAvatar(
+        radius: 45,
+        // backgroundColor: HexColor('#0175C8'),
+        child: Text(
+          name.isNotEmpty ? name[0].toUpperCase() : '?',
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +81,8 @@ class _NotificationsState extends State<Notifications> {
           ? notificationModel.isEmpty
               ? Center(
                   child: Text(
-                    'No more notifications',))
+                  'No more notifications',
+                ))
               : ListView.builder(
                   itemCount: notificationModel.length,
                   itemBuilder: (context, index) {
@@ -70,12 +94,11 @@ class _NotificationsState extends State<Notifications> {
                           child: Row(
                             children: [
                               Container(
-                                child: CircleAvatar(
-                                  radius: 45,
-                                  backgroundImage: NetworkImage(
-                                      notificationModel[index]
-                                          .profileImage
-                                          .toString()),
+                                child: buildProfileImage(
+                                  notificationModel[index]
+                                      .profileImage
+                                      .toString(),
+                                  notificationModel[index].fromName.toString(),
                                 ),
                               ),
                               SizedBox(width: 20),
@@ -88,9 +111,10 @@ class _NotificationsState extends State<Notifications> {
                                             .fromName
                                             .toString(),
                                         style: TextStyle(
-                                            fontSize: 20,
-                                            fontStyle: FontStyle.italic,
-                                            fontWeight: FontWeight.bold),
+                                          fontSize: 20,
+                                          fontStyle: FontStyle.italic,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                       Text(
                                         notificationModel[index]
@@ -104,43 +128,55 @@ class _NotificationsState extends State<Notifications> {
                                     child: Row(
                                       children: [
                                         ElevatedButton(
-                                            onPressed: () {
-                                              notificationService
-                                                  .acceptNotificationService(
-                                                notificationModel[index]
-                                                    .fromUniqueUserId
-                                                    .toString(),
-                                                notificationModel[index]
-                                                    .relation
-                                                    .toString(),
-                                                notificationModel[index]
-                                                    .toUniqueUserId
-                                                    .toString(),
-                                              );
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.green),
-                                            child: Text("Accept")),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => NavBar(),
+                                              ),
+                                            );
+                                            notificationService
+                                                .acceptNotificationService(
+                                              notificationModel[index]
+                                                  .fromUniqueUserId
+                                                  .toString(),
+                                              notificationModel[index]
+                                                  .relation
+                                                  .toString(),
+                                              notificationModel[index]
+                                                  .toUniqueUserId
+                                                  .toString(),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.green,
+                                          ),
+                                          child: Text("Accept"),
+                                        ),
                                         SizedBox(width: 30),
                                         ElevatedButton(
-                                            onPressed: () {
-                                              // Navigator.push(
-                                              //     context,
-                                              //     MaterialPageRoute(
-                                              //         builder: (context) =>
-                                              //             FamilyList()));
-                                              notificationService
-                                                  .declineNotificationService(
-                                                      notificationModel[index]
-                                                          .fromUserId
-                                                          .toString(),
-                                                      notificationModel[index]
-                                                          .toUniqueUserId
-                                                          .toString());
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.red),
-                                            child: Text("Decline"))
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => NavBar(),
+                                              ),
+                                            );
+                                            notificationService
+                                                .declineNotificationService(
+                                              notificationModel[index]
+                                                  .fromUserId
+                                                  .toString(),
+                                              notificationModel[index]
+                                                  .toUniqueUserId
+                                                  .toString(),
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.red,
+                                          ),
+                                          child: Text("Decline"),
+                                        )
                                       ],
                                     ),
                                   )
@@ -152,7 +188,7 @@ class _NotificationsState extends State<Notifications> {
                       ),
                     );
                   },
-                     )
+                )
           : Center(
               child: CircularProgressIndicator(),
             ),
