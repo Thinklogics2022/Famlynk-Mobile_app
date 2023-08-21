@@ -368,6 +368,7 @@ class FamilyTreePainter extends CustomPainter {
         );
       }
 
+      // Brother
       if (brothers.contains(familyTreeDataList[i])) {
         final paint = Paint()..strokeWidth = 2.5;
         final centerX = size.width * 0.5;
@@ -377,15 +378,15 @@ class FamilyTreePainter extends CustomPainter {
         // Draw vertical line to left
         canvas.drawLine(
           Offset(centerX, centerY),
-          Offset(size.width * 0.35, centerY),
+          Offset(size.width * 0.358, centerY),
           paint,
         );
 
         // Draw horizontal line extending to the left
         final horizontalLineX = size.width * 0.36 - brotherIndex * 50.0;
-  
+
         canvas.drawLine(
-          Offset(size.width * 0.5, size.height * 0.43),
+          Offset(size.width * 0.5, centerY),
           Offset(centerX, centerY),
           paint,
         );
@@ -396,7 +397,7 @@ class FamilyTreePainter extends CustomPainter {
 
         // Draw the horizontal line of the Γ shape
         canvas.drawLine(
-          Offset(brotherX, brotherY),
+          Offset(brotherX + 50, brotherY),
           Offset(brotherX, brotherY),
           paint,
         );
@@ -457,9 +458,10 @@ class FamilyTreePainter extends CustomPainter {
         if (image != null) {
           final imageSize = Size(60, 60); // Adjust size as needed
           final imageRect = Rect.fromCenter(
-              center: Offset(brotherX - 30, brotherY + 60),
-              width: imageSize.width,
-              height: imageSize.height);
+            center: Offset(brotherX - 30, brotherY + 60),
+            width: imageSize.width,
+            height: imageSize.height,
+          );
           canvas.drawImageRect(
             image,
             Rect.fromLTRB(
@@ -653,10 +655,12 @@ class FamilyTreePainter extends CustomPainter {
           );
         }
       }
+
+      //son
       if (sons.contains(familyTreeDataList[i])) {
         final paint = Paint()..strokeWidth = 2.5;
         final centerX = size.width * 0.9;
-        final centerY = size.height * 0.525 + i * 11.4;
+        final centerY = size.height * 0.51 + i * 11.4;
         final sonsIndex = sons.indexOf(familyTreeDataList[i]);
 
         // Draw vertical line to left
@@ -669,23 +673,38 @@ class FamilyTreePainter extends CustomPainter {
         // Draw horizontal line extending to the left
         canvas.drawLine(
           Offset(centerX * 0.7, centerY),
-          Offset(size.width * 0.5 , centerY),
-          paint,
-        );
-
-        canvas.drawLine(
           Offset(size.width * 0.5, centerY),
-          Offset(centerX, centerY * 0.8),
           paint,
         );
 
+        final horizontalLineX = size.width * 0.5 - sonsIndex * 50.0;
+        canvas.drawLine(
+          Offset(centerX, centerY),
+          Offset(centerX, centerY),
+          paint,
+        );
 
-        final horizontalLineX = size.width * 0.36 - sonsIndex * 50.0;
-        // canvas.drawLine(
-        //   Offset(centerX * 0.7, centerY),
-        //   Offset(centerX, centerY),
-        //   paint,
-        // );
+        final sonY = centerY;
+        final sonx = horizontalLineX;
+
+        // Draw the bottom line of the Γ shape
+        canvas.drawLine(
+          Offset(sonx, sonY),
+          Offset(sonx, sonY + 20),
+          paint,
+        );
+
+        paint
+          ..color = Colors.blue // Adjust color as needed
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
+
+        // Draw the circle at the end of the bottom line
+        canvas.drawCircle(
+          Offset(sonx, sonY + 40),
+          20,
+          paint,
+        );
       }
     }
   }
