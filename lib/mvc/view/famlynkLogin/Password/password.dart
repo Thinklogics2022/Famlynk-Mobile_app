@@ -1,4 +1,3 @@
-import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/services/forgetPswdService.dart';
 import 'package:flutter/material.dart';

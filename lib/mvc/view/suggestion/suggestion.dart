@@ -70,7 +70,7 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       appBar: AppBar(
-        // automaticallyImplyLeading: false,
+       
         backgroundColor: HexColor('#0175C8'),
         iconTheme: IconThemeData(color: Colors.white),
         centerTitle: true,

@@ -18,19 +18,19 @@ class SearchAddMemberService {
         Uri.parse(urls + userId + "/" + searchAddMemberModel.uniqueUserID);
 
     Map<String, dynamic> requestBody = {
-      "famid": searchAddMemberModel.famid,
-      "name": searchAddMemberModel.name,
-      "gender": searchAddMemberModel.gender,
-      "dob": searchAddMemberModel.dob,
-      "email": searchAddMemberModel.email,
-      "userId": searchAddMemberModel.userId,
-      "image": searchAddMemberModel.image,
-      "mobileNo": searchAddMemberModel.mobileNo,
-      "uniqueUserID": searchAddMemberModel.uniqueUserID,
-      "relation": searchAddMemberModel.relation,
+      // "famid": searchAddMemberModel.famid,
+      // "name": searchAddMemberModel.name,
+      // "gender": searchAddMemberModel.gender,
+      // "dob": searchAddMemberModel.dob,
+      // "email": searchAddMemberModel.email,
+      // "userId": searchAddMemberModel.userId,
+      // "image": searchAddMemberModel.image,
+      // "mobileNo": searchAddMemberModel.mobileNo,
+      // "uniqueUserID": searchAddMemberModel.uniqueUserID,
+      // "relation": searchAddMemberModel.relation,
       "firstLevelRelation": searchAddMemberModel.firstLevelRelation,
-      "secondLevelrelation": searchAddMemberModel.secondLevelRelation,
-      "thirdLevelrelation": searchAddMemberModel.thirdLevelRelation,
+      "secondLevelRelation": searchAddMemberModel.secondLevelRelation,
+      "thirdLevelRelation": searchAddMemberModel.thirdLevelRelation,
     };
     try {
       print(url);
@@ -44,7 +44,7 @@ class SearchAddMemberService {
       );
       if (response.statusCode == 200) {
         print('POST request successful');
-        print(response.body);
+        print("search${response.body}");
         return response.body;
       } else {
         print('POST request failed with status: ${response.statusCode}');

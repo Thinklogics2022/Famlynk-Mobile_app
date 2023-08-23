@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/newsfeed_model/newsFeed_model.dart';
 import 'package:famlynk_version1/mvc/view/familyList/mutualConnection.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/comment/comment.dart';
@@ -102,14 +103,18 @@ class _FamilyNewsState extends State<FamilyNews> {
     }
   }
 
-  ImageProvider<Object> _getProfileImage(NewsFeedModel newsFeedModel) {
+  ImageProvider<Object>? _getProfileImage(NewsFeedModel newsFeedModel) {
     final String? profilePicture = newsFeedModel.profilePicture;
-
-    if (profilePicture == null || profilePicture.isEmpty) {
-      return AssetImage('assets/images/FL01.png');
-    } else {
+    if (profilePicture != null && profilePicture.isNotEmpty) {
       return CachedNetworkImageProvider(profilePicture);
     }
+    return null;
+    //   if (profilePicture == null || profilePicture.isEmpty) {
+    //     return AssetImage('assets/images/FL01.png');
+    //   } else {
+    //     return CachedNetworkImageProvider(profilePicture);
+    //   }
+    // }
   }
 
   Future<void> addComment(int index, String comment) async {
@@ -161,7 +166,22 @@ class _FamilyNewsState extends State<FamilyNews> {
                               },
                               child: ListTile(
                                 leading: CircleAvatar(
+                                          backgroundColor: backgroundColors[index % backgroundColors.length],
+
                                   backgroundImage: _getProfileImage(newsFeed),
+                                  child: _getProfileImage(newsFeed) == null
+                                  ? Text(
+                                    newsFeed.name.isNotEmpty
+                                      ? newsFeed.name[0].toUpperCase()
+                                              : "?",
+                                          style: TextStyle(
+                                            
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : null,
                                 ),
                                 title: Text(newsFeed.name),
                                 subtitle: Text(formattedDate),
