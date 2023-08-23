@@ -10,7 +10,6 @@ import 'package:http/http.dart' as http;
 class EditProfileService {
   String userId = '';
   String token = "";
-
   Future<dynamic> editProfile(ProfileUserModel data) async {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';
@@ -65,11 +64,11 @@ class EditProfileService {
     Map<String, dynamic> image = {
       "name": data.name,
       "profilePicture": data.profilePicture,
-       "userId": data.userId,
+      "userId": data.userId,
     };
     try {
       var response = await http.put(
-        Uri.parse(FamlynkServiceUrl.imgUrl +userId),
+        Uri.parse(FamlynkServiceUrl.imgUrl + userId),
         body: jsonEncode(image),
         headers: {
           "Content-Type": "application/json",

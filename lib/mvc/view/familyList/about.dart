@@ -94,11 +94,23 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                         builder: (context, child) {
                           return Transform.scale(
                             scale: _animation.value,
-                            child: CircleAvatar(
-                              radius: 65,
-                              backgroundImage:
-                                  NetworkImage(widget.image.toString()),
-                            ),
+                            child:CircleAvatar(
+  radius: 65,
+  backgroundImage: widget.image.isNotEmpty
+      ? NetworkImage(widget.image.toString())
+      : null, // Use null if no image is available
+  child: widget.image.isNotEmpty
+      ? null // Don't display text if an image is available
+      : Text(
+          widget.name.isNotEmpty ? widget.name[0].toUpperCase() : "?",
+          style: TextStyle(
+            fontSize: 50,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+),
+
                           );
                         },
                       ),

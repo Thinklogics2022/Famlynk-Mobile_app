@@ -1,4 +1,3 @@
-import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/profileService/notificationService.dart';
 import 'package:flutter/material.dart';
@@ -8,9 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../model/profile_model/notificationModel.dart';
 
 class Notifications extends StatefulWidget {
-  const Notifications({
-    super.key,
-  });
+  const Notifications({super.key});
 
   @override
   State<Notifications> createState() => _NotificationsState();
@@ -50,7 +47,6 @@ class _NotificationsState extends State<Notifications> {
         backgroundImage: NetworkImage(profileImage),
       );
     } else {
-      
       return CircleAvatar(
         radius: 45,
         // backgroundColor: HexColor('#0175C8'),
@@ -86,7 +82,7 @@ class _NotificationsState extends State<Notifications> {
               : ListView.builder(
                   itemCount: notificationModel.length,
                   itemBuilder: (context, index) {
-                    return Card(
+                    return Card(           
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Padding(

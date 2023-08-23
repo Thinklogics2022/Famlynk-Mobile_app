@@ -122,8 +122,10 @@ void _postNewsFeed() async {
       backgroundColor: Color.fromARGB(255, 223, 228, 237),
       key: _scaffoldKey,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: HexColor('#0175C8'),
-        title: Text('Add Image'),
+        title: Text('Add Image', style: TextStyle(color: Colors.white),),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -140,7 +142,7 @@ void _postNewsFeed() async {
                       backgroundImage: _getProfileImage(profileUserModel),
                     ),
                     SizedBox(width: 10),
-                    Text("${name}"),
+                    Text("${name}", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 18)),
                   ],
                 ),
               ),

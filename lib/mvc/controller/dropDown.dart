@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 const List<String> relation = <String>[
@@ -16,28 +14,23 @@ const List<String> relation = <String>[
   'grandmother',
 ];
 
-const List<String> maritalStatus = <String>[
-  "Single",
-  "Marrried"
-];
+const List<String> maritalStatus = <String>["Single", "Marrried"];
 
-
- List<Color> backgroundColors = [
-  Color.fromARGB(255, 207, 70, 70), 
+List<Color> backgroundColors = [
+  Color.fromARGB(255, 207, 70, 70),
   Color.fromARGB(255, 96, 183, 100),
   Color.fromARGB(255, 74, 121, 159),
-  Color.fromARGB(255, 59, 148, 62), 
-  Color.fromARGB(255, 210, 155, 72), 
-  Color.fromARGB(255, 114, 77, 179), 
- 
+  Color.fromARGB(255, 59, 148, 62),
+  Color.fromARGB(255, 210, 155, 72),
+  Color.fromARGB(255, 114, 77, 179),
 ];
 
-
 class NameAvatar extends StatelessWidget {
-  final String name;
+  final String? name;
   final double radius;
+  final String? img;
 
-  NameAvatar({required this.name, this.radius = 30.0});
+  NameAvatar({ this.name, this.radius = 30, this.img });
 
   Color _getRandomColor() {
     final colors = [
@@ -54,7 +47,7 @@ class NameAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final initials = name.isNotEmpty ? name[0].toUpperCase() : '?';
+    final initials = name!.isNotEmpty ? name![0].toUpperCase() : '?';
 
     return CircleAvatar(
       radius: radius,
@@ -69,5 +62,3 @@ class NameAvatar extends StatelessWidget {
     );
   }
 }
-
-

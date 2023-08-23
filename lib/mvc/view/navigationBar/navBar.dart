@@ -1,6 +1,5 @@
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/notificationModel.dart';
-import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/familyTree/famTree.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/newsFeed.dart';
 import 'package:famlynk_version1/mvc/view/profile/notification/notification.dart';
@@ -38,7 +37,6 @@ class _NavBarState extends State<NavBar> {
     FamlynkNewsFeed(),
     FamilyList(),
     FamilyTree(),
-           
     Profile(),
   ];
 
@@ -61,11 +59,6 @@ class _NavBarState extends State<NavBar> {
       }
     }
   }
-  //  void _updateBadgeCount() {
-  //   setState(() {
-  //     _badgeCount = notificationModel.length;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -268,4 +261,3 @@ class _NavBarState extends State<NavBar> {
     );
   }
 }
-

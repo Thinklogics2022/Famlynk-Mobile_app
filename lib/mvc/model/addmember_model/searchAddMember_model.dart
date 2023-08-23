@@ -7,15 +7,15 @@ String searchAddMemberToJson(SearchAddMember data) =>
 
 class SearchAddMember {
   String? famid;
-  String name;
-  String gender;
-  String dob;
-  String email;
-  String userId;
-  String image;
-  String mobileNo;
+  String? name;
+  String? gender;
+  String? dob;
+  String? email;
+  String? userId;
+  String? image;
+  String? mobileNo;
   String uniqueUserID;
-  String relation;
+  String? relation;
   String firstLevelRelation;
   String secondLevelRelation;
   String thirdLevelRelation;
@@ -31,15 +31,15 @@ class SearchAddMember {
 
   SearchAddMember({
     this.famid,
-    required this.name,
-    required this.gender,
-    required this.dob,
-    required this.email,
-    required this.userId,
-    required this.image,
-    required this.mobileNo,
+     this.name,
+     this.gender,
+     this.dob,
+     this.email,
+     this.userId,
+     this.image,
+     this.mobileNo,
     required this.uniqueUserID,
-    required this.relation,
+     this.relation,
     required this.firstLevelRelation,
     required this.secondLevelRelation,
     required this.thirdLevelRelation,

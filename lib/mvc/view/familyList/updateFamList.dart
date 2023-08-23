@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class UpdateFamList extends StatefulWidget {
   UpdateFamList({super.key, required this.updateMember});
 

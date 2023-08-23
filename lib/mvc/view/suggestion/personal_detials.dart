@@ -33,7 +33,7 @@ class UserDetails extends StatefulWidget {
     required this.email,
     required this.maritalStatus,
     required this.hometown,
-    this.profileImage,
+    required this.profileImage,
     required this.address,
     required this.uniqueUserID,
     required this.mobileNo,
@@ -45,7 +45,7 @@ class UserDetails extends StatefulWidget {
   final String email;
   final String maritalStatus;
   final String hometown;
-  final String? profileImage;
+  final String profileImage;
   final String address;
   final String uniqueUserID;
   final String mobileNo;
@@ -59,7 +59,7 @@ class _UserDetailsState extends State<UserDetails> {
   String userId = '';
   String selectedSecondLevelRelation = '';
   String selectedThirdLevelRelation = '';
-
+  // String? profileImage;
   List<String> secondLevelRelationList = [];
   List<String> thirdLevelRelationList = [];
   Set<String> secondLevelRelationSet = {};
@@ -103,16 +103,16 @@ class _UserDetailsState extends State<UserDetails> {
       SearchAddMemberService searchAddMemberService = SearchAddMemberService();
 
       SearchAddMember searchAddMemberModel = SearchAddMember(
-        famid: '',
-        name: widget.name,
-        gender: widget.gender,
-        dob: widget.dateOfBirth,
-        email: widget.email,
-        userId: userId,
-        image: widget.profileImage!,
-        mobileNo: widget.mobileNo,
+        // famid: '',
+        // name: widget.name,
+        // gender: widget.gender,
+        // dob: widget.dateOfBirth,
+        // email: widget.email,
+        // userId: userId,
+        // image: widget.profileImage,
+        // mobileNo: widget.mobileNo,
         uniqueUserID: widget.uniqueUserID,
-        relation: '',
+        // relation: '',
         firstLevelRelation: selectedFirstLevelRelation,
         secondLevelRelation: selectedSecondLevelRelation,
         thirdLevelRelation: selectedThirdLevelRelation,
@@ -379,6 +379,7 @@ class _UserDetailsState extends State<UserDetails> {
                     SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
+                        // ignore: unnecessary_null_comparison
                         if (selectedFirstLevelRelation == null ||
                             selectedFirstLevelRelation.isEmpty ||
                             selectedFirstLevelRelation == "none") {

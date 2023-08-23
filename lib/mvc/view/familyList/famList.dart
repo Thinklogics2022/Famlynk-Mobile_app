@@ -20,8 +20,6 @@ class _FamilyListState extends State<FamilyList> {
   ShowFamilyMemberService _familyMemberService = ShowFamilyMemberService();
   String userId = "";
 
- 
-
   @override
   void initState() {
     super.initState();
@@ -47,12 +45,8 @@ class _FamilyListState extends State<FamilyList> {
   }
 
   Widget defaultImage(String image, String name, int index) {
-    if (image.isNotEmpty) {
-      return CircleAvatar(
-        radius: 40,
-        backgroundImage: NetworkImage(image),
-      );
-    } else {
+    // ignore: unnecessary_null_comparison
+    if ( image.isEmpty ||  image == "null") {
       return CircleAvatar(
         radius: 40,
         backgroundColor: backgroundColors[index % backgroundColors.length],
@@ -64,6 +58,11 @@ class _FamilyListState extends State<FamilyList> {
             color: Colors.white,
           ),
         ),
+      );
+    } else {
+      return CircleAvatar(
+        radius: 40,
+        backgroundImage: NetworkImage(image),
       );
     }
   }
@@ -105,9 +104,7 @@ class _FamilyListState extends State<FamilyList> {
                                 children: [
                                   Container(
                                     child: defaultImage(
-                                      familyList[index]
-                                          .image
-                                          .toString(),
+                                      familyList[index].image.toString(),
                                       familyList[index].name.toString(),
                                       index, // Pass the index here
                                     ),
@@ -152,8 +149,8 @@ class _FamilyListState extends State<FamilyList> {
                                               },
                                               child: Text(
                                                 "Edit",
-                                                style:
-                                                    TextStyle(color: Colors.blue),
+                                                style: TextStyle(
+                                                    color: Colors.blue),
                                               ),
                                             ),
                                           ),
@@ -172,8 +169,8 @@ class _FamilyListState extends State<FamilyList> {
                                               },
                                               child: Text(
                                                 "remove",
-                                                style:
-                                                    TextStyle(color: Colors.red),
+                                                style: TextStyle(
+                                                    color: Colors.red),
                                               ),
                                             ),
                                           ),
@@ -192,8 +189,8 @@ class _FamilyListState extends State<FamilyList> {
                                               },
                                               child: Text(
                                                 "Delete",
-                                                style:
-                                                    TextStyle(color: Colors.blue),
+                                                style: TextStyle(
+                                                    color: Colors.blue),
                                               ),
                                             ),
                                           ),
