@@ -7,7 +7,6 @@ import 'package:famlynk_version1/services/familyTreeService/familyTree_service.d
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SecondLevelRelation extends StatefulWidget {
   const SecondLevelRelation({super.key});
@@ -91,7 +90,7 @@ class _SecondLevelRelationState extends State<SecondLevelRelation> {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Transform.scale(
-              scale: _zoomLevel, // Set this variable to control the zoom level
+              scale: _zoomLevel,
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +99,6 @@ class _SecondLevelRelationState extends State<SecondLevelRelation> {
                     //   'Zoom: ${(_zoomLevel * 100).toStringAsFixed(0)}%',
                     //   style: TextStyle(fontSize: 18),
                     // ),
-                    // Your header elements here
                     isLoading
                         ? Container(
                             height: 90,
@@ -180,45 +178,12 @@ class FamilyTreePainter extends CustomPainter {
       this.sons,
       this.daughters);
 
-  Future<ui.Image?> loadImage(String imagePath) async {
-    final imageProvider = NetworkImage(imagePath);
-    final imageStream = imageProvider.resolve(ImageConfiguration.empty);
-    final completer = Completer<ui.Image>();
-
-    final listener = ImageStreamListener((imageInfo, synchronousCall) {
-      completer.complete(imageInfo.image);
-    });
-
-    imageStream.addListener(listener);
-
-    try {
-      final image = await completer.future;
-      imageStream.removeListener(listener);
-      return image;
-    } catch (e) {
-      print("Image loading error: $e");
-      return null;
-    }
-  }
-
   @override
   void paint(Canvas canvas, Size size) async {
-    final paint = Paint()..strokeWidth = 2.5;
 
     for (int i = 0; i < familyTreeDataList.length; i++) {
-      Future<ui.Image> loadImage(String imageUrl) async {
-        print("Loading image: $imageUrl");
-        final NetworkImage imageProvider = NetworkImage(imageUrl);
-        final ImageStream stream =
-            imageProvider.resolve(ImageConfiguration.empty);
-        final Completer<ui.Image> completer = Completer<ui.Image>();
-        stream.addListener(ImageStreamListener((ImageInfo info, bool _) {
-          completer.complete(info.image);
-        }));
-        return completer.future;
-      }
-
       if (user.contains(familyTreeDataList[i])) {
+        final paint = Paint()..strokeWidth = 2.5;
         final centerX = size.width * 0.5;
         final centerY = size.height * 0.523;
         paint
@@ -239,10 +204,23 @@ class FamilyTreePainter extends CustomPainter {
           35,
           glowPaint,
         );
-       
+        final image = imageCache[user[0].image];
+        if (image == null) {
+          loadImage(user[0].image.toString()).then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[user[0].image.toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, centerX, centerY);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, centerX, centerY);
+        }
+
         // Draw the user's name
         TextSpan userTextSpan = TextSpan(
-          text: user[0].name,
+          text: user[0].name!.length > 5
+              ? user[0].name!.substring(0, 5)
+              : user[0].name,
           style: TextStyle(
               fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -267,14 +245,15 @@ class FamilyTreePainter extends CustomPainter {
         relationTextPainter.layout();
         relationTextPainter.paint(
           canvas,
-          Offset(centerX - 20, centerY + 46), 
+          Offset(centerX - 20, centerY + 46),
         );
       }
 
       // Draw father's lines
       if (fathers.contains(familyTreeDataList[i])) {
+        final paint = Paint()..strokeWidth = 2.5;
         final centerX = size.width * 0.5;
-        final centerY = size.height * 0.110 + i * 2;
+        final centerY = size.height * 0.100 + i * 0.1;
         final fatherIndex = fathers.indexOf(familyTreeDataList[i]);
         final fatherX = centerX - 51 - fatherIndex * 70.0;
 
@@ -307,6 +286,17 @@ class FamilyTreePainter extends CustomPainter {
           35,
           glowPaint,
         );
+        final image = imageCache[fathers[fatherIndex].image];
+        if (image == null) {
+          loadImage(fathers[fatherIndex].image.toString()).then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[fathers[fatherIndex].image.toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, fatherX - 30, centerY);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, fatherX - 30, centerY);
+        }
 
         // Draw father's name
         TextSpan fatherTextSpan = TextSpan(
@@ -342,7 +332,7 @@ class FamilyTreePainter extends CustomPainter {
       //mother
       if (mothers.contains(familyTreeDataList[i])) {
         final centerX = size.width * 0.5;
-        final centerY = size.height * 0.130 + i * 2;
+        final centerY = size.height * 0.10 + i * 0.2;
         final paint = Paint()..strokeWidth = 2.5;
         final motherIndex = mothers.indexOf(familyTreeDataList[i]);
         final motherX = centerX + 60 + motherIndex * 80.0;
@@ -380,22 +370,18 @@ class FamilyTreePainter extends CustomPainter {
         );
 
         // Draw the image inside the circle
-        final image = imageCache[mothers[motherIndex].uniqueUserID];
-        if (image != null) {
-          final imageSize = Size(60, 60);
-          final imageRect = Rect.fromCenter(
-            center: Offset(motherX, centerY),
-            width: imageSize.width,
-            height: imageSize.height,
-          );
-          canvas.drawImageRect(
-            image,
-            Rect.fromLTRB(
-                0, 0, image.width.toDouble(), image.height.toDouble()),
-            imageRect,
-            paint,
-          );
+        final image = imageCache[mothers[motherIndex].image];
+        if (image == null) {
+          loadImage(mothers[motherIndex].image.toString()).then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[mothers[motherIndex].image.toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, motherX + 30, centerY);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, motherX + 30, centerY);
         }
+
         TextSpan motherTextSpan = TextSpan(
           text: mothers[motherIndex].name,
           style: TextStyle(
@@ -443,11 +429,11 @@ class FamilyTreePainter extends CustomPainter {
         );
 
         // Draw horizontal line extending to the left
-        final horizontalLineX = size.width * 0.36 - brotherIndex * 50.0;
+        final horizontalLineX = size.width * 0.36 - brotherIndex * 70.0;
 
         canvas.drawLine(
-          Offset(size.width * 0.5, centerY),
-          Offset(centerX, centerY),
+          Offset(size.width * 0.6, centerY),
+          Offset(horizontalLineX, centerY),
           paint,
         );
         canvas.drawLine(
@@ -470,7 +456,7 @@ class FamilyTreePainter extends CustomPainter {
         // Draw the bottom line of the Γ shape
         canvas.drawLine(
           Offset(brotherX, brotherY),
-          Offset(brotherX, brotherY + 20),
+          Offset(brotherX, brotherY + 30),
           paint,
         );
 
@@ -481,8 +467,8 @@ class FamilyTreePainter extends CustomPainter {
 
         // Draw the circle at the end of the bottom line
         canvas.drawCircle(
-          Offset(brotherX, brotherY + 40),
-          20,
+          Offset(brotherX, brotherY + 56),
+          27,
           paint,
         );
         final Paint glowPaint = Paint()
@@ -490,56 +476,23 @@ class FamilyTreePainter extends CustomPainter {
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, 12);
 
         canvas.drawCircle(
-          Offset(brotherX, brotherY + 40),
-          25,
+          Offset(brotherX, brotherY + 50),
+          32,
           glowPaint,
         );
 
         final image = imageCache[brothers[brotherIndex].image];
-        if (image != null) {
-          final imageSize = Size(60, 60);
-          final imageRect = Rect.fromCenter(
-            center: Offset(brotherX, brotherY),
-            width: imageSize.width,
-            height: imageSize.height,
-          );
-          canvas.drawImageRect(
-            image,
-            Rect.fromLTRB(
-                0, 0, image.width.toDouble(), image.height.toDouble()),
-            imageRect,
-            paint,
-          );
+        if (image == null) {
+          loadImage(brothers[brotherIndex].image.toString())
+              .then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[brothers[brotherIndex].image.toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, brotherX, brotherY + 56);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, brotherX, brotherY + 56);
         }
-        // // Draw brother's image if available
-        // final imageFuture = loadImage(brothers[brotherIndex].image.toString());
-
-        // // Use a FutureBuilder to paint the image when it's loaded
-        // FutureBuilder<ui.Image?>(
-        //   future: imageFuture,
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.done &&
-        //         snapshot.data != null) {
-        //       final image = snapshot.data!;
-        //       final imageSize = Size(60, 60); // Adjust size as needed
-        //       final imageRect = Rect.fromCenter(
-        //         center: Offset(brotherX - 30, brotherY + 60),
-        //         width: imageSize.width,
-        //         height: imageSize.height,
-        //       );
-        //       canvas.drawImageRect(
-        //         image,
-        //         Rect.fromLTRB(
-        //             0, 0, image.width.toDouble(), image.height.toDouble()),
-        //         imageRect,
-        //         paint,
-        //       );
-        //     }
-        //     // Return an empty container if the image is not yet loaded
-        //     return Container();
-        //   },
-        // );
-
         TextSpan brotherTextSpan = TextSpan(
           text: brothers[brotherIndex].name!.length > 5
               ? brothers[brotherIndex].name!.substring(0, 5)
@@ -554,7 +507,7 @@ class FamilyTreePainter extends CustomPainter {
         brotherTextPainter.layout();
         brotherTextPainter.paint(
           canvas,
-          Offset(brotherX - 14, centerY + 65),
+          Offset(brotherX - 14, centerY + 88),
         );
 
         TextSpan relationTextSpan = TextSpan(
@@ -569,7 +522,7 @@ class FamilyTreePainter extends CustomPainter {
         relationTextPainter.layout();
         relationTextPainter.paint(
           canvas,
-          Offset(brotherX - 14, centerY + 75),
+          Offset(brotherX - 14, centerY + 99),
         );
       }
 
@@ -577,7 +530,7 @@ class FamilyTreePainter extends CustomPainter {
       if (sisters.contains(familyTreeDataList[i])) {
         final paint = Paint()..strokeWidth = 2.5;
         final centerX = size.width * 0.5;
-        final centerY = size.height * 0.300 + i * 0.1;
+        final centerY = size.height * 0.300 + i * 0.07;
         final sisterIndex = sisters.indexOf(familyTreeDataList[i]);
 
         // Draw vertical line to right
@@ -588,7 +541,7 @@ class FamilyTreePainter extends CustomPainter {
         );
 
         // Draw horizontal line extending to the right
-        final horizontalLineX = size.width * 0.65 + sisterIndex * 50.0;
+        final horizontalLineX = size.width * 0.65 + sisterIndex * 70.0;
         canvas.drawLine(
           Offset(size.width * 0.6, centerY),
           Offset(horizontalLineX, centerY),
@@ -614,7 +567,7 @@ class FamilyTreePainter extends CustomPainter {
         // Draw the bottom line of the Γ shape
         canvas.drawLine(
           Offset(sisterX, sisterY),
-          Offset(sisterX, sisterY + 20),
+          Offset(sisterX, sisterY + 30),
           paint,
         );
 
@@ -625,8 +578,8 @@ class FamilyTreePainter extends CustomPainter {
 
         // Draw the circle at the end of the bottom line
         canvas.drawCircle(
-          Offset(sisterX, sisterY + 40),
-          20,
+          Offset(sisterX, sisterY + 56),
+          27,
           paint,
         );
         final Paint glowPaint = Paint()
@@ -634,70 +587,22 @@ class FamilyTreePainter extends CustomPainter {
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, 12);
 
         canvas.drawCircle(
-          Offset(sisterX, sisterY + 40),
-          25,
+          Offset(sisterX, sisterY + 50),
+          32,
           glowPaint,
         );
-
-        final networkImage = NetworkImage('${sisters[sisterIndex].image}');
-        final imageStream = networkImage.resolve(ImageConfiguration.empty);
-        final listener = ImageStreamListener((info, synchronousCall) async {
-          try {
-            final ByteData? data =
-                await info.image.toByteData(format: ImageByteFormat.png);
-            if (data != null) {
-              final Uint8List uint8list = data.buffer.asUint8List();
-              final uiImage = await decodeImageFromList(uint8list);
-              final imageSize = Size(
-                uiImage.width.toDouble(),
-                uiImage.height.toDouble(),
-              );
-
-              final imageRect = Rect.fromCenter(
-                center: Offset(sisterX - 30, sisterY + 60),
-                width: imageSize.width,
-                height: imageSize.height,
-              );
-
-              paintImage(
-                canvas: canvas,
-                rect: imageRect,
-                image: uiImage,
-                fit: BoxFit.cover,
-              );
-            }
-          } catch (e) {
-            print('Image loading error: $e');
-          }
-        });
-
-        imageStream.addListener(listener);
-
         // Draw sister's image inside the circle
-        // final imagess = imageCache[sisters[sisterIndex].image];
-        // print("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-        // print(imagess);
-
-        // if (imagess != null) {
-        //   final imageSize = Size(60, 60);
-        //   final imageRect = Rect.fromCenter(
-        //     center: Offset(sisterX - 30, sisterY + 60),
-        //     width: imageSize.width,
-        //     height: imageSize.height,
-        //   );
-        //   // CustomPaint(
-        //   //   painter: MyCustomPainter(
-        //   //     imageUrl: "${imagess}",
-        //   //   ),
-        //   //   size: Size(30, 30),
-        //   // );
-        //   canvas.drawImageRect(
-        //     imagess,
-        //     Rect.fromLTRB(10, 10, 10, 10),
-        //     imageRect,
-        //     paint,
-        //   );
-        // }
+        final image = imageCache[sisters[sisterIndex].image];
+        if (image == null) {
+          loadImage(sisters[sisterIndex].image.toString()).then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[sisters[sisterIndex].image.toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, sisterX, sisterY + 56);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, sisterX, sisterY + 56);
+        }
 
         TextSpan sisterTextSpan = TextSpan(
           text: sisters[sisterIndex].name!.length > 5
@@ -713,7 +618,7 @@ class FamilyTreePainter extends CustomPainter {
         sisterTextPainter.layout();
         sisterTextPainter.paint(
           canvas,
-          Offset(sisterX - 14, centerY + 65),
+          Offset(sisterX - 14, centerY + 88),
         );
         TextSpan relationTextSpan = TextSpan(
           text: sisters[sisterIndex].relationShip,
@@ -727,7 +632,7 @@ class FamilyTreePainter extends CustomPainter {
         relationTextPainter.layout();
         relationTextPainter.paint(
           canvas,
-          Offset(sisterX - 14, centerY + 75),
+          Offset(sisterX - 14, centerY + 99),
         );
       }
 
@@ -766,6 +671,17 @@ class FamilyTreePainter extends CustomPainter {
           35,
           glowPaint,
         );
+        final image = imageCache[wife[wifeIndex].image];
+        if (image == null) {
+          loadImage(wife[wifeIndex].image.toString()).then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[wife[wifeIndex].image.toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, wifeX + 29, wifeY);
+            }
+          });
+        }else{
+           _drawImage(canvas, size, image, i, wifeX + 29, wifeY);
+        }
 
         // Draw wife's name
         TextSpan wifeTextSpan = TextSpan(
@@ -822,7 +738,7 @@ class FamilyTreePainter extends CustomPainter {
       if (sons.contains(familyTreeDataList[i])) {
         final paint = Paint()..strokeWidth = 2.5;
         final centerX = size.width * 0.9;
-        final centerY = size.height * 0.6 + i * 10;
+        final centerY = size.height * 0.5 + i * 18;
         final sonsIndex = sons.indexOf(familyTreeDataList[i]);
 
         // Draw vertical line to left
@@ -871,38 +787,35 @@ class FamilyTreePainter extends CustomPainter {
     }
   }
 
+  void _drawImage(Canvas canvas, Size size, ui.Image image, int index,
+      double centerX, double centerY) {
+
+    final imageSize = Size(60, 60);
+    final imageRect = Rect.fromCenter(
+      center: Offset(centerX, centerY),
+      width: imageSize.width,
+      height: imageSize.height,
+    );
+    canvas.drawImageRect(
+      image,
+      Rect.fromLTRB(0, 0, image.width.toDouble(), image.height.toDouble()),
+      imageRect,
+      Paint(),
+    );
+  }
+
+  Future<ui.Image?> loadImage(String imageUrl) async {
+    final completer = Completer<ui.Image>();
+
+    final image = NetworkImage(imageUrl);
+    final stream = image.resolve(ImageConfiguration.empty);
+    stream.addListener(ImageStreamListener((info, _) {
+      completer.complete(info.image);
+    }));
+
+    return completer.future;
+  }
+
   @override
   bool shouldRepaint(FamilyTreePainter oldDelegate) => false;
-}
-
-class MyCustomPainter extends CustomPainter {
-  final String imageUrl; // URL of the network image
-
-  MyCustomPainter({required this.imageUrl});
-
-  @override
-  void paint(Canvas canvas, Size size) async {
-    print("sssssssssssssssssssssssssssssssssssssssssss");
-    print(imageUrl);
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
-    final imageProvider = NetworkImage(imageUrl);
-
-    final ImageStream stream = imageProvider.resolve(ImageConfiguration.empty);
-    final listener = ImageStreamListener((info, synchronousCall) {
-      if (info.image != null) {
-        paintImage(
-          canvas: canvas,
-          rect: rect,
-          image: info.image!,
-          fit: BoxFit.cover,
-        );
-      }
-    });
-    stream.addListener(listener);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
 }

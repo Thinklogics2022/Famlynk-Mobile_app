@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:famlynk_version1/mvc/model/familyTree_model/familyTree_model.dart';
 import 'package:famlynk_version1/services/familyTreeService/familyTree_service.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
 class ThirdLevelRelation extends StatefulWidget {
   const ThirdLevelRelation({super.key});
@@ -27,6 +30,11 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
   void initState() {
     super.initState();
     fetchFamilyTreeData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> fetchFamilyTreeData() async {
@@ -85,7 +93,26 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
             child: Transform.scale(
               scale: _zoomLevel,
               child: Container(
-                child: Text("data"),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    isLoading
+                        ? Container(
+                            height: 90,
+                            width: 90,
+                            child: CircularProgressIndicator(
+                              color: Colors.lightBlueAccent,
+                            ),
+                          )
+                        : CustomPaint(
+                            size: Size(500, 700),
+                            painter: FamlynkPainter(
+                              familyTreeDataList,
+                              user,
+                            ),
+                          )
+                  ],
+                ),
               ),
             ),
           ),
@@ -115,4 +142,104 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
       ),
     );
   }
+}
+
+class FamlynkPainter extends CustomPainter {
+  List<FamilyTreeModel> familyTreeDataList;
+  List<FamilyTreeModel> user;
+  final Map<String, ui.Image> imageCache = {};
+  FamlynkPainter(
+    this.familyTreeDataList,
+    this.user,
+  );
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (int i = 0; i < familyTreeDataList.length; i++) {
+      if (user.contains(familyTreeDataList[i])) {
+        final paint = Paint()..strokeWidth = 2.5;
+        final centerX = size.width * 0.5;
+        final centerY = size.height * 0.523;
+        paint
+          ..color = Colors.blue // Change color as needed
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1.6;
+        canvas.drawCircle(
+          Offset(centerX, centerY),
+          30,
+          paint,
+        );
+        final Paint glowPaint = Paint()
+          ..color = Colors.blue.withOpacity(0.3)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, 12);
+
+        canvas.drawCircle(
+          Offset(centerX, centerY),
+          35,
+          glowPaint,
+        );
+        
+        // Draw the user's name
+        TextSpan userTextSpan = TextSpan(
+          text: user[0].name!.length > 5
+              ? user[0].name!.substring(0, 5)
+              : user[0].name,
+          style: TextStyle(
+              fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter userTextPainter = TextPainter(
+          text: userTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        userTextPainter.layout();
+        userTextPainter.paint(
+          canvas,
+          Offset(centerX - 20, centerY + 35), // Adjust the position as needed
+        );
+        TextSpan relationTextSpan = TextSpan(
+          text: user[0].relationShip,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter relationTextPainter = TextPainter(
+          text: relationTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        relationTextPainter.layout();
+        relationTextPainter.paint(
+          canvas,
+          Offset(centerX - 20, centerY + 46),
+        );
+      }
+    }
+  }
+
+  void _drawImage(Canvas canvas, ui.Image image, double centerX, double centerY) {
+    final imageSize = Size(60, 60);
+    final imageRect = Rect.fromCenter(
+      center: Offset(centerX, centerY),
+      width: imageSize.width,
+      height: imageSize.height,
+    );
+    canvas.drawImageRect(
+      image,
+      Rect.fromLTRB(0, 0, image.width.toDouble(), image.height.toDouble()),
+      imageRect,
+      Paint(),
+    );
+  }
+   Future<ui.Image?> loadImage(String imageUrl) async {
+    final completer = Completer<ui.Image>();
+
+    final image = NetworkImage(imageUrl);
+    final stream = image.resolve(ImageConfiguration.empty);
+    stream.addListener(ImageStreamListener((info, _) {
+      completer.complete(info.image);
+    }));
+
+    return completer.future;
+  }
+
+  @override
+  bool shouldRepaint(FamlynkPainter oldDelegate) => false;
 }
