@@ -5,6 +5,7 @@ import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/otp/verifyOtp.dart';
 import 'package:famlynk_version1/services/login&registerService/register_service.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -55,7 +56,8 @@ class _RegisterPageState extends State<RegisterPage> {
     });
   }
 
-  
+    bool _isLoading = false;
+
   var profileBase64;
   bool isPasswordVisible = false;
   bool isConfirmPswdVisible = false;
@@ -375,13 +377,53 @@ class _RegisterPageState extends State<RegisterPage> {
                       }),
                   SizedBox(height: 35),
                   Container(
-                      child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: myProperties.buttonColor,
-                    ),
-                    onPressed: () async {
-                      RegisterService registerService = RegisterService();
-                      if (_formKey.currentState!.validate()) {
+                    child:  ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: HexColor('#0175C8'),
+                                ),
+                                onPressed: _isLoading ? null : _submitForm,
+                                child: _isLoading
+                                    ? CircularProgressIndicator(
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.blue),
+                                      )
+                                    : Text(
+                                        'Register',
+                                        style: TextStyle(color: Colors.white, fontSize: 22),
+                                      ),
+                              ),
+                  )
+                  // Container(
+                  //     child: ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: myProperties.buttonColor,
+                  //   ),
+                  //   onPressed: _isLoading ? null : _submitForm(),
+                    
+                  //  ? CircularProgressIndicator(
+                  //                       valueColor: AlwaysStoppedAnimation<Color>(
+                  //                           Colors.blue),
+                  //                     )
+                  //                   : Text(
+                  //                       'Login',
+                  //                       style: TextStyle(color: Colors.white, fontSize: 22),
+                  //                     ),
+                  // )),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Future<void> _submitForm() async {
+     setState(() {
+    _isLoading = true;
+  });
+                          RegisterService registerService = RegisterService();
+
+    if (_formKey.currentState!.validate()) {
                         RegisterModel registerModel = RegisterModel(
                             id: "",
                             uniqueUserID: "",
@@ -414,22 +456,5 @@ class _RegisterPageState extends State<RegisterPage> {
                           );
                         }
                       }
-                    },
-                    child: Text(
-                      'Register',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  )),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

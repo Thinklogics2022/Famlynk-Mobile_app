@@ -29,7 +29,6 @@ class _NavBarState extends State<NavBar> {
   @override
   void initState() {
     super.initState();
-
     fetchAPI();
   }
 
@@ -251,11 +250,11 @@ class _NavBarState extends State<NavBar> {
             label: 'Family Tree',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesomeIcons.personCircleCheck,
-            ),
-            label: 'Profile',
-          ),
+              icon: Icon(
+                FontAwesomeIcons.personCircleCheck,
+                size: 25.0,
+              ),
+              label: 'Profile'),
         ],
       ),
     );

@@ -1,8 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/notificationModel.dart';
+import 'package:famlynk_version1/mvc/model/profile_model/profileModel.dart';
 import 'package:famlynk_version1/mvc/view/addmember/addMember.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/resetPassword.dart';
-import 'package:famlynk_version1/mvc/model/profile_model/profileModel.dart';
 import 'package:famlynk_version1/mvc/view/myTimeLine/myTimeLine.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/mvc/view/profile/edit.dart';
@@ -11,43 +13,30 @@ import 'package:famlynk_version1/mvc/view/profile/notification/notification.dart
 import 'package:famlynk_version1/mvc/view/profile/userDetails.dart';
 import 'package:famlynk_version1/services/profileService/notificationService.dart';
 import 'package:famlynk_version1/services/profileService/profile_Service.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  const Profile({Key? key}) : super(key: key);
 
   @override
-  State<Profile> createState() => _ProfileState();
+  _ProfileState createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
   int notificationCount = 0;
-
   List<NotificationModel> notificationModel = [];
   NotificationService notificationService = NotificationService();
   ProfileUserModel profileUserModel = ProfileUserModel();
   ProfileUserService profileUserService = ProfileUserService();
   bool isLoading = true;
-  var imageFile;
+
   @override
   void initState() {
     super.initState();
     _fetchMembers();
+    fetchAPI();
   }
 
-  ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
-    if (profileUserModel.profileImage == null ||
-        profileUserModel.profileImage!.isEmpty) {
-      return AssetImage('assets/images/FL01.png');
-    } else {
-      return CachedNetworkImageProvider(
-          profileUserModel.profileImage.toString());
-    }
-  }
-
-  _fetchMembers() async {
+  Future<void> _fetchMembers() async {
     try {
       profileUserModel = await profileUserService.fetchMembersByUserId();
       setState(() {
@@ -69,6 +58,17 @@ class _ProfileState extends State<Profile> {
       } catch (e) {
         print(e);
       }
+    }
+  }
+
+  ImageProvider<Object>? _getProfileImage(ProfileUserModel profileUserModel) {
+    if (profileUserModel.profileImage == null ||
+        profileUserModel.profileImage!.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
+    } else {
+      return CachedNetworkImageProvider(
+        profileUserModel.profileImage.toString(),
+      );
     }
   }
 
@@ -156,12 +156,14 @@ class _ProfileState extends State<Profile> {
                                 TextButton(
                                   onPressed: () {
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditProfilePage(
-                                                    profileUserModel:
-                                                        profileUserModel)));
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              EditProfilePage(
+                                                profileUserModel:
+                                                    profileUserModel,
+                                              )),
+                                    );
                                   },
                                   child: Text(
                                     "Edit Profile",
@@ -227,10 +229,10 @@ class _ProfileState extends State<Profile> {
                                 GestureDetector(
                                   onTap: () async {
                                     await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                Notifications()));
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Notifications()),
+                                    );
                                   },
                                   child: Row(
                                     children: [
@@ -334,9 +336,7 @@ class CustomListTile extends StatelessWidget {
             icon,
             color: HexColor('#FF6F20'),
           ),
-          SizedBox(
-            width: 15.0,
-          ),
+          SizedBox(width: 15),
           Text(
             "$text",
             style: TextStyle(fontSize: 16.0),

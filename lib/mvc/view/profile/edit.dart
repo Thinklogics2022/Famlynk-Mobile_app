@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
-import 'package:famlynk_version1/mvc/model/login_model/register_model.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/imageModel.dart';
 import 'package:famlynk_version1/mvc/model/profile_model/profileModel.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
@@ -24,6 +23,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final firebase_storage.Reference storageRef =
       firebase_storage.FirebaseStorage.instance.ref();
   File? imageFile;
+  bool _isLoading = false;
 
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
@@ -103,7 +103,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
               buildTextField("Full Name", nameController, Icons.person),
               buildTextField("E-mail", emailController, Icons.email),
               buildTextField(
-                  "Mobile Number", mobileNumberController, Icons.phone),
+                "Mobile Number",
+                mobileNumberController,
+                Icons.phone,
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -229,17 +232,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               SizedBox(height: 35),
               ElevatedButton(
-                  onPressed: submitForm,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: HexColor('#0175C8'),
-                  ),
-                  child: Text(
-                    "Update",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                    ),
-                  )),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: HexColor('#0175C8'),
+                ),
+                onPressed: _isLoading ? null : submitForm,
+                child: _isLoading
+                    ? CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      )
+                    : Text(
+                        'Update',
+                        style: TextStyle(color: Colors.white, fontSize: 22),
+                      ),
+              ),
+              // ElevatedButton(
+              //     onPressed: submitForm,
+              //     style: ElevatedButton.styleFrom(
+              //       backgroundColor: HexColor('#0175C8'),
+              //     ),
+              //     child: Text(
+              //       "Update",
+              //       style: TextStyle(
+              //         fontSize: 20,
+              //         color: Colors.white,
+              //       ),
+              //     )),
               SizedBox(height: 35),
             ],
           ),

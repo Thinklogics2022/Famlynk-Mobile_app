@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/profileService/notificationService.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,6 @@ class _NotificationsState extends State<Notifications> {
     if (notificationModel.isEmpty) {
       try {
         notificationModel = await notificationService.notificationService();
-
         setState(() {
           isLoaded = true;
         });
@@ -40,7 +40,7 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
-  Widget buildProfileImage(String profileImage, String name) {
+  Widget buildProfileImage(String profileImage, String name, int index) {
     if (profileImage.isNotEmpty) {
       return CircleAvatar(
         radius: 45,
@@ -49,7 +49,7 @@ class _NotificationsState extends State<Notifications> {
     } else {
       return CircleAvatar(
         radius: 45,
-        // backgroundColor: HexColor('#0175C8'),
+        backgroundColor: backgroundColors[index % backgroundColors.length],
         child: Text(
           name.isNotEmpty ? name[0].toUpperCase() : '?',
           style: TextStyle(
@@ -68,6 +68,7 @@ class _NotificationsState extends State<Notifications> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: HexColor('#0175C8'),
+        centerTitle: true,
         title: Text(
           'Family Request',
           style: TextStyle(color: Colors.white),
@@ -82,7 +83,7 @@ class _NotificationsState extends State<Notifications> {
               : ListView.builder(
                   itemCount: notificationModel.length,
                   itemBuilder: (context, index) {
-                    return Card(           
+                    return Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Padding(
@@ -91,11 +92,13 @@ class _NotificationsState extends State<Notifications> {
                             children: [
                               Container(
                                 child: buildProfileImage(
-                                  notificationModel[index]
-                                      .profileImage
-                                      .toString(),
-                                  notificationModel[index].fromName.toString(),
-                                ),
+                                    notificationModel[index]
+                                        .profileImage
+                                        .toString(),
+                                    notificationModel[index]
+                                        .fromName
+                                        .toString(),
+                                    index),
                               ),
                               SizedBox(width: 20),
                               Column(
@@ -153,11 +156,11 @@ class _NotificationsState extends State<Notifications> {
                                         ElevatedButton(
                                           onPressed: () {
                                             Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => NavBar(),
-                                              ),
-                                            );
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      NavBar(),
+                                                ));
                                             notificationService
                                                 .declineNotificationService(
                                               notificationModel[index]

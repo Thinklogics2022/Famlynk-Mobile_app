@@ -45,6 +45,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: HexColor('#0175C8'),
+        centerTitle: true,
         title: Text(
           "Forget Password",
           style: TextStyle(color: Colors.white),

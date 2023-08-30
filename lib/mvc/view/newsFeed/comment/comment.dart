@@ -48,7 +48,6 @@ class _CommentScreenState extends State<CommentScreen> {
       setState(() {
         commentList = comments;
       });
-      
     } catch (e) {
       print('Error loading comments: $e');
     }
@@ -92,16 +91,18 @@ class _CommentScreenState extends State<CommentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Comments"),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          "Comments",
+          style: TextStyle(color: Colors.white, fontSize: 20),
+        ),
         centerTitle: true,
         backgroundColor: HexColor('#0175C8'),
       ),
       body: Column(
         children: [
           Expanded(
-            child: CommentCard(
-              newsFeedId: widget.newsFeedId,
-            ),
+            child: CommentCard(newsFeedId: widget.newsFeedId),
           ),
           SafeArea(
             child: Container(

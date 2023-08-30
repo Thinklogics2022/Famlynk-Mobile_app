@@ -49,9 +49,9 @@ class _FamilyListState extends State<FamilyList> {
     if ( image.isEmpty ||  image == "null") {
       return CircleAvatar(
         radius: 40,
-        backgroundColor: backgroundColors[index % backgroundColors.length],
+        backgroundColor: backgroundColors[index % backgroundColors.length], 
         child: Text(
-          name.isNotEmpty ? name[0].toUpperCase() : "?",
+          name.isNotEmpty ? name[0].toUpperCase() : "?", 
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class _FamilyListState extends State<FamilyList> {
                       final isEditable =
                           familyList[index].registerUser == false;
 
-                      print("RS USER :${familyList[index].registerUser}");
+                      // print("RS USER :${familyList[index].registerUser}");
                       return InkWell(
                         child: Card(
                           child: Container(
@@ -106,7 +106,7 @@ class _FamilyListState extends State<FamilyList> {
                                     child: defaultImage(
                                       familyList[index].image.toString(),
                                       familyList[index].name.toString(),
-                                      index, // Pass the index here
+                                      index,
                                     ),
                                   ),
                                   SizedBox(width: 20),

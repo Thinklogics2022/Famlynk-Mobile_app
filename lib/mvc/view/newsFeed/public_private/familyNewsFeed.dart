@@ -166,16 +166,15 @@ class _FamilyNewsState extends State<FamilyNews> {
                               },
                               child: ListTile(
                                 leading: CircleAvatar(
-                                          backgroundColor: backgroundColors[index % backgroundColors.length],
-
+                                  backgroundColor: backgroundColors[
+                                      index % backgroundColors.length],
                                   backgroundImage: _getProfileImage(newsFeed),
                                   child: _getProfileImage(newsFeed) == null
-                                  ? Text(
-                                    newsFeed.name.isNotEmpty
-                                      ? newsFeed.name[0].toUpperCase()
+                                      ? Text(
+                                          newsFeed.name.isNotEmpty
+                                              ? newsFeed.name[0].toUpperCase()
                                               : "?",
                                           style: TextStyle(
-                                            
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,

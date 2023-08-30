@@ -74,6 +74,7 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: HexColor('#0175C8'),
+        centerTitle: true,
         title: Text(
           'User Details',
           style: TextStyle(color: Colors.white),
@@ -99,7 +100,7 @@ class _ProfileUserDetailsState extends State<ProfileUserDetails>
                           ScaleTransition(
                             scale: _animation,
                             child: CircleAvatar(
-                                radius: 75,
+                                radius: 65,
                                 backgroundImage:
                                     _getProfileImage(profileUserModel)),
                           ),
