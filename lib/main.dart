@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/utils/default_option.dart';
@@ -75,22 +77,21 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: _primaryColor,
         hintColor: _accentColor,
-        scaffoldBackgroundColor: Colors.grey.shade100,
+        scaffoldBackgroundColor : Colors.grey.shade100,
         primarySwatch: Colors.grey,
       ),
-      // home: LoginPage()
-      home: FutureBuilder<bool>(
-        future: isLoggedIn(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else {
-            final bool isLoggedIn = snapshot.data ?? true;
-
-            return isLoggedIn ? NavBar() : LoginPage();
-          }
-        },
-      ),
+      home: LoginPage(),
+      // home: FutureBuilder<bool>(
+      //   future: isLoggedIn(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return CircularProgressIndicator();
+      //     } else {
+      //       final bool isLoggedIn = snapshot.data ?? true;
+      //       return isLoggedIn ? NavBar() : LoginPage();
+      //     }
+      //   },
+      // ),
     );
   }
 }

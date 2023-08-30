@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/view/familyList/mutualConnection.dart';
 import 'package:famlynk_version1/mvc/view/newsFeed/like/like.dart';
@@ -128,7 +129,7 @@ class _PublicNewsState extends State<PublicNews> {
     if (profilePicture != null && profilePicture.isNotEmpty) {
       return CachedNetworkImageProvider(profilePicture);
     }
-    return null; 
+    return null;
   }
 
   @override
@@ -176,16 +177,17 @@ class _PublicNewsState extends State<PublicNews> {
                               },
                               child: ListTile(
                                 leading: CircleAvatar(
-                                          backgroundColor: backgroundColors[index % backgroundColors.length],
+                                  // backgroundColor: Colors.white,
+                                  backgroundColor: backgroundColors[index % backgroundColors.length],
 
                                   backgroundImage: _getProfileImage(newsFeed),
-                                  // Show the first letter of the name if image is not available
                                   child: _getProfileImage(newsFeed) == null
                                       ? Text(
                                           newsFeed.name.isNotEmpty
                                               ? newsFeed.name[0].toUpperCase()
                                               : "?",
                                           style: TextStyle(
+                                            // backgroundColor: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,

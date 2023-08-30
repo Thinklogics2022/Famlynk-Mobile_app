@@ -57,58 +57,57 @@ class _AddImagePageState extends State<AddImagePage> {
       print(e);
     }
   }
-   ImageProvider<Object>? _getProfileImage(ProfileUserModel myNewsFeeds) {
-    if (myNewsFeeds.profileImage == null ||
-        myNewsFeeds.profileImage!.isEmpty) {
-      return AssetImage('assets/images/google.png');
+
+  ImageProvider<Object>? _getProfileImage(ProfileUserModel myNewsFeeds) {
+    if (myNewsFeeds.profileImage == null || myNewsFeeds.profileImage!.isEmpty) {
+      return AssetImage('assets/images/FL01.png');
     } else {
       return CachedNetworkImageProvider(myNewsFeeds.profileImage!);
     }
   }
 
-void _postNewsFeed() async {
-  if (uploading) return;
+  void _postNewsFeed() async {
+    if (uploading) return;
 
-  setState(() {
-    uploading = true;
-  });
-
-  String photo = '';
-  if (_imagesFile.isNotEmpty) {
-    final imageFile = _imagesFile.first;
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference storageReference =
-        FirebaseStorage.instance.ref().child('profile_images/$fileName');
-    UploadTask uploadTask = storageReference.putFile(imageFile);
-    TaskSnapshot taskSnapshot = await uploadTask;
-    photo = await taskSnapshot.ref.getDownloadURL();
-  }
-
-  String profilePicture = profileUserModel.profileImage ?? ''; 
-
-  String description = _descriptionController.text;
-
-  Map<String, dynamic> postData = {
-    'userId': userId,
-    'name': name,
-    'profilePicture': profilePicture,
-    'uniqueUserID': uniqueUserID,
-    'photo': photo,
-    'description': description,
-  };
-
-  NewsFeedService newsFeedService = NewsFeedService();
-
-  try {
-    await newsFeedService.postNewsFeed(postData);
-    Navigator.pop(context);
-  } catch (error) {
     setState(() {
-      uploading = false;
+      uploading = true;
     });
-  }
-}
 
+    String photo = '';
+    if (_imagesFile.isNotEmpty) {
+      final imageFile = _imagesFile.first;
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child('profile_images/$fileName');
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      photo = await taskSnapshot.ref.getDownloadURL();
+    }
+
+    String profilePicture = profileUserModel.profileImage ?? '';
+
+    String description = _descriptionController.text;
+
+    Map<String, dynamic> postData = {
+      'userId': userId,
+      'name': name,
+      'profilePicture': profilePicture,
+      'uniqueUserID': uniqueUserID,
+      'photo': photo,
+      'description': description,
+    };
+
+    NewsFeedService newsFeedService = NewsFeedService();
+
+    try {
+      await newsFeedService.postNewsFeed(postData);
+      Navigator.pop(context);
+    } catch (error) {
+      setState(() {
+        uploading = false;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -119,12 +118,15 @@ void _postNewsFeed() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 223, 228, 237),
+     backgroundColor: Color.fromARGB(255, 213, 220, 235),
       key: _scaffoldKey,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: HexColor('#0175C8'),
-        title: Text('Add Image', style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Add Image',
+          style: TextStyle(color: Colors.white) 
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -142,7 +144,11 @@ void _postNewsFeed() async {
                       backgroundImage: _getProfileImage(profileUserModel),
                     ),
                     SizedBox(width: 10),
-                    Text("${name}", style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, fontSize: 18)),
+                    Text("${name}",
+                        style: TextStyle(
+                            fontStyle: FontStyle.italic,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18)),
                   ],
                 ),
               ),
@@ -153,6 +159,7 @@ void _postNewsFeed() async {
                   children: [
                     Expanded(
                       child: TextFormField(
+                        
                         controller: _descriptionController,
                         decoration: InputDecoration(hintText: 'Description'),
                       ),

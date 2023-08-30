@@ -6,6 +6,7 @@ import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/login&registerService/mailLogin_Service.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,7 +16,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
-  // TextEditingController _phoneNumberController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool _passwordVisible = false;
   MyProperties myProperties = MyProperties();
@@ -28,10 +28,29 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    checkForToken();
+  }
+
+  Future<void> checkForToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('token'); 
+
+  if (token != null && token.isNotEmpty) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => NavBar()),
+    );
+  }
+}
+
+
   void _submitForm() async {
-     setState(() {
-    _isLoading = true;
-  });
+    setState(() {
+      _isLoading = true;
+    });
     MailLoginServices mailLoginServices = MailLoginServices();
 
     if (_formKey.currentState!.validate()) {
@@ -48,24 +67,25 @@ class _LoginPageState extends State<LoginPage> {
         _showSnackbar("Login successful");
       } catch (e) {
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text("Failure"),
-                content: Text("Invalid Email or Password"),
-                actions: [
-                  TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                         setState(() {
-                        _isLoading = false; 
-                      });
-                    
-                      },
-                      child: Text("OK"))
-                ],
-              );
-            });
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Failure"),
+              content: Text("Invalid Email or Password"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  },
+                  child: Text("OK"),
+                )
+              ],
+            );
+          },
+        );
       }
     }
   }
@@ -79,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-   Future<bool> _onBackPressed() {
+
+  Future<bool> _onBackPressed() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -92,7 +113,6 @@ class _LoginPageState extends State<LoginPage> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-       
         body: SingleChildScrollView(
           child: SafeArea(
             child: Padding(
@@ -117,7 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: 30),
                     Text(
                       'A family bond is priceless !!!',
                       style: TextStyle(
@@ -179,10 +199,9 @@ class _LoginPageState extends State<LoginPage> {
                                     child: Text(
                                       'Forgot Password?',
                                       style: TextStyle(
-                                    
-                                        color:   HexColor('#FF6F20'),
+                                        color: HexColor('#FF6F20'),
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 17, 
+                                        fontSize: 17,
                                       ),
                                     ),
                                   ),
@@ -198,12 +217,14 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: _isLoading ? null : _submitForm,
                                 child: _isLoading
                                     ? CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            Colors.blue),
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                                Colors.blue),
                                       )
                                     : Text(
                                         'Login',
-                                        style: TextStyle(color: Colors.white, fontSize: 22),
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 22),
                                       ),
                               ),
                             ),
@@ -218,7 +239,8 @@ class _LoginPageState extends State<LoginPage> {
                                     children: [
                                       Text(
                                         'Not a member?',
-                                        style: TextStyle(color: Colors.grey[700]),
+                                        style:
+                                            TextStyle(color: Colors.grey[700]),
                                       ),
                                       const SizedBox(width: 4),
                                       TextButton(

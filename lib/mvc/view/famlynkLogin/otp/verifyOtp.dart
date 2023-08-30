@@ -19,6 +19,7 @@ class _OTPPageState extends State<OTPPage> {
   final OTPService _otpService = OTPService();
   Timer? _otpTimer;
   int _otpDuration = 120;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -148,6 +149,7 @@ class _OTPPageState extends State<OTPPage> {
       appBar: AppBar(
         backgroundColor: HexColor('#0175C8'),
         automaticallyImplyLeading: false,
+        centerTitle: true,
         title: Text(
           'OTP Verification',
           style: TextStyle(color: Colors.white),
@@ -194,19 +196,32 @@ class _OTPPageState extends State<OTPPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                print(_otpController.text);
-                _verifyOTP();
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              onPressed: _isLoading ? null : _verifyOTP,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: HexColor('#0175C8'),
               ),
-              child: Text(
-                "Verify",
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              ),
-            ),
-            SizedBox(height: 10),
+              child: _isLoading
+                  ? CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    )
+                  : Text("Verify OTP",
+                      style: TextStyle(color: Colors.white, fontSize: 18)),
+            )
+
+            // ElevatedButton(
+            //   onPressed: () {
+            //     print(_otpController.text);
+            //     _verifyOTP();
+            //   },
+            //   style: ButtonStyle(
+            //     backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            //   ),
+            //   child: Text(
+            //     "Verify",
+            //     style: TextStyle(fontSize: 20, color: Colors.white),
+            //   ),
+            // ),
+            // SizedBox(height: 10),
           ],
         ),
       ),
