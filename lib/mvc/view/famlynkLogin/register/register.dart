@@ -47,16 +47,17 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {
       showErrorPopup = true;
       showDialog(
-          context: context,
-          builder: (context) => CustomDialog(
-                title: "Register",
-                content: "Email already exists",
-                buttonText: "OK",
-              ));
+        context: context,
+        builder: (context) => CustomDialog(
+          title: "Register",
+          content: "Email already exists",
+          buttonText: "OK",
+        ),
+      );
     });
   }
 
-    bool _isLoading = false;
+  bool _isLoading = false;
 
   var profileBase64;
   bool isPasswordVisible = false;
@@ -98,363 +99,364 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: myProperties.backgroundColor,
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Text(
-                    "Register your account",
-                    style: TextStyle(
-                        fontSize: 21,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                        color: const Color.fromARGB(255, 62, 141, 141)),
-                  ),
-                  // imageprofile(_imageFile),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                        icon: Icon(Icons.person),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: myProperties.fillColor,
-                        filled: true,
-                        hintText: 'Enter Your Name',
-                        hintStyle: TextStyle(color: Colors.grey[500])),
-                    validator: (value) {
-                      if (value!.isEmpty ||
-                          !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
-                        return '*name is required';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
                     children: [
-                      Row(
+                      Text(
+                        "Register your account",
+                        style: TextStyle(
+                            fontSize: 21,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic,
+                            color: const Color.fromARGB(255, 62, 141, 141)),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.person),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade400),
+                            ),
+                            fillColor: myProperties.fillColor,
+                            filled: true,
+                            hintText: 'Enter Your Name',
+                            hintStyle: TextStyle(color: Colors.grey[500])),
+                        validator: (value) {
+                          if (value!.isEmpty ||
+                              !RegExp(r'^[a-z A-Z]+$').hasMatch(value)) {
+                            return '*name is required';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Icon(Icons.person_add, color: Colors.grey, size: 25),
-                          SizedBox(
-                            width: 8,
-                          ),
                           Row(
                             children: [
-                              Radio(
-                                value: 'male',
-                                groupValue: _selectedGender,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedGender = value!;
-                                  });
-                                },
+                              Icon(Icons.person_add,
+                                  color: Colors.grey, size: 25),
+                              SizedBox(
+                                width: 8,
                               ),
-                              SizedBox(height: 6),
-                              Text("Male"),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Radio(
-                                value: 'female',
-                                groupValue: _selectedGender,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedGender = value!;
-                                  });
-                                },
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 'male',
+                                    groupValue: _selectedGender,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedGender = value!;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text("Male"),
+                                ],
                               ),
-                              SizedBox(height: 6),
-                              Text("Female"),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Radio(
-                                value: 'others',
-                                groupValue: _selectedGender,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _selectedGender = value!;
-                                  });
-                                },
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 'female',
+                                    groupValue: _selectedGender,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedGender = value!;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text("Female"),
+                                ],
                               ),
-                              SizedBox(height: 6),
-                              Text("Others"),
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 'others',
+                                    groupValue: _selectedGender,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _selectedGender = value!;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text("Others"),
+                                ],
+                              ),
                             ],
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    controller: _dateinput,
-                    keyboardType: TextInputType.datetime,
-                    decoration: InputDecoration(
-                        icon: Icon(Icons.calendar_month),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: myProperties.fillColor,
-                        filled: true,
-                        hintText: 'Date Of Birth',
-                        hintStyle: TextStyle(color: Colors.grey[500])),
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2500));
-                      if (pickedDate != null) {
-                        String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(pickedDate);
-                        setState(() {
-                          _dateinput.text = formattedDate;
-                        });
-                      }
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '*dob is required';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                      controller: _phnController,
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.phone),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _dateinput,
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.calendar_month),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade400),
+                            ),
+                            fillColor: myProperties.fillColor,
+                            filled: true,
+                            hintText: 'Date Of Birth',
+                            hintStyle: TextStyle(color: Colors.grey[500])),
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime(2500));
+                          if (pickedDate != null) {
+                            String formattedDate =
+                                DateFormat('yyyy-MM-dd').format(pickedDate);
+                            setState(() {
+                              _dateinput.text = formattedDate;
+                            });
+                          }
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return '*dob is required';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                          controller: _phnController,
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.phone),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.grey.shade400),
+                              ),
+                              fillColor: myProperties.fillColor,
+                              filled: true,
+                              hintText: 'Mobile Number',
+                              hintStyle: TextStyle(color: Colors.grey[500])),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "*mobile number is required";
+                            }
+                            if (value.length < 10) {
+                              return "*mobile number must be 10";
+                            }
+                            if (value.length > 10) {
+                              return "*mobile number must be 10";
+                            }
+                            return null;
+                          }),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.email),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.grey.shade400),
+                            ),
+                            fillColor: myProperties.fillColor,
+                            filled: true,
+                            hintText: 'Email',
+                            hintStyle: TextStyle(color: Colors.grey[500])),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "*email is required";
+                          }
+                          if (validateEmail(value)) {
+                            return "*valid email is required";
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: !isPasswordVisible,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.lock),
                           enabledBorder: const OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade400),
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade400),
                           ),
                           fillColor: myProperties.fillColor,
                           filled: true,
-                          hintText: 'Mobile Number',
-                          hintStyle: TextStyle(color: Colors.grey[500])),
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "*mobile number is required";
-                        }
-                        if (value.length < 10) {
-                          return "*mobile number must be 10";
-                        }
-                        if (value.length > 10) {
-                          return "*mobile number must be 10";
-                        }
-                        return null;
-                      }),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                        icon: Icon(Icons.email),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: myProperties.fillColor,
-                        filled: true,
-                        hintText: 'Email',
-                        hintStyle: TextStyle(color: Colors.grey[500])),
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "*email is required";
-                      }
-                      if (validateEmail(value)) {
-                        return "*valid email is required";
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: !isPasswordVisible,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.lock),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade400),
-                      ),
-                      fillColor: myProperties.fillColor,
-                      filled: true,
-                      hintText: 'Password',
-                      hintStyle: TextStyle(color: Colors.grey[500]),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
-                        child: Icon(
-                          isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                        ),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      _password = value;
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return '*password is required';
-                      }
-                      if (value.length < 8) {
-                        return '*password should be at least 8 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                  SizedBox(height: 15),
-                  TextFormField(
-                      controller: _confirmPasswordController,
-                      obscureText: !isConfirmPswdVisible,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.lock),
-                        enabledBorder: const OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade400),
-                        ),
-                        fillColor: myProperties.fillColor,
-                        filled: true,
-                        hintText: 'Confirm Password',
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        suffixIcon: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isConfirmPswdVisible = !isConfirmPswdVisible;
-                            });
-                          },
-                          child: Icon(
-                            isConfirmPswdVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                          hintText: 'Password',
+                          hintStyle: TextStyle(color: Colors.grey[500]),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isPasswordVisible = !isPasswordVisible;
+                              });
+                            },
+                            child: Icon(
+                              isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
                           ),
                         ),
+                        onChanged: (value) {
+                          _password = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return '*password is required';
+                          }
+                          if (value.length < 8) {
+                            return '*password should be at least 8 characters';
+                          }
+                          return null;
+                        },
                       ),
-                      onChanged: (value) {
-                        _confirmPassword = value;
-                      },
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return '*confirm password is required';
-                        }
-                        if (value != _password) {
-                          return '*confirm password not matching';
-                        }
-                        return null;
-                      }),
-                  SizedBox(height: 35),
-                  Container(
-                    child:  ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: HexColor('#0175C8'),
-                                ),
-                                onPressed: _isLoading ? null : _submitForm,
-                                child: _isLoading
-                                    ? CircularProgressIndicator(
-                                        valueColor: AlwaysStoppedAnimation<Color>(
-                                            Colors.blue),
-                                      )
-                                    : Text(
-                                        'Register',
-                                        style: TextStyle(color: Colors.white, fontSize: 22),
-                                      ),
-                              ),
-                  )
-                  // Container(
-                  //     child: ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //     backgroundColor: myProperties.buttonColor,
-                  //   ),
-                  //   onPressed: _isLoading ? null : _submitForm(),
-                    
-                  //  ? CircularProgressIndicator(
-                  //                       valueColor: AlwaysStoppedAnimation<Color>(
-                  //                           Colors.blue),
-                  //                     )
-                  //                   : Text(
-                  //                       'Login',
-                  //                       style: TextStyle(color: Colors.white, fontSize: 22),
-                  //                     ),
-                  // )),
-                ],
+                      SizedBox(height: 15),
+                      TextFormField(
+                        controller: _confirmPasswordController,
+                        obscureText: !isConfirmPswdVisible,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.lock),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey.shade400),
+                          ),
+                          fillColor: myProperties.fillColor,
+                          filled: true,
+                          hintText: 'Confirm Password',
+                          hintStyle: TextStyle(color: Colors.grey[500]),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                isConfirmPswdVisible = !isConfirmPswdVisible;
+                              });
+                            },
+                            child: Icon(
+                              isConfirmPswdVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          _confirmPassword = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return '*confirm password is required';
+                          }
+                          if (value != _password) {
+                            return '*confirm password not matching';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 35),
+                      Container(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: HexColor('#0175C8'),
+                          ),
+                          onPressed: _submitForm,
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                                color: Colors.white, fontSize: 22),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
+          if (_isLoading)
+            Container(
+              color: Colors.black.withOpacity(0.5),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+        ],
       ),
     );
   }
+
   Future<void> _submitForm() async {
-     setState(() {
-    _isLoading = true;
-  });
-                          RegisterService registerService = RegisterService();
-
     if (_formKey.currentState!.validate()) {
-                        RegisterModel registerModel = RegisterModel(
-                            id: "",
-                            uniqueUserID: "",
-                            userId: "",
-                            address: "",
-                            maritalStatus: "",
-                            hometown: "",
-                            otp: "",
-                            verificationToken: "",
-                            coverImage: "",
-                            name: _nameController.text,
-                            gender: _selectedGender,
-                            dateOfBirth: _dateinput.text,
-                            password: _passwordController.text,
-                            email: _emailController.text,
-                            mobileNo: _phnController.text,
-                            profileImage: profileBase64 ?? "");
-                        registerService.addRegister(registerModel);
-                        final response =
-                            await registerService.addRegister(registerModel);
+      setState(() {
+        _isLoading = true; 
+      });
 
-                        print(registerModel.dateOfBirth);
-                        print(registerModel.userId);
-                        if (response == "Email already exists") {
-                          showEmailExistsPopup();
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => OTPPage()),
-                          );
-                        }
-                      }
+      RegisterService registerService = RegisterService();
+
+      RegisterModel registerModel = RegisterModel(
+        id: "",
+        uniqueUserID: "",
+        userId: "",
+        address: "",
+        maritalStatus: "",
+        hometown: "",
+        otp: "",
+        verificationToken: "",
+        coverImage: "",
+        name: _nameController.text,
+        gender: _selectedGender,
+        dateOfBirth: _dateinput.text,
+        password: _passwordController.text,
+        email: _emailController.text,
+        mobileNo: _phnController.text,
+        profileImage: profileBase64 ?? "",
+      );
+
+      final response = await registerService.addRegister(registerModel);
+
+      if (response == "Email already exists") {
+        setState(() {
+          _isLoading = false; 
+        });
+        showEmailExistsPopup();
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OTPPage()),
+        );
+      }
+    }
   }
 }

@@ -40,18 +40,14 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
-  Widget buildProfileImage(String profileImage, String name, int index) {
-    if (profileImage.isNotEmpty) {
+ Widget defaultImage(String image, String name, int index) {
+    // ignore: unnecessary_null_comparison
+    if ( image.isEmpty ||  image == "null") {
       return CircleAvatar(
-        radius: 45,
-        backgroundImage: NetworkImage(profileImage),
-      );
-    } else {
-      return CircleAvatar(
-        radius: 45,
-        backgroundColor: backgroundColors[index % backgroundColors.length],
+        radius: 40,
+        backgroundColor: backgroundColors[index % backgroundColors.length], 
         child: Text(
-          name.isNotEmpty ? name[0].toUpperCase() : '?',
+          name.isNotEmpty ? name[0].toUpperCase() : "?", 
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -59,8 +55,14 @@ class _NotificationsState extends State<Notifications> {
           ),
         ),
       );
+    } else {
+      return CircleAvatar(
+        radius: 40,
+        backgroundImage: NetworkImage(image),
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -91,15 +93,12 @@ class _NotificationsState extends State<Notifications> {
                           child: Row(
                             children: [
                               Container(
-                                child: buildProfileImage(
-                                    notificationModel[index]
-                                        .profileImage
-                                        .toString(),
-                                    notificationModel[index]
-                                        .fromName
-                                        .toString(),
-                                    index),
-                              ),
+                                    child: defaultImage(
+                                      notificationModel[index].profileImage.toString(),
+                                      notificationModel[index].fromName.toString(),
+                                      index,
+                                    ),
+                                  ),
                               SizedBox(width: 20),
                               Column(
                                 children: [

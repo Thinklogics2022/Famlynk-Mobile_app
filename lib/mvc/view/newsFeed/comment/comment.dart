@@ -112,8 +112,6 @@ class _CommentScreenState extends State<CommentScreen> {
               padding: EdgeInsets.only(left: 16, right: 8),
               child: Row(
                 children: [
-                  // CircleAvatar(
-                  //     backgroundImage: NetworkImage(widget.profilePicture)),
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.only(left: 16, right: 8),
@@ -129,15 +127,13 @@ class _CommentScreenState extends State<CommentScreen> {
                   InkWell(
                     onTap: isPostingComment ? null : postComment,
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      padding: EdgeInsets.symmetric(vertical : 8, horizontal : 8),
                       child: isPostingComment
                           ? CircularProgressIndicator()
-                          : Text(
-                              'Post',
+                          : Text('Post',
                               style: TextStyle(
                                 color: HexColor('#0175C8'),
-                              ),
-                            ),
+                              )),
                     ),
                   )
                 ],

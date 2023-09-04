@@ -191,7 +191,7 @@ class _OTPPageState extends State<OTPPage> {
                         : 'Resend OTP',
                     style: TextStyle(fontSize: 16, color: Colors.orange),
                   ),
-                ),
+                                  ),
               ],
             ),
             SizedBox(height: 20),

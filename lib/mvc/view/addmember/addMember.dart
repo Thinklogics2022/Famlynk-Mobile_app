@@ -308,56 +308,46 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 
-  void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+ void _submitForm() async {
+  if (_formKey.currentState!.validate()) {
+    setState(() {
+      _isLoading = true;
+    });
 
-      if (imageFile != null) {
-        final storageResult = await storageRef
-            .child('profile_images/${_name.text}')
-            .putFile(imageFile!);
-        final imageUrl = await storageResult.ref.getDownloadURL();
+    String imageUrl = ''; 
 
-        AddMemberService addMemberService = AddMemberService();
-        AddMemberModel addMemberModel = AddMemberModel(
-          name: _name.text,
-          gender: _selectedGender,
-          firstLevelRelation: dropdownValue1,
-          dob: _dateinput.text,
-          userId: userId,
-          email: _email.text,
-          mobileNo: _phNumber.text,
-          image: imageUrl,
-          // uniqueUserID: ""
-        );
-
-        addMemberService.addMemberPost(addMemberModel);
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => NavBar(),
-          ),
-        );
-      } else
-        _showImageNotSelectedDialog();
+    if (imageFile != null) {
+      final storageResult = await storageRef
+          .child('profile_images/${_name.text}')
+          .putFile(imageFile!);
+      imageUrl = await storageResult.ref.getDownloadURL();
     }
-  }
 
-  Future<void> _showImageNotSelectedDialog() async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomDialog(
-          title: "Image Select",
-          content: "Image is required",
-          buttonText: "ok",
-        );
-      },
+    AddMemberService addMemberService = AddMemberService();
+    AddMemberModel addMemberModel = AddMemberModel(
+      name: _name.text,
+      gender: _selectedGender,
+      firstLevelRelation: dropdownValue1,
+      dob: _dateinput.text,
+      userId: userId,
+      email: _email.text,
+      mobileNo: _phNumber.text,
+      image: imageUrl, 
+    );
+
+    addMemberService.addMemberPost(addMemberModel);
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => NavBar(),
+      ),
     );
   }
+}
+
+
+
 
   Widget imageprofile() {
     return Center(

@@ -98,9 +98,9 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                               radius: 65,
                               backgroundImage: widget.image.isNotEmpty
                                   ? NetworkImage(widget.image.toString())
-                                  : null, // Use null if no image is available
+                                  : null,
                               child: widget.image.isNotEmpty
-                                  ? null // Don't display text if an image is available
+                                  ? null
                                   : Text(
                                       widget.name.isNotEmpty
                                           ? widget.name[0].toUpperCase()
@@ -162,25 +162,5 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
     );
   }
 
-  // Widget _buildDetailRow(String label, String value) {
-
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(vertical: 8),
-  //     child: Row(
-  //       children: [
-  //         Text(
-  //           "$label :",
-  //           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-  //         ),
-  //         SizedBox(width: 10),
-  //         Expanded(
-  //           child: Text(
-  //             value,
-  //             style: TextStyle(fontSize: 18),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
+  
 }

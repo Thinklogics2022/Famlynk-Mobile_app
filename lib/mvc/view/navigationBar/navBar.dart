@@ -36,7 +36,7 @@ class _NavBarState extends State<NavBar> {
     FamlynkNewsFeed(),
     FamilyList(),
     FamilyTree(),
-    Profile(),
+    ProfilePage(),
   ];
 
   void _onTabSelected(int index) {
