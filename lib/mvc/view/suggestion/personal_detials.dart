@@ -208,207 +208,209 @@ class _UserDetailsState extends State<UserDetails> {
           ),
         ),
       ),
-      body: Container(
-        // decoration: BoxDecoration(
-        //   gradient: LinearGradient(
-        //     colors: [
-        //       Colors.lightBlue,
-        //       Color.fromARGB(255, 223, 228, 237),
-        //     ],
-        //     begin: Alignment.topCenter,
-        //     end: Alignment.bottomCenter,
-        //   ),
-        // ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: NetworkImage(
-                        widget.profileImage ?? '',
+      body: SingleChildScrollView(
+        child: Container(
+          // decoration: BoxDecoration(
+          //   gradient: LinearGradient(
+          //     colors: [
+          //       Colors.lightBlue,
+          //       Color.fromARGB(255, 223, 228, 237),
+          //     ],
+          //     begin: Alignment.topCenter,
+          //     end: Alignment.bottomCenter,
+          //   ),
+          // ),
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Card(
+                elevation: 8,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: NetworkImage(
+                          widget.profileImage ?? '',
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      widget.name,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 20),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Gender :',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              '${widget.gender}',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey,
+                      SizedBox(height: 20),
+                      Text(
+                        widget.name,
+                        style:
+                            TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Gender :',
+                                style: TextStyle(fontSize: 18),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Text(
-                              'DOB      :',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              '${widget.dateOfBirth}',
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Text(
-                              'Email    :',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                '${widget.email}',
+                              SizedBox(width: 10),
+                              Text(
+                                '${widget.gender}',
                                 style: TextStyle(
                                   fontSize: 15,
-                                  overflow: TextOverflow.ellipsis,
                                   color: Colors.grey,
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                'DOB      :',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(width: 10),
+                              Text(
+                                '${widget.dateOfBirth}',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Text(
+                                'Email    :',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  '${widget.email}',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: 'First Level Relation',
+                          errorText:
+                              firstLevelRelationError, // Set the error text here
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        labelText: 'First Level Relation',
-                        errorText:
-                            firstLevelRelationError, // Set the error text here
-                      ),
-                      value: selectedFirstLevelRelation,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedFirstLevelRelation = newValue!;
-                          selectedSecondLevelRelation = '';
-                          updateSecondRelations(selectedFirstLevelRelation);
-                          firstLevelRelationError =
-                              null; // Reset the error message
-                        });
-                      },
-                      items: relationship.map((relation) {
-                        return DropdownMenuItem<String>(
-                          value: relation.value,
-                          child: Text(relation.viewValue),
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 10),
-                    DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        labelText: 'Second Level Relation',
-                      ),
-                      value: selectedSecondLevelRelation,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedSecondLevelRelation = newValue!;
-                          selectedThirdLevelRelation = '';
-                          updateThirdLevelRelations(
-                              selectedSecondLevelRelation);
-                        });
-                      },
-                      items: secondLevelRelationList.map((relation) {
-                        int startIndex =
-                            relation.indexOf("secondLevelRelation:") +
-                                "secondLevelRelation:".length;
-
-                        String restOfData = relation.substring(startIndex);
-
-                        int endIndex = restOfData.indexOf(",") != -1
-                            ? restOfData.indexOf(",")
-                            : restOfData.indexOf("}");
-
-                        String secondLevelRelationn =
-                            restOfData.substring(0, endIndex).trim();
-
-                        return DropdownMenuItem(
-                          value: secondLevelRelationn,
-                          child: Text(secondLevelRelationn),
-                        );
-                      }).toList(),
-                    ),
-                    SizedBox(height: 10),
-                    DropdownButtonFormField<String>(
-                      decoration: InputDecoration(
-                        labelText: 'Third Level Relation',
-                      ),
-                      value: selectedThirdLevelRelation,
-                      onChanged: (newValue) {
-                        setState(() {
-                          selectedThirdLevelRelation = newValue!;
-                        });
-                      },
-                      items: buildThirdLevelDropdownItems(),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        // ignore: unnecessary_null_comparison
-                        if (selectedFirstLevelRelation == null ||
-                            selectedFirstLevelRelation.isEmpty ||
-                            selectedFirstLevelRelation == "none") {
+                        value: selectedFirstLevelRelation,
+                        onChanged: (newValue) {
                           setState(() {
+                            selectedFirstLevelRelation = newValue!;
+                            selectedSecondLevelRelation = '';
+                            updateSecondRelations(selectedFirstLevelRelation);
                             firstLevelRelationError =
-                                'Please select a valid first level relation';
+                                null; // Reset the error message
                           });
-                        } else {
+                        },
+                        items: relationship.map((relation) {
+                          return DropdownMenuItem<String>(
+                            value: relation.value,
+                            child: Text(relation.viewValue),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(height: 10),
+                      DropdownButtonFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Second Level Relation',
+                        ),
+                        value: selectedSecondLevelRelation,
+                        onChanged: (newValue) {
                           setState(() {
-                            firstLevelRelationError = null;
+                            selectedSecondLevelRelation = newValue!;
+                            selectedThirdLevelRelation = '';
+                            updateThirdLevelRelations(
+                                selectedSecondLevelRelation);
                           });
-                          addToFamily();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                        },
+                        items: secondLevelRelationList.map((relation) {
+                          int startIndex =
+                              relation.indexOf("secondLevelRelation:") +
+                                  "secondLevelRelation:".length;
+      
+                          String restOfData = relation.substring(startIndex);
+      
+                          int endIndex = restOfData.indexOf(",") != -1
+                              ? restOfData.indexOf(",")
+                              : restOfData.indexOf("}");
+      
+                          String secondLevelRelationn =
+                              restOfData.substring(0, endIndex).trim();
+      
+                          return DropdownMenuItem(
+                            value: secondLevelRelationn,
+                            child: Text(secondLevelRelationn),
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(height: 10),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: 'Third Level Relation',
+                        ),
+                        value: selectedThirdLevelRelation,
+                        onChanged: (newValue) {
+                          setState(() {
+                            selectedThirdLevelRelation = newValue!;
+                          });
+                        },
+                        items: buildThirdLevelDropdownItems(),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          // ignore: unnecessary_null_comparison
+                          if (selectedFirstLevelRelation == null ||
+                              selectedFirstLevelRelation.isEmpty ||
+                              selectedFirstLevelRelation == "none") {
+                            setState(() {
+                              firstLevelRelationError =
+                                  'Please select a valid first level relation';
+                            });
+                          } else {
+                            setState(() {
+                              firstLevelRelationError = null;
+                            });
+                            addToFamily();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            "Add to Family",
+                            style: TextStyle(fontSize: 18 , color: Colors.white),
+                          ),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Text(
-                          "Add to Family",
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -32,7 +32,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController homeTownController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  // TextEditingController maritalStatusController = TextEditingController();
   TextEditingController _dateinput = TextEditingController();
   String _selectedGender = '';
   List<File> _imagesFile = [];
@@ -101,12 +100,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               SizedBox(height: 35),
               buildTextField("Full Name", nameController, Icons.person),
-              buildTextField("E-mail", emailController, Icons.email),
-              buildTextField(
-                "Mobile Number",
-                mobileNumberController,
-                Icons.phone,
-              ),
+              buildTextField("E-mail", emailController, Icons.email, enabled: false), 
+              buildTextField("Mobile Number", mobileNumberController, Icons.phone),
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,31 +227,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               SizedBox(height: 35),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: HexColor('#0175C8'),
-                ),
-                onPressed: _isLoading ? null : submitForm,
-                child: _isLoading
-                    ? CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                      )
-                    : Text(
-                        'Update',
-                        style: TextStyle(color: Colors.white, fontSize: 22),
-                      ),
-              ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: HexColor('#0175C8'),
+                    ),
+                    onPressed: _isLoading ? null : submitForm,
+                    child: Text(
+                      'Update',
+                      style: TextStyle(color: Colors.white, fontSize: 22),
+                    ),
+                  ),
               // ElevatedButton(
-              //     onPressed: submitForm,
-              //     style: ElevatedButton.styleFrom(
-              //       backgroundColor: HexColor('#0175C8'),
-              //     ),
-              //     child: Text(
-              //       "Update",
-              //       style: TextStyle(
-              //         fontSize: 20,
-              //         color: Colors.white,
-              //       ),
-              //     )),
+              //   style: ElevatedButton.styleFrom(
+              //     backgroundColor: HexColor('#0175C8'),
+              //   ),
+              //   onPressed: _isLoading ? null : submitForm,
+              //   child: _isLoading
+              //       ? CircularProgressIndicator(
+              //           valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              //         )
+              //       : Text(
+              //           'Update',
+              //           style: TextStyle(color: Colors.white, fontSize: 22),
+              //         ),
+              // ),
               SizedBox(height: 35),
             ],
           ),
@@ -313,6 +306,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     String labelText,
     TextEditingController controller,
     IconData? prefixIcon,
+    {bool enabled = true}
   ) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
@@ -333,6 +327,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             color: Colors.black,
           ),
         ),
+        enabled: enabled,
       ),
     );
   }
