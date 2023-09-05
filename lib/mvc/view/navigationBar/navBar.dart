@@ -49,7 +49,7 @@ class _NavBarState extends State<NavBar> {
     if (notificationModel.isEmpty) {
       try {
         notificationModel = await notificationService.notificationService();
-        //  _updateBadgeCount();
+        
         setState(() {
           isLoading = true;
         });
@@ -90,109 +90,11 @@ class _NavBarState extends State<NavBar> {
               SizedBox(width: 14),
             ],
           )
-          // PopupMenuButton<int>(
-          //   itemBuilder: (context) => [
-          //     PopupMenuItem(
-          //       value: 1,
-          //       child: Row(
-          //         children: [
-          //           GestureDetector(
-          //             onTap: () {
-          //               Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(builder: (context) => AddMember()),
-          //               );
-          //             },
-          //             child: Row(
-          //               children: [
-          //                 Icon(
-          //                   Icons.person_add_alt_1,
-          //                   color: Colors.black,
-          //                 ),
-          //                 SizedBox(width: 10),
-          //                 Text(
-          //                   "Add Member",
-          //                   style: TextStyle(color: Colors.black),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          // PopupMenuItem(
-          //   value: 2,
-          //   child: Row(
-          //     children: [
-          //       Row(
-          //         children: [
-          //           GestureDetector(
-          //             onTap: () async {
-
-          //               await Navigator.push(
-          //                   context,
-          //                   MaterialPageRoute(
-          //                       builder: (context) => Notifications()));
-          //             },
-          //             child: Row(
-          //               children: [
-          //                 Badge(
-          //                   label:
-          //                       Text(_badgeCount.toString()),
-          //                   child: Icon(
-          //                     Icons.notifications,
-          //                     color: Colors.black,
-          //                   ),
-          //                 ),
-          //                 SizedBox(width: 10),
-          //                 Text(
-          //                   "Notification",
-          //                   style: TextStyle(color: Colors.black),
-          //                 ),
-          //               ],
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // PopupMenuItem(
-          //   value: 3,
-          //   child: Row(
-          //     children: [
-          //       GestureDetector(
-          //         onTap: () {
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) => SuggestionScreen()),
-          //           );
-          //         },
-          //         child: Row(
-          //           children: [
-          //             Icon(
-          //               Icons.search,
-          //               color: Colors.black,
-          //             ),
-          //             SizedBox(width: 10),
-          //             Text(
-          //               "Search",
-          //               style: TextStyle(color: Colors.black),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
-        // offset: Offset(0, 70),
-        // color: Colors.grey,
-        // elevation: 2,
+        
         title: GestureDetector(
           onTap: () {
-            _onTabSelected(0); // Navigate to the news feed page
+            _onTabSelected(0); 
           },
           child: Row(
             children: [

@@ -309,8 +309,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
                           fillColor: myProperties.fillColor,
                           filled: true,
@@ -352,8 +351,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderSide: BorderSide(color: Colors.white),
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.grey.shade400),
+                            borderSide: BorderSide(color: Colors.grey.shade400),
                           ),
                           fillColor: myProperties.fillColor,
                           filled: true,
@@ -394,8 +392,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           onPressed: _submitForm,
                           child: Text(
                             'Register',
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 22),
+                            style: TextStyle(color: Colors.white, fontSize: 22),
                           ),
                         ),
                       )
@@ -417,11 +414,23 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  Future alertDialogBox() {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            
+            content: Text("Otp send to your mail"),
+          );
+        });
+  }
+
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
-        _isLoading = true; 
+        _isLoading = true;
       });
+      alertDialogBox();
 
       RegisterService registerService = RegisterService();
 
@@ -448,7 +457,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       if (response == "Email already exists") {
         setState(() {
-          _isLoading = false; 
+          _isLoading = false;
         });
         showEmailExistsPopup();
       } else {

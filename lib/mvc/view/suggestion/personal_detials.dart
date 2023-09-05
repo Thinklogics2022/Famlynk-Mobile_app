@@ -222,7 +222,7 @@ class _UserDetailsState extends State<UserDetails> {
           // ),
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
               child: Card(
                 elevation: 8,
                 shape: RoundedRectangleBorder(
@@ -233,12 +233,12 @@ class _UserDetailsState extends State<UserDetails> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(
-                          widget.profileImage ?? '',
-                        ),
-                      ),
+                      // CircleAvatar(
+                      //   radius: 60,
+                      //   backgroundImage: NetworkImage(
+                      //     widget.profileImage ?? '',
+                      //   ),
+                      // ),
                       SizedBox(height: 20),
                       Text(
                         widget.name,

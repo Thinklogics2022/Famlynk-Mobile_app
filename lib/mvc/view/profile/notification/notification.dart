@@ -40,14 +40,14 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
- Widget defaultImage(String image, String name, int index) {
+  Widget defaultImage(String image, String name, int index) {
     // ignore: unnecessary_null_comparison
-    if ( image.isEmpty ||  image == "null") {
+    if (image.isEmpty || image == "null") {
       return CircleAvatar(
         radius: 40,
-        backgroundColor: backgroundColors[index % backgroundColors.length], 
+        backgroundColor: backgroundColors[index % backgroundColors.length],
         child: Text(
-          name.isNotEmpty ? name[0].toUpperCase() : "?", 
+          name.isNotEmpty ? name[0].toUpperCase() : "?",
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -62,7 +62,6 @@ class _NotificationsState extends State<Notifications> {
       );
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -93,12 +92,14 @@ class _NotificationsState extends State<Notifications> {
                           child: Row(
                             children: [
                               Container(
-                                    child: defaultImage(
-                                      notificationModel[index].profileImage.toString(),
-                                      notificationModel[index].fromName.toString(),
-                                      index,
-                                    ),
-                                  ),
+                                child: defaultImage(
+                                  notificationModel[index]
+                                      .profileImage
+                                      .toString(),
+                                  notificationModel[index].fromName.toString(),
+                                  index,
+                                ),
+                              ),
                               SizedBox(width: 20),
                               Column(
                                 children: [

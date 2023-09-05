@@ -233,8 +233,8 @@ class _FamilyNewsState extends State<FamilyNews> {
                                     );
                                   },
                                   child: Container(
-                                    height: 300,
-                                    width: 550,
+                                    height: 250,
+                                    width: 500,
                                     child: CachedNetworkImage(
                                       imageUrl: newsFeed.photo!,
                                       placeholder: (context, url) =>

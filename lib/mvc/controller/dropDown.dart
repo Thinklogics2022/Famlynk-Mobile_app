@@ -30,7 +30,7 @@ class NameAvatar extends StatelessWidget {
   final double radius;
   final String? img;
 
-  NameAvatar({ this.name, this.radius = 30, this.img });
+  NameAvatar({this.name, this.radius = 30, this.img});
 
   Color _getRandomColor() {
     final colors = [

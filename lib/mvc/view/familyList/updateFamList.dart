@@ -67,8 +67,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
     dropdownValue1 = widget.updateMember!.firstLevelRelation.toString();
     if (relation.contains(widget.updateMember!.firstLevelRelation)) {
       dropdownValue1 = widget.updateMember!.firstLevelRelation.toString();
-    } else
-    {
+    } else {
       dropdownValue1 = "Select Relation";
     }
 

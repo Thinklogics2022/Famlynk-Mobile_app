@@ -64,6 +64,7 @@ class _CommentCardState extends State<CommentCard> {
       print('Error loading comments: $e');
     }
   }
+
   Future<void> loadComments() async {
     try {
       List<CommentModel> comments =
@@ -223,7 +224,7 @@ class CommentViewUserOptions extends StatelessWidget {
     }
   }
 
-  void _showDeleteConfirmation(BuildContext context, CommentModel comment) {
+  void _showDltDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -237,7 +238,6 @@ class CommentViewUserOptions extends StatelessWidget {
               },
               child: Text('Cancel'),
             ),
-            Spacer(),
             ElevatedButton(
               onPressed: () {
                 _deleteComment(comment);
@@ -316,8 +316,9 @@ class CommentViewUserOptions extends StatelessWidget {
             if (value == 'edit') {
               _showEditDialog(context);
             } else if (value == 'delete') {
-              _showDeleteConfirmation(context, comment);
+              _showDltDialog(context);
             }
+           
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
             PopupMenuItem<String>(

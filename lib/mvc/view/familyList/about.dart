@@ -101,14 +101,24 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                                   : null,
                               child: widget.image.isNotEmpty
                                   ? null
-                                  : Text(
-                                      widget.name.isNotEmpty
-                                          ? widget.name[0].toUpperCase()
-                                          : "?",
-                                      style: TextStyle(
-                                        fontSize: 50,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
+                                  : Container(
+                                      width: 130,
+                                      height: 130,
+                                      decoration: BoxDecoration(
+                                        color: Color.fromARGB(255, 140, 170, 195), 
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          widget.name.isNotEmpty
+                                              ? widget.name[0].toUpperCase()
+                                              : "?",
+                                          style: TextStyle(
+                                            fontSize: 50,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
                                     ),
                             ),
@@ -127,7 +137,7 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                       Card(
                         elevation: 4,
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 20, 10, 30),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
                           child: Center(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,6 +171,4 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
             ),
     );
   }
-
-  
 }

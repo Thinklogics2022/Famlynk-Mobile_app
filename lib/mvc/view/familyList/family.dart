@@ -91,6 +91,7 @@ class _FamilyState extends State<Family> {
           SizedBox(width: 20),
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 familyList[index].name.toString(),
