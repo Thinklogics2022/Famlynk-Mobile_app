@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/services/familySevice/mutualService.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,10 @@ class _MutualConnectionState extends State<MutualConnection> {
       }
     }
   }
+String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +53,7 @@ class _MutualConnectionState extends State<MutualConnection> {
                   ),
                   itemCount: familyLists.length,
                   itemBuilder: (context, index) {
+                    final famList = familyLists[index];
                     return InkWell(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -55,20 +61,52 @@ class _MutualConnectionState extends State<MutualConnection> {
                           child: Column(
                             children: [
                               SizedBox(height: 10),
-                              CircleAvatar(
-                                radius: 45,
-                                backgroundImage: NetworkImage(
-                                    familyLists[index].image.toString()),
+                              Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  color: backgroundColors[
+                                      index % backgroundColors.length],
+                                  shape: BoxShape.circle,
+                                ),
+                                child: ClipOval(
+                                  child: famList.image != null
+                                      ? CircleAvatar(
+                                          radius: 45,
+                                          backgroundImage: NetworkImage(
+                                              famList.image.toString()),
+                                        )
+                                      : Center(
+                                          child: Text(
+                                            famList.name!.isNotEmpty
+                                                ? famList.name![0]
+                                                    .toUpperCase()
+                                                : "?",
+                                            style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                ),
                               ),
                               SizedBox(height: 10),
-                              Text(
-                                familyLists[index].name.toString(),
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.bold),
+                              Container(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(1),
+                                  child: Text(
+                                    famList.name.toString(),
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        overflow: TextOverflow.ellipsis,
+                                        fontStyle: FontStyle.italic,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               ),
-                              Text(familyLists[index].relation.toString()),
+
+                              Text(capitalizeFirstLetter(famList.relation.toString()))
+                              
                             ],
                           ),
                         ),

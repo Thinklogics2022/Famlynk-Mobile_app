@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
@@ -34,7 +35,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController addressController = TextEditingController();
   TextEditingController _dateinput = TextEditingController();
   String _selectedGender = '';
-  List<File> _imagesFile = [];
+
   String? profilBase64;
   String dropdownValuess = 'Marital Status';
 
@@ -56,6 +57,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
     dropdownValuess = widget.profileUserModel!.maritalStatus.toString();
 
     super.initState();
+  }
+
+  void _snackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Colors.blue,
+      content: Text("Profile Updated", style: TextStyle(fontSize: 15),),
+      duration: Duration(seconds: 2),
+    ));
   }
 
   @override
@@ -85,148 +94,153 @@ class _EditProfilePageState extends State<EditProfilePage> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: Form(
-          key: formkey,
-          child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            children: [
-              SizedBox(height: 25),
-              Center(
-                child: Stack(
-                  children: [
-                    imageprofile(),
-                  ],
-                ),
-              ),
-              SizedBox(height: 35),
-              buildTextField("Full Name", nameController, Icons.person),
-              buildTextField("E-mail", emailController, Icons.email, enabled: false), 
-              buildTextField("Mobile Number", mobileNumberController, Icons.phone),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          children: [
+            Form(
+              key: formkey,
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 16),
                 children: [
-                  Row(
+                  SizedBox(height: 25),
+                  Center(
+                    child: Stack(
+                      children: [
+                        imageprofile(),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 35),
+                  buildTextField("Full Name", nameController, Icons.person),
+                  buildTextField("E-mail", emailController, Icons.email,
+                      enabled: false),
+                  buildTextField(
+                      "Mobile Number", mobileNumberController, Icons.phone),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(Icons.person_add, color: Colors.grey, size: 25),
-                      SizedBox(
-                        width: 8,
-                      ),
                       Row(
                         children: [
-                          Radio(
-                            value: 'male',
-                            groupValue: _selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedGender = value!;
-                              });
-                            },
+                          Icon(Icons.person_add, color: Colors.grey, size: 25),
+                          SizedBox(
+                            width: 8,
                           ),
-                          SizedBox(height: 6),
-                          Text("Male"),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            value: 'female',
-                            groupValue: _selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedGender = value!;
-                              });
-                            },
+                          Row(
+                            children: [
+                              Radio(
+                                value: 'male',
+                                groupValue: _selectedGender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedGender = value!;
+                                  });
+                                },
+                              ),
+                              SizedBox(height: 6),
+                              Text("Male"),
+                            ],
                           ),
-                          SizedBox(height: 6),
-                          Text("Female"),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Radio(
-                            value: 'others',
-                            groupValue: _selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedGender = value!;
-                              });
-                            },
+                          Row(
+                            children: [
+                              Radio(
+                                value: 'female',
+                                groupValue: _selectedGender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedGender = value!;
+                                  });
+                                },
+                              ),
+                              SizedBox(height: 6),
+                              Text("Female"),
+                            ],
                           ),
-                          SizedBox(height: 6),
-                          Text("Others"),
+                          Row(
+                            children: [
+                              Radio(
+                                value: 'others',
+                                groupValue: _selectedGender,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedGender = value!;
+                                  });
+                                },
+                              ),
+                              SizedBox(height: 6),
+                              Text("Others"),
+                            ],
+                          ),
                         ],
                       ),
                     ],
                   ),
-                ],
-              ),
-              SizedBox(height: 12.5),
-              Divider(
-                thickness: 2,
-              ),
-              SizedBox(height: 12.5),
-              TextField(
-                controller: _dateinput,
-                keyboardType: TextInputType.datetime,
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.calendar_month),
-                  fillColor: myProperties.fillColor,
-                  hintText: 'Date Of Birth',
-                ),
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime(2500));
-                  if (pickedDate != null) {
-                    String formattedDate =
-                        DateFormat('yyyy-MM-dd').format(pickedDate);
-                    setState(() {
-                      _dateinput.text = formattedDate;
-                    });
-                  }
-                },
-              ),
-              SizedBox(height: 25),
-              buildTextField("Home Town", homeTownController, Icons.home),
-              buildTextField("Address", addressController, Icons.location_city),
-              Container(
-                child: DropdownButtonFormField(
-                  decoration: InputDecoration(
-                    icon: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(Icons.child_care),
-                    ),
-                    contentPadding: EdgeInsets.only(bottom: 1),
-                    labelText: "Marital Status",
-                    labelStyle:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    hintText:
-                        "${widget.profileUserModel!.maritalStatus.toString()}",
-                    hintStyle: TextStyle(color: Colors.black),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  SizedBox(height: 12.5),
+                  Divider(
+                    thickness: 1.2,
+                    color: Colors.grey,
                   ),
-                  items: maritalStatus
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(fontSize: 15),
+                  SizedBox(height: 12.5),
+                  TextField(
+                    controller: _dateinput,
+                    keyboardType: TextInputType.datetime,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.calendar_month),
+                      fillColor: myProperties.fillColor,
+                      hintText: 'Date Of Birth',
+                    ),
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2500));
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                        setState(() {
+                          _dateinput.text = formattedDate;
+                        });
+                      }
+                    },
+                  ),
+                  SizedBox(height: 25),
+                  buildTextField("Home Town", homeTownController, Icons.home),
+                  buildTextField("Address", addressController, Icons.location_city),
+                  Container(
+                    child: DropdownButtonFormField(
+                      decoration: InputDecoration(
+                        icon: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(Icons.child_care),
+                        ),
+                        contentPadding: EdgeInsets.only(bottom: 1),
+                        labelText: "Marital Status",
+                        labelStyle:
+                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        hintText:
+                            "${widget.profileUserModel!.maritalStatus.toString()}",
+                        hintStyle: TextStyle(color: Colors.black),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropdownValuess = newValue!;
-                    });
-                  },
-                ),
-              ),
-              SizedBox(height: 35),
-              ElevatedButton(
+                      items: maritalStatus
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          dropdownValuess = newValue!;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 35),
+                  ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: HexColor('#0175C8'),
                     ),
@@ -236,29 +250,29 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                   ),
-              // ElevatedButton(
-              //   style: ElevatedButton.styleFrom(
-              //     backgroundColor: HexColor('#0175C8'),
-              //   ),
-              //   onPressed: _isLoading ? null : submitForm,
-              //   child: _isLoading
-              //       ? CircularProgressIndicator(
-              //           valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-              //         )
-              //       : Text(
-              //           'Update',
-              //           style: TextStyle(color: Colors.white, fontSize: 22),
-              //         ),
-              // ),
-              SizedBox(height: 35),
-            ],
-          ),
+                  SizedBox(height: 35),
+                ],
+              ),
+            ),
+            if (_isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+          ],
         ),
       ),
     );
   }
 
   void submitForm() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _snackBar();
     String imageUrl = widget.profileUserModel!.profileImage.toString();
 
     if (imageFile != null) {
@@ -299,15 +313,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
     EditProfileService editProfileService = EditProfileService();
     editProfileService.editProfile(profileUserModel);
 
+    setState(() {
+      _isLoading = false;
+    });
+
     Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
   }
 
-  Widget buildTextField(
-    String labelText,
-    TextEditingController controller,
-    IconData? prefixIcon,
-    {bool enabled = true}
-  ) {
+ Widget buildTextField(
+      String labelText, TextEditingController controller, IconData? prefixIcon,
+      {bool enabled = true}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25.0),
       child: TextField(
@@ -442,16 +457,5 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ],
       ),
     );
-  }
-
-  void takePhoto(ImageSource source) async {
-    final ImagePicker _picker = ImagePicker();
-    final pickedFile = await _picker.pickImage(source: source);
-    if (pickedFile != null) {
-      setState(() {
-        _imagesFile.clear();
-        _imagesFile.add(File(pickedFile.path));
-      });
-    }
   }
 }

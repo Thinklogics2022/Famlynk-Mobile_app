@@ -14,11 +14,14 @@ class NotificationService {
     final prefs = await SharedPreferences.getInstance();
     uniqueUserID = prefs.getString('uniqueUserID') ?? '';
     token = prefs.getString("token") ?? '';
+    var url = urls + uniqueUserID;
     try {
       final response = await http.get(
-        Uri.parse(urls + uniqueUserID),
+        Uri.parse(url),
         headers: {'Authorization': 'Bearer $token'},
       );
+      print("object");
+      print("notification url ${url}");
 
       if (response.statusCode == 200) {
         print("notification (show): ${response.body}");
@@ -68,7 +71,6 @@ class NotificationService {
       print(e);
     }
   }
-  
 
   Future<dynamic> declineNotificationService(
       String fromUserId, String toUniqueUserId) async {
@@ -80,7 +82,9 @@ class NotificationService {
       http.Response response;
       response = await http.delete(
           Uri.parse(FamlynkServiceUrl.declineNotification +
-             fromUserId + "/" + toUniqueUserId),
+              fromUserId +
+              "/" +
+              toUniqueUserId),
           headers: {'Authorization': 'Bearer $token'});
       dynamic returnObject;
 
@@ -93,5 +97,4 @@ class NotificationService {
       print(e);
     }
   }
- 
 }

@@ -2,8 +2,6 @@ import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/addmember_model/addMember_model.dart';
-import 'package:famlynk_version1/mvc/view/familyList/famList.dart';
-import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/custom.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/services/familySevice/addMember_service.dart';
 import 'package:flutter/material.dart';
@@ -102,12 +100,6 @@ class _AddMemberState extends State<AddMember> {
                     buildRelationDropdown(),
                     SizedBox(height: 35),
                     ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor: HexColor('#0175C8'),
-                      //   ),
-                      //   onPressed: _submitForm,
-                      //   child: Text("Submit"),
-
                       onPressed: _isLoading ? null : _submitForm,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: HexColor('#0175C8'),
@@ -129,6 +121,16 @@ class _AddMemberState extends State<AddMember> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void _showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor:Colors.deepOrange,
+        content: Text(message, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),),
+        duration: Duration(seconds: 2),
       ),
     );
   }
@@ -308,46 +310,51 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 
- void _submitForm() async {
-  if (_formKey.currentState!.validate()) {
-    setState(() {
-      _isLoading = true;
-    });
+  void _submitForm() async {
+    _showSnackbar("Family Member added sucessfully", );
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
 
-    String imageUrl = ''; 
+      String imageUrl = '';
 
-    if (imageFile != null) {
-      final storageResult = await storageRef
-          .child('profile_images/${_name.text}')
-          .putFile(imageFile!);
-      imageUrl = await storageResult.ref.getDownloadURL();
+      if (imageFile != null) {
+        final storageResult = await storageRef
+            .child('profile_images/${_name.text}')
+            .putFile(imageFile!);
+        imageUrl = await storageResult.ref.getDownloadURL();
+      }
+
+      AddMemberService addMemberService = AddMemberService();
+      AddMemberModel addMemberModel = AddMemberModel(
+        name: _name.text,
+        gender: _selectedGender,
+        firstLevelRelation: dropdownValue1,
+        dob: _dateinput.text,
+        userId: userId,
+        email: _email.text,
+        mobileNo: _phNumber.text,
+        image: imageUrl,
+      );
+
+      addMemberService.addMemberPost(addMemberModel);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NavBar(),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NavBar(),
+        ),
+      );
     }
-
-    AddMemberService addMemberService = AddMemberService();
-    AddMemberModel addMemberModel = AddMemberModel(
-      name: _name.text,
-      gender: _selectedGender,
-      firstLevelRelation: dropdownValue1,
-      dob: _dateinput.text,
-      userId: userId,
-      email: _email.text,
-      mobileNo: _phNumber.text,
-      image: imageUrl, 
-    );
-
-    addMemberService.addMemberPost(addMemberModel);
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => NavBar(),
-      ),
-    );
   }
-}
-
-
-
 
   Widget imageprofile() {
     return Center(

@@ -13,15 +13,16 @@ class ShowFamilyMemberService {
     final prefs = await SharedPreferences.getInstance();
     userId = prefs.getString('userId') ?? '';
     token = prefs.getString("token") ?? '';
+    var url = urls + userId;
     try {
       final response = await http.get(
         Uri.parse(urls + userId),
         headers: {'Authorization': 'Bearer $token'},
       );
-
+      print(url);
       if (response.statusCode == 200) {
         print("getList : ${response.body}");
-        
+
         final jsonData = json.decode(response.body);
         if (jsonData is List) {
           List<FamListModel> familyList =

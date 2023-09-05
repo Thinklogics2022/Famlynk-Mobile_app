@@ -151,7 +151,7 @@ class _MyNewsFeedState extends State<MyNewsFeed> {
       builder: (context) {
         return AlertDialog(
           title: Text('Delete MyTimeLine'),
-          content: Text('Are you sure you want to delete this comment?'),
+          content: Text('Are you sure you want to delete this Timeline?'),
           actions: [
             ElevatedButton(
               onPressed: () {

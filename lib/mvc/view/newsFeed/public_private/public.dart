@@ -178,7 +178,8 @@ class _PublicNewsState extends State<PublicNews> {
                               child: ListTile(
                                 leading: CircleAvatar(
                                   // backgroundColor: Colors.white,
-                                  backgroundColor: backgroundColors[index % backgroundColors.length],
+                                  backgroundColor: backgroundColors[
+                                      index % backgroundColors.length],
 
                                   backgroundImage: _getProfileImage(newsFeed),
                                   child: _getProfileImage(newsFeed) == null
@@ -228,11 +229,11 @@ class _PublicNewsState extends State<PublicNews> {
                                                           minScale:
                                                               PhotoViewComputedScale
                                                                       .contained *
-                                                                  0.8,
+                                                                  0.3,
                                                           maxScale:
                                                               PhotoViewComputedScale
                                                                       .covered *
-                                                                  2,
+                                                                  1.8,
                                                           initialScale:
                                                               PhotoViewComputedScale
                                                                   .contained,

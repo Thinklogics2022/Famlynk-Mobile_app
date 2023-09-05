@@ -101,11 +101,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                   width: 20,
                                 ),
                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  // crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(height: 19),
                                     Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           profileUserModel.name.toString(),

@@ -45,13 +45,13 @@ class _FamilyListState extends State<FamilyList> {
   }
 
   Widget defaultImage(String image, String name, int index) {
-    // ignore: unnecessary_null_comparison
-    if ( image.isEmpty ||  image == "null") {
+    
+    if (image.isEmpty || image == "null") {
       return CircleAvatar(
         radius: 40,
-        backgroundColor: backgroundColors[index % backgroundColors.length], 
+        backgroundColor: backgroundColors[index % backgroundColors.length],
         child: Text(
-          name.isNotEmpty ? name[0].toUpperCase() : "?", 
+          name.isNotEmpty ? name[0].toUpperCase() : "?",
           style: TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -113,17 +113,20 @@ class _FamilyListState extends State<FamilyList> {
                                   Container(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.center,
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          familyList[index].name.toString(),
-                                          style: TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.bold),
+                                        Container(
+                                          width: 100,
+                                          child: Text(
+                                            familyList[index].name.toString(),
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                         Text(capitalizeFirstLetter(
                                             familyList[index]
-                                                .firstLevelRelation
+                                                .relation
                                                 .toString())),
                                       ],
                                     ),
