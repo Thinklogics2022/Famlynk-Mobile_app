@@ -608,9 +608,136 @@ class FamilyTreePainter extends CustomPainter {
           _drawImage(canvas, size, image, i,
               centerX + 20 + horizontalLineLength, fathersmotherY);
         }
+
+        // Draw name and relation text
+        final fathersmotherTextSpan = TextSpan(
+          text: fathersmother[fathersmotherIndex].name,
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        );
+        final relationTextSpan = TextSpan(
+          text: fathersmother[fathersmotherIndex].relationShip,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        );
+
+        final fathersmotherTextPainter = TextPainter(
+          text: fathersmotherTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        final relationTextPainter = TextPainter(
+          text: relationTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+
+        fathersmotherTextPainter.layout();
+        relationTextPainter.layout();
+
+        fathersmotherTextPainter.paint(
+          canvas,
+          Offset(
+              fathersmotherX + 10 + horizontalLineLength, fathersmotherY + 45),
+        );
+        relationTextPainter.paint(
+          canvas,
+          Offset(
+              fathersmotherX + 10 + horizontalLineLength, fathersmotherY + 56),
+        );
       }
 
       //Mothersmother
+      if (mothermothers.contains(familyTreeDataList[i])) {
+        final paint = Paint()
+          ..strokeWidth = 2.5
+          ..isAntiAlias = true;
+        final centerX = size.width * 0.5;
+        final centerY = size.height * 0.100;
+        final mothermothersIndex = mothermothers.indexOf(familyTreeDataList[i]);
+        final mothermothersX = centerX + 60;
+        final mothermothersY = centerY - 100;
+
+        // Draw vertical line connecting the mother's circle to the horizontal line
+        canvas.drawLine(
+          Offset(centerX + 90, mothermothersY),
+          Offset(centerX + 90, centerY - 30),
+          paint,
+        );
+
+        // Draw a circle at the end of the horizontal line
+        paint
+          ..color = Color.fromARGB(255, 80, 24, 43)
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
+        canvas.drawCircle(
+          Offset(mothermothersX + 90, centerY - 100),
+          30,
+          paint,
+        );
+
+        // Draw the image inside the circle
+        final image = imageCache[mothermothers[mothermothersIndex].image];
+        if (image == null) {
+          loadImage(mothermothers[mothermothersIndex].image.toString())
+              .then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[mothermothers[mothermothersIndex].image.toString()] =
+                  loadedImage;
+              _drawImage(canvas, size, loadedImage, i, mothermothersX + 60,
+                  centerY - 15);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, mothermothersX + 60,
+              centerY - 15);
+        }
+
+        // // Draw name and relation text
+        // final mothermothersTextSpan = TextSpan(
+        //   text: mothermothers[mothermothersIndex].name,
+        //   style: TextStyle(
+        //     fontSize: 11,
+        //     fontWeight: FontWeight.bold,
+        //     color: Colors.black,
+        //   ),
+        // );
+        // final relationTextSpan = TextSpan(
+        //   text: mothermothers[mothermothersIndex].relationShip,
+        //   style: TextStyle(
+        //     fontSize: 10,
+        //     fontWeight: FontWeight.bold,
+        //     color: Colors.black,
+        //   ),
+        // );
+
+        // final mothermothersTextPainter = TextPainter(
+        //   text: mothermothersTextSpan,
+        //   textDirection: TextDirection.ltr,
+        // );
+        // final relationTextPainter = TextPainter(
+        //   text: relationTextSpan,
+        //   textDirection: TextDirection.ltr,
+        // );
+
+        // mothermothersTextPainter.layout();
+        // relationTextPainter.layout();
+
+        // mothermothersTextPainter.paint(
+        //   canvas,
+        //   Offset(mothermothersX + 20,
+        //       centerY - 45), // Adjust the vertical position as needed
+        // );
+        // relationTextPainter.paint(
+        //   canvas,
+        //   Offset(mothermothersX + 20,
+        //       centerY - 30), // Adjust the vertical position as needed
+        // );
+      }
 
       // Brother
       if (brothers.contains(familyTreeDataList[i])) {
