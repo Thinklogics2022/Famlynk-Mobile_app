@@ -989,12 +989,7 @@ class FamilyTreePainter extends CustomPainter {
         final sisterY = centerY;
         final sisterX = horizontalLineX;
 
-        // Draw the horizontal line of the Γ shape
-        canvas.drawLine(
-          Offset(sisterX, sisterY),
-          Offset(sisterX, sisterY),
-          paint,
-        );
+        
 
         // Draw the bottom line of the Γ shape
         canvas.drawLine(
@@ -1149,8 +1144,8 @@ class FamilyTreePainter extends CustomPainter {
       // wife
       if (wife.contains(familyTreeDataList[i])) {
         final paint = Paint()..strokeWidth = 2.5;
-        final centerX = size.width * 0.5; // Use the same centerX as the user
-        final centerY = size.height * 0.665; // Use the same centerY as the user
+        final centerX = size.width * 0.5; 
+        final centerY = size.height * 0.665;
         final wifeIndex = wife.indexOf(familyTreeDataList[i]);
 
         final wifeX = centerX;
