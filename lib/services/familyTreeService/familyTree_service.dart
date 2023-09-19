@@ -15,8 +15,13 @@ class FamilyTreeServices {
     userId = userIdFromPrefs ?? '';
     token = prefs.getString('token') ?? '';
     uniqueUserID = prefs.getString('uniqueUserID') ?? '';
-    var url = FamlynkServiceUrl.familyTree + userId + '/' + uniqueUserID + '/' + level;
-    print(url);
+    var url = FamlynkServiceUrl.familyTree +
+        userId +
+        '/' +
+        uniqueUserID +
+        '/' +
+        level;
+    print("Family tree url : ${url}");
     try {
       final response = await http.get(
         Uri.parse('$url'),
@@ -30,6 +35,7 @@ class FamilyTreeServices {
           var familyTree = List<FamilyTreeModel>.from(
             jsonData.map((i) => FamilyTreeModel.fromJson(i)),
           );
+          print("family tree : ${response.body}");
           return familyTree;
         } else {
           throw Exception('Invalid response format: expected a JSON array');

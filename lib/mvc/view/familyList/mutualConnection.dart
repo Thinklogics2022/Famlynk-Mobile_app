@@ -35,7 +35,8 @@ class _MutualConnectionState extends State<MutualConnection> {
       }
     }
   }
-String capitalizeFirstLetter(String text) {
+
+  String capitalizeFirstLetter(String text) {
     if (text.isEmpty) return text;
     return text[0].toUpperCase() + text.substring(1);
   }
@@ -62,32 +63,10 @@ String capitalizeFirstLetter(String text) {
                             children: [
                               SizedBox(height: 10),
                               Container(
-                                width: 90,
-                                height: 90,
-                                decoration: BoxDecoration(
-                                  color: backgroundColors[
-                                      index % backgroundColors.length],
-                                  shape: BoxShape.circle,
-                                ),
-                                child: ClipOval(
-                                  child: famList.image != null
-                                      ? CircleAvatar(
-                                          radius: 45,
-                                          backgroundImage: NetworkImage(
-                                              famList.image.toString()),
-                                        )
-                                      : Center(
-                                          child: Text(
-                                            famList.name!.isNotEmpty
-                                                ? famList.name![0]
-                                                    .toUpperCase()
-                                                : "?",
-                                            style: TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
+                                child: defaultImage(
+                                  famList.image.toString(),
+                                  famList.name.toString(),
+                                  index,
                                 ),
                               ),
                               SizedBox(height: 10),
@@ -104,9 +83,8 @@ String capitalizeFirstLetter(String text) {
                                   ),
                                 ),
                               ),
-
-                              Text(capitalizeFirstLetter(famList.relation.toString()))
-                              
+                              Text(capitalizeFirstLetter(
+                                  famList.relation.toString()))
                             ],
                           ),
                         ),

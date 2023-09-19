@@ -36,11 +36,12 @@ class _AddMemberState extends State<AddMember> {
 
   String userId = "";
   bool _isLoading = false;
-  bool validateEmail(String value) {
-    const emailRegex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]";
-    final RegExp regex = RegExp(emailRegex);
-    return !regex.hasMatch(value);
-  }
+ bool validateEmail(String value) {
+  const emailRegex = r"^[a-zA-Z0-9+_.-]+@gmail\.com$";
+  final RegExp regex = RegExp(emailRegex);
+  return !regex.hasMatch(value);
+}
+
 
   Future<void> fetchData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -311,12 +312,12 @@ class _AddMemberState extends State<AddMember> {
   }
 
   void _submitForm() async {
-    _showSnackbar("Family Member added sucessfully", );
+   
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
       });
-
+//  _showSnackbar("Family Member added sucessfully", );
       String imageUrl = '';
 
       if (imageFile != null) {
@@ -336,6 +337,7 @@ class _AddMemberState extends State<AddMember> {
         email: _email.text,
         mobileNo: _phNumber.text,
         image: imageUrl,
+       
       );
 
       addMemberService.addMemberPost(addMemberModel);
@@ -346,14 +348,15 @@ class _AddMemberState extends State<AddMember> {
           builder: (context) => NavBar(),
         ),
       );
-    } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NavBar(),
-        ),
-      );
     }
+    //  else {
+    //   Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => NavBar(),
+    //     ),
+    //   );
+    // }
   }
 
   Widget imageprofile() {
