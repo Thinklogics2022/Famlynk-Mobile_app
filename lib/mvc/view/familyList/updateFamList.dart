@@ -327,6 +327,15 @@ class _UpdateFamListState extends State<UpdateFamList> {
   }
 
   void _submitForm() async {
+     showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    },
+  );
     String imageUrl = widget.updateMember!.image.toString();
 
     if (imageFile != null) {
@@ -344,19 +353,16 @@ class _UpdateFamListState extends State<UpdateFamList> {
         email: email.text,
         userId: widget.updateMember!.userId,
         uniqueUserID: widget.updateMember!.uniqueUserID,
-        relation: dropdownValue1,
+        // relation: "",
         firstLevelRelation: dropdownValue1,
         image: imageUrl);
-
+    print(widget.updateMember!.famid.toString());
     UpdateFamListService updateFamListService = UpdateFamListService();
-
     updateFamListService.updateFamMember(updateFamMemberModel);
-
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => NavBar()));
   }
-
-  Widget imageprofile() {
+Widget imageprofile() {
     return Center(
       child: Stack(
         children: <Widget>[

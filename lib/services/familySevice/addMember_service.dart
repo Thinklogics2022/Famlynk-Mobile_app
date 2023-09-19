@@ -15,12 +15,13 @@ class AddMemberService {
     token = prefs.getString('token') ?? '';
 
     final url = Uri.parse(urls + email);
-
+    print("add member ${url}");
     Map<String, dynamic> requestBody = {
       "name": addMemberModel.name,
       "gender": addMemberModel.gender,
       "mobileNo": addMemberModel.mobileNo,
       "email": addMemberModel.email,
+      // "relation" : addMemberModel.relation,
       "firstLevelRelation": addMemberModel.firstLevelRelation,
       "dob": addMemberModel.dob,
       "image": addMemberModel.image,

@@ -54,65 +54,54 @@ class _FamilyState extends State<Family> {
               : ListView.builder(
                   itemCount: familyList.length,
                   itemBuilder: (context, index) {
-                    return  InkWell(
-  child: Card(
-    child: Container(
-      margin: EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        color: Color.fromARGB(255, 221, 232, 232),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 35,
-              backgroundImage: familyList[index].image != null
-                  ? NetworkImage(familyList[index].image.toString())
-                  : null, 
-                      backgroundColor: backgroundColors[index % backgroundColors.length],
-
-              child: familyList[index].image != null
-                  ? null // Don't display text if an image is available
-                  : Text(
-                      familyList[index].name!.isNotEmpty
-                          ? familyList[index].name![0].toUpperCase()
-                          : "?",
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    return InkWell(
+                      child: Card(
+                        child: Container(
+                          margin: EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            color: Color.fromARGB(255, 221, 232, 232),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: defaultImage(
+                                  familyList[index].image.toString(),
+                                  familyList[index].name.toString(),
+                                  index,
+                                ),
+                              ),
+                              SizedBox(width: 20),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    width: 140,
+                                    child: Text(
+                                      familyList[index].name.toString(),
+                                      style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    capitalizeFirstLetter(
+                                      familyList[index]
+                                          .firstLevelRelation
+                                          .toString(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-            ),
-          ),
-          SizedBox(width: 20),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                familyList[index].name.toString(),
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                capitalizeFirstLetter(
-                  familyList[index].firstLevelRelation.toString(),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  ),
-);
-
+                    );
                   })
           : Center(
               child: CircularProgressIndicator(),

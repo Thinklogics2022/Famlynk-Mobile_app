@@ -8,6 +8,7 @@ import 'package:famlynk_version1/services/familySevice/famlist_servicess.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class FamilyList extends StatefulWidget {
   @override
   _FamilyListState createState() => _FamilyListState();
@@ -44,28 +45,7 @@ class _FamilyListState extends State<FamilyList> {
     }
   }
 
-  Widget defaultImage(String image, String name, int index) {
-    
-    if (image.isEmpty || image == "null") {
-      return CircleAvatar(
-        radius: 40,
-        backgroundColor: backgroundColors[index % backgroundColors.length],
-        child: Text(
-          name.isNotEmpty ? name[0].toUpperCase() : "?",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      );
-    } else {
-      return CircleAvatar(
-        radius: 40,
-        backgroundImage: NetworkImage(image),
-      );
-    }
-  }
+ 
 
   String capitalizeFirstLetter(String text) {
     if (text.isEmpty) return text;

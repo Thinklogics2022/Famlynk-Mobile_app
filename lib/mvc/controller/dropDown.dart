@@ -62,3 +62,26 @@ class NameAvatar extends StatelessWidget {
     );
   }
 }
+
+
+ Widget defaultImage(String image, String name, int index) {
+    if (image.isEmpty || image == "null") {
+      return CircleAvatar(
+        radius: 40,
+        backgroundColor: backgroundColors[index % backgroundColors.length],
+        child: Text(
+          name.isNotEmpty ? name[0].toUpperCase() : "?",
+          style: TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
+      );
+    } else {
+      return CircleAvatar(
+        radius: 40,
+        backgroundImage: NetworkImage(image),
+      );
+    }
+  }
