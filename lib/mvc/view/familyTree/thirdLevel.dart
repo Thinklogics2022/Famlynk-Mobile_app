@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:famlynk_version1/mvc/model/familyTree_model/familyTree_model.dart';
@@ -24,6 +23,9 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
   List<FamilyTreeModel> greatgrandmother = [];
   List<FamilyTreeModel> greatgrandson = [];
   List<FamilyTreeModel> greatgranddaughter = [];
+  List<FamilyTreeModel> greatgrandfather1 = [];
+  List<FamilyTreeModel> greatgrandmother1 = [];
+  List<FamilyTreeModel> greatgrandson1 = [];
 
   @override
   void initState() {
@@ -48,10 +50,19 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
           .where((member) => member.relationShip == "great grandmother")
           .toList();
       greatgrandson = newDataList
-          .where((member) => member.relationShip == "great grandson")
+          .where((member) => member.relationShip == "great grandfather")
           .toList();
       greatgranddaughter = newDataList
-          .where((member) => member.relationShip == "great granddaughter")
+          .where((member) => member.relationShip == "great grandmother")
+          .toList();
+      greatgrandfather1 = newDataList
+          .where((member) => member.relationShip == "great grandfather")
+          .toList();
+      greatgrandmother1 = newDataList
+          .where((member) => member.relationShip == "great grandmother")
+          .toList();
+      greatgrandson1 = newDataList
+          .where((member) => member.relationShip == "great grandmother")
           .toList();
 
       setState(() {
@@ -81,10 +92,6 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Text(
-                    //   'Zoom: ${(_zoomLevel * 100).toStringAsFixed(0)}%',
-                    //   style: TextStyle(fontSize: 18),
-                    // ),
                     isLoading
                         ? Container(
                             height: 90,
@@ -101,7 +108,10 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
                                 greatgrandfather,
                                 greatgrandmother,
                                 greatgrandson,
-                                greatgranddaughter)),
+                                greatgranddaughter,
+                                greatgrandfather1,
+                                greatgrandmother1,
+                                greatgrandson1)),
                   ],
                 ),
               ),
@@ -144,11 +154,22 @@ class FamlynkPainter extends CustomPainter {
   List<FamilyTreeModel> greatgrandmother;
   List<FamilyTreeModel> greatgrandson;
   List<FamilyTreeModel> greatgranddaughter;
+  List<FamilyTreeModel> greatgrandfather1;
+  List<FamilyTreeModel> greatgrandmother1;
+  List<FamilyTreeModel> greatgrandson1;
 
   final Map<String, ui.Image> imageCache = {};
 
-  FamlynkPainter(this.familyTreeDataList, this.user, this.greatgrandfather,
-      this.greatgrandmother, this.greatgrandson, this.greatgranddaughter);
+  FamlynkPainter(
+      this.familyTreeDataList,
+      this.user,
+      this.greatgrandfather,
+      this.greatgrandmother,
+      this.greatgrandson,
+      this.greatgranddaughter,
+      this.greatgrandfather1,
+      this.greatgrandmother1,
+      this.greatgrandson1);
 
   @override
   void paint(Canvas canvas, Size size) async {
@@ -207,7 +228,7 @@ class FamlynkPainter extends CustomPainter {
         userTextPainter.layout();
         userTextPainter.paint(
           canvas,
-          Offset(centerX - 40, centerY + 35), // Adjust the position as needed
+          Offset(centerX - 40, centerY + 35),
         );
         TextSpan relationTextSpan = TextSpan(
           text: user[0].relationShip,
@@ -254,13 +275,6 @@ class FamlynkPainter extends CustomPainter {
         // Draw the brother's circle
         final greatgrandfatherY = centerY;
         final greatgrandfatherX = horizontalLineX;
-
-        // Draw the horizontal line of the Γ shape
-        // canvas.drawLine(
-        //   Offset(brotherX + 50, brotherY),
-        //   Offset(brotherX, brotherY),
-        //   paint,
-        // );
 
         // Draw the bottom line of the Γ shape
         canvas.drawLine(
@@ -357,7 +371,7 @@ class FamlynkPainter extends CustomPainter {
           paint,
         );
 
-        // Draw horizontal line extending to the right
+        // Draw horizontal line  to the right
         final horizontalLineX =
             size.width * 0.65 + greatgrandmotherIndex * 70.0;
         canvas.drawLine(
@@ -365,18 +379,18 @@ class FamlynkPainter extends CustomPainter {
           Offset(horizontalLineX, centerY),
           paint,
         );
-        //Draw vertical line to connect the user circle
+        //Draw vertical line to connect the  circle user
         canvas.drawLine(
           Offset(size.width * 0.5, size.height * 0.58),
           Offset(centerX, centerY),
           paint,
         );
 
-        // Draw the sister's circle
+        //  sister's circle
         final greatgrandmotherY = centerY;
         final greatgrandmotherX = horizontalLineX;
 
-        // Draw the horizontal line of the Γ shape
+        //  horizontal line of the Γ shape
         canvas.drawLine(
           Offset(greatgrandmotherX, greatgrandmotherY),
           Offset(greatgrandmotherX, greatgrandmotherY),
@@ -555,7 +569,9 @@ class FamlynkPainter extends CustomPainter {
         );
 
         TextSpan relationTextSpan = TextSpan(
-          text: greatgrandson[greatgrandsonIndex].relationShip,
+          text: greatgrandson[greatgrandsonIndex].relationShip!.length > 6
+              ? greatgrandson[greatgrandsonIndex].relationShip!.substring(0, 12)
+              : greatgrandson[greatgrandsonIndex].relationShip,
           style: TextStyle(
               fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -570,7 +586,7 @@ class FamlynkPainter extends CustomPainter {
               greatgrandsonIndexY + verticalLineHeight + 79),
         );
       }
-
+//great grand daughter
       if (greatgranddaughter.contains(familyTreeDataList[i])) {
         final paint = Paint()
           ..strokeWidth = 2.5
@@ -681,7 +697,13 @@ class FamlynkPainter extends CustomPainter {
         );
 
         TextSpan relationTextSpan = TextSpan(
-          text: greatgranddaughter[greatgranddaughterIndex].relationShip,
+          text:
+              greatgranddaughter[greatgranddaughterIndex].relationShip!.length >
+                      6
+                  ? greatgranddaughter[greatgranddaughterIndex]
+                      .relationShip!
+                      .substring(0, 6)
+                  : greatgranddaughter[greatgranddaughterIndex].relationShip,
           style: TextStyle(
               fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -694,6 +716,114 @@ class FamlynkPainter extends CustomPainter {
           canvas,
           Offset(greatgranddaughterX + horizontalLineLength,
               greatgranddaughterY + verticalLineHeight + 79),
+        );
+      }
+
+      // great great grandson
+
+      if (greatgrandson1.contains(familyTreeDataList[i])) {
+        final centerX = size.width * 0.5;
+        final centerY = size.height * 0.700;
+        final paint = Paint()
+          ..strokeWidth = 2.5
+          ..isAntiAlias = true;
+        final greatgrandson1Index =
+            greatgrandson1.indexOf(familyTreeDataList[i]);
+        final greatgrandson1IndexX = centerX;
+        final greatgrandson1IndexY = centerY + 200;
+        canvas.drawLine(
+          Offset(centerX, centerY),
+          Offset(greatgrandson1IndexX, greatgrandson1IndexY),
+          paint,
+        );
+        final horizontalLineLength =
+            size.width * 0.36 - greatgrandson1Index * 70;
+        //left to  right
+        canvas.drawLine(
+          Offset(greatgrandson1IndexX, greatgrandson1IndexY),
+          Offset(horizontalLineLength, greatgrandson1IndexY),
+          paint,
+        );
+        final verticalLineHeight = 30;
+        canvas.drawLine(
+          Offset(horizontalLineLength, greatgrandson1IndexY),
+          Offset(
+              horizontalLineLength, greatgrandson1IndexY + verticalLineHeight),
+          paint,
+        );
+
+        paint
+          ..color = Colors.brown
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
+        canvas.drawCircle(
+          Offset(horizontalLineLength,
+              greatgrandson1IndexY + verticalLineHeight + 29),
+          29,
+          paint,
+        );
+        final Paint glowPaint = Paint()
+          ..color = Colors.brown.withOpacity(0.3)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, 12);
+
+        canvas.drawCircle(
+          Offset(horizontalLineLength,
+              greatgrandson1IndexY + verticalLineHeight + 29),
+          32,
+          glowPaint,
+        );
+        final image = imageCache[greatgrandson[greatgrandson1Index].image];
+        if (image == null) {
+          loadImage(greatgrandson[greatgrandson1Index].image.toString())
+              .then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[greatgrandson[greatgrandson1Index].image.toString()] =
+                  loadedImage;
+              _drawImage(canvas, size, loadedImage, i, horizontalLineLength,
+                  greatgrandson1IndexY + verticalLineHeight + 29);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, horizontalLineLength,
+              greatgrandson1IndexY + verticalLineHeight + 29);
+        }
+
+        TextSpan greatgrandsonTextSpan = TextSpan(
+          text: greatgrandson[greatgrandson1Index].name!.length > 6
+              ? greatgrandson[greatgrandson1Index].name!.substring(0, 6)
+              : greatgrandson[greatgrandson1Index].name,
+          style: TextStyle(
+              fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter greatgrandsonTextPainter = TextPainter(
+          text: greatgrandsonTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        greatgrandsonTextPainter.layout();
+        greatgrandsonTextPainter.paint(
+          canvas,
+          Offset(horizontalLineLength - 20,
+              greatgrandson1IndexY + verticalLineHeight + 69),
+        );
+
+        TextSpan relationTextSpan = TextSpan(
+          text: greatgrandson[greatgrandson1Index].relationShip!.length > 6
+              ? greatgrandson[greatgrandson1Index]
+                  .relationShip!
+                  .substring(0, 12)
+              : greatgrandson[greatgrandson1Index].relationShip,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter relationTextPainter = TextPainter(
+          text: relationTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        relationTextPainter.layout();
+        relationTextPainter.paint(
+          canvas,
+          Offset(horizontalLineLength - 20,
+              greatgrandson1IndexY + verticalLineHeight + 79),
         );
       }
     }
