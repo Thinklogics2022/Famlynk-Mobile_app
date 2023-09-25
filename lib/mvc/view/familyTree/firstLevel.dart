@@ -1342,7 +1342,7 @@ class FamilyTreePainter extends CustomPainter {
 
         // Draw vertical line to left
         canvas.drawLine(
-          Offset(centerX, centerY),
+          Offset(daughterX, centerY),
           Offset(daughterX, daughterY),
           paint,
         );
