@@ -23,9 +23,10 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
   List<FamilyTreeModel> greatgrandmother = [];
   List<FamilyTreeModel> greatgrandson = [];
   List<FamilyTreeModel> greatgranddaughter = [];
-  List<FamilyTreeModel> greatgrandfather1 = [];
-  List<FamilyTreeModel> greatgrandmother1 = [];
-  List<FamilyTreeModel> greatgrandson1 = [];
+  List<FamilyTreeModel> greatgreatgrandfather = [];
+  List<FamilyTreeModel> greatgreatgrandmother = [];
+  List<FamilyTreeModel> greatgreatgrandson = [];
+  List<FamilyTreeModel> greatgreatgranddaughter = [];
 
   @override
   void initState() {
@@ -50,21 +51,23 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
           .where((member) => member.relationShip == "great grandmother")
           .toList();
       greatgrandson = newDataList
-          .where((member) => member.relationShip == "great grandfather")
+          .where((member) => member.relationShip == "great grandson")
           .toList();
       greatgranddaughter = newDataList
-          .where((member) => member.relationShip == "great grandmother")
+          .where((member) => member.relationShip == "great granddaughter")
           .toList();
-      greatgrandfather1 = newDataList
-          .where((member) => member.relationShip == "great grandfather")
+      greatgreatgrandfather = newDataList
+          .where((member) => member.relationShip == "great great grandfather")
           .toList();
-      greatgrandmother1 = newDataList
-          .where((member) => member.relationShip == "great grandmother")
+      greatgreatgrandmother = newDataList
+          .where((member) => member.relationShip == "great great grandmother")
           .toList();
-      greatgrandson1 = newDataList
-          .where((member) => member.relationShip == "great grandmother")
+      greatgreatgrandson = newDataList
+          .where((member) => member.relationShip == "great great grandson")
           .toList();
-
+      greatgreatgranddaughter = newDataList
+        ..where((member) => member.relationShip == "great great granddaughter")
+            .toList();
       setState(() {
         familyTreeDataList = newDataList;
         isLoading = false;
@@ -109,9 +112,10 @@ class _ThirdLevelRelationState extends State<ThirdLevelRelation> {
                                 greatgrandmother,
                                 greatgrandson,
                                 greatgranddaughter,
-                                greatgrandfather1,
-                                greatgrandmother1,
-                                greatgrandson1)),
+                                greatgreatgrandfather,
+                                greatgreatgrandmother,
+                                greatgreatgrandson,
+                                greatgreatgranddaughter)),
                   ],
                 ),
               ),
@@ -154,9 +158,10 @@ class FamlynkPainter extends CustomPainter {
   List<FamilyTreeModel> greatgrandmother;
   List<FamilyTreeModel> greatgrandson;
   List<FamilyTreeModel> greatgranddaughter;
-  List<FamilyTreeModel> greatgrandfather1;
-  List<FamilyTreeModel> greatgrandmother1;
-  List<FamilyTreeModel> greatgrandson1;
+  List<FamilyTreeModel> greatgreatgrandfather;
+  List<FamilyTreeModel> greatgreatgrandmother;
+  List<FamilyTreeModel> greatgreatgrandson;
+  List<FamilyTreeModel> greatgreatgranddaughter;
 
   final Map<String, ui.Image> imageCache = {};
 
@@ -167,9 +172,10 @@ class FamlynkPainter extends CustomPainter {
       this.greatgrandmother,
       this.greatgrandson,
       this.greatgranddaughter,
-      this.greatgrandfather1,
-      this.greatgrandmother1,
-      this.greatgrandson1);
+      this.greatgreatgrandfather,
+      this.greatgreatgrandmother,
+      this.greatgreatgrandson,
+      this.greatgreatgranddaughter);
 
   @override
   void paint(Canvas canvas, Size size) async {
@@ -477,7 +483,7 @@ class FamlynkPainter extends CustomPainter {
           Offset(greatgrandmotherX - 14, centerY + 105),
         );
       }
-
+//great grandson
       if (greatgrandson.contains(familyTreeDataList[i])) {
         final centerX = size.width * 0.5;
         final centerY = size.height * 0.665;
@@ -713,42 +719,41 @@ class FamlynkPainter extends CustomPainter {
         );
         relationTextPainter.layout();
         relationTextPainter.paint(
-          canvas,
-          Offset(greatgranddaughterX + horizontalLineLength,
-              greatgranddaughterY + verticalLineHeight + 79),
-        );
+            canvas,
+            Offset(greatgranddaughterX + horizontalLineLength,
+                greatgranddaughterY + verticalLineHeight + 79));
       }
 
       // great great grandson
 
-      if (greatgrandson1.contains(familyTreeDataList[i])) {
+      if (greatgreatgrandson.contains(familyTreeDataList[i])) {
         final centerX = size.width * 0.5;
         final centerY = size.height * 0.700;
         final paint = Paint()
           ..strokeWidth = 2.5
           ..isAntiAlias = true;
-        final greatgrandson1Index =
-            greatgrandson1.indexOf(familyTreeDataList[i]);
-        final greatgrandson1IndexX = centerX;
-        final greatgrandson1IndexY = centerY + 200;
+        final greatgreatgrandsonIndex =
+            greatgreatgrandson.indexOf(familyTreeDataList[i]);
+        final greatgreatgrandsonIndexX = centerX;
+        final greatgreatgrandsonIndexY = centerY + 200;
         canvas.drawLine(
           Offset(centerX, centerY),
-          Offset(greatgrandson1IndexX, greatgrandson1IndexY),
+          Offset(greatgreatgrandsonIndexX, greatgreatgrandsonIndexY),
           paint,
         );
         final horizontalLineLength =
-            size.width * 0.36 - greatgrandson1Index * 70;
+            size.width * 0.36 - greatgreatgrandsonIndex * 70;
         //left to  right
         canvas.drawLine(
-          Offset(greatgrandson1IndexX, greatgrandson1IndexY),
-          Offset(horizontalLineLength, greatgrandson1IndexY),
+          Offset(greatgreatgrandsonIndexX, greatgreatgrandsonIndexY),
+          Offset(horizontalLineLength, greatgreatgrandsonIndexY),
           paint,
         );
         final verticalLineHeight = 30;
         canvas.drawLine(
-          Offset(horizontalLineLength, greatgrandson1IndexY),
+          Offset(horizontalLineLength, greatgreatgrandsonIndexY),
           Offset(
-              horizontalLineLength, greatgrandson1IndexY + verticalLineHeight),
+              horizontalLineLength, greatgreatgrandsonIndexY + verticalLineHeight),
           paint,
         );
 
@@ -758,7 +763,7 @@ class FamlynkPainter extends CustomPainter {
           ..strokeWidth = 1;
         canvas.drawCircle(
           Offset(horizontalLineLength,
-              greatgrandson1IndexY + verticalLineHeight + 29),
+              greatgreatgrandsonIndexY + verticalLineHeight + 29),
           29,
           paint,
         );
@@ -768,30 +773,30 @@ class FamlynkPainter extends CustomPainter {
 
         canvas.drawCircle(
           Offset(horizontalLineLength,
-              greatgrandson1IndexY + verticalLineHeight + 29),
+              greatgreatgrandsonIndexY + verticalLineHeight + 29),
           32,
           glowPaint,
         );
-        final image = imageCache[greatgrandson[greatgrandson1Index].image];
+        final image = imageCache[greatgrandson[greatgreatgrandsonIndex].image];
         if (image == null) {
-          loadImage(greatgrandson[greatgrandson1Index].image.toString())
+          loadImage(greatgrandson[greatgreatgrandsonIndex].image.toString())
               .then((loadedImage) {
             if (loadedImage != null) {
-              imageCache[greatgrandson[greatgrandson1Index].image.toString()] =
+              imageCache[greatgrandson[greatgreatgrandsonIndex].image.toString()] =
                   loadedImage;
               _drawImage(canvas, size, loadedImage, i, horizontalLineLength,
-                  greatgrandson1IndexY + verticalLineHeight + 29);
+                  greatgreatgrandsonIndexY + verticalLineHeight + 29);
             }
           });
         } else {
           _drawImage(canvas, size, image, i, horizontalLineLength,
-              greatgrandson1IndexY + verticalLineHeight + 29);
+              greatgreatgrandsonIndexY + verticalLineHeight + 29);
         }
 
         TextSpan greatgrandsonTextSpan = TextSpan(
-          text: greatgrandson[greatgrandson1Index].name!.length > 6
-              ? greatgrandson[greatgrandson1Index].name!.substring(0, 6)
-              : greatgrandson[greatgrandson1Index].name,
+          text: greatgrandson[greatgreatgrandsonIndex].name!.length > 6
+              ? greatgrandson[greatgreatgrandsonIndex].name!.substring(0, 6)
+              : greatgrandson[greatgreatgrandsonIndex].name,
           style: TextStyle(
               fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -803,15 +808,15 @@ class FamlynkPainter extends CustomPainter {
         greatgrandsonTextPainter.paint(
           canvas,
           Offset(horizontalLineLength - 20,
-              greatgrandson1IndexY + verticalLineHeight + 69),
+              greatgreatgrandsonIndexY + verticalLineHeight + 69),
         );
 
         TextSpan relationTextSpan = TextSpan(
-          text: greatgrandson[greatgrandson1Index].relationShip!.length > 6
-              ? greatgrandson[greatgrandson1Index]
+          text: greatgrandson[greatgreatgrandsonIndex].relationShip!.length > 6
+              ? greatgrandson[greatgreatgrandsonIndex]
                   .relationShip!
                   .substring(0, 12)
-              : greatgrandson[greatgrandson1Index].relationShip,
+              : greatgrandson[greatgreatgrandsonIndex].relationShip,
           style: TextStyle(
               fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -823,7 +828,336 @@ class FamlynkPainter extends CustomPainter {
         relationTextPainter.paint(
           canvas,
           Offset(horizontalLineLength - 20,
-              greatgrandson1IndexY + verticalLineHeight + 79),
+              greatgreatgrandsonIndexY + verticalLineHeight + 79),
+        );
+      }
+
+      // great great granddaughter 
+
+      // if(greatgreatgranddaughter.contains(familyTreeDataList[i])) {
+      //   final centerX = size.width * 0.5;
+      //   final centerY = size.height * 0.665;
+      //   final paint = Paint()
+      //     ..strokeWidth = 2.5
+      //     ..isAntiAlias = true;
+      //   final greatgreatgranddaughterIndex = greatgreatgranddaughter.indexOf(familyTreeDataList[i]);
+      //   final sonX = centerX;
+      //   final sonY = centerY + 80; 
+      //    canvas.drawLine(
+      //     Offset(centerX, centerY),
+      //     Offset(sonX, sonY),
+      //     paint,
+      //   );
+      // }
+      if (greatgranddaughter.contains(familyTreeDataList[i])) {
+        final paint = Paint()
+          ..strokeWidth = 2.5
+          ..isAntiAlias = true;
+        final centerX = size.width * 0.5;
+        final centerY = size.height * 0.700;
+        final greatgranddaughterIndex =
+            greatgranddaughter.indexOf(familyTreeDataList[i]);
+        final greatgranddaughterX = centerX;
+        final greatgranddaughterY = centerY + 200;
+        canvas.drawLine(
+          Offset(centerX, centerY),
+          Offset(greatgranddaughterX, greatgranddaughterY),
+          paint,
+        );
+        final horizontalLineLength =
+            size.width * 0.65 + greatgranddaughterIndex * 70;
+        canvas.drawLine(
+          Offset(greatgranddaughterX, greatgranddaughterY),
+          Offset(horizontalLineLength, greatgranddaughterY),
+          paint,
+        );
+        final verticalLineHeight = 30;
+        canvas.drawLine(
+          Offset(horizontalLineLength, greatgranddaughterY),
+          Offset(
+              horizontalLineLength, greatgranddaughterY + verticalLineHeight),
+          paint,
+        );
+        paint
+          ..color = Colors.amber
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
+        canvas.drawCircle(
+          Offset(horizontalLineLength,
+              greatgranddaughterY + verticalLineHeight + 29),
+          29,
+          paint,
+        );
+        final image =
+            imageCache[greatgreatgranddaughter[greatgranddaughterIndex].image];
+        if (image == null) {
+          loadImage(greatgreatgranddaughter[greatgranddaughterIndex]
+                  .image
+                  .toString())
+              .then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[greatgreatgranddaughter[greatgranddaughterIndex]
+                  .image
+                  .toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, horizontalLineLength,
+                  greatgranddaughterY + verticalLineHeight + 29);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, horizontalLineLength,
+              greatgranddaughterY + verticalLineHeight + 29);
+        }
+
+        TextSpan greatgreatgranddaughterTextSpan = TextSpan(
+          text: greatgreatgranddaughter[greatgranddaughterIndex].name!.length > 6
+              ? greatgreatgranddaughter[greatgranddaughterIndex]
+                  .name!
+                  .substring(0, 6)
+              : greatgreatgranddaughter[greatgranddaughterIndex].name,
+          style: TextStyle(
+              fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        print("object");
+        print(greatgreatgranddaughter);
+        TextPainter greatgreatgranddaughterTextPainter = TextPainter(
+          text: greatgreatgranddaughterTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        greatgreatgranddaughterTextPainter.layout();
+        greatgreatgranddaughterTextPainter.paint(
+          canvas,
+          Offset(horizontalLineLength - 20,
+              greatgranddaughterY + verticalLineHeight + 65),
+        );
+
+        TextSpan relationTextSpan = TextSpan(
+          text: greatgreatgranddaughter[greatgranddaughterIndex]
+                      .relationShip!
+                      .length >
+                  6
+              ? greatgreatgranddaughter[greatgranddaughterIndex]
+                  .relationShip!
+                  .substring(0, 12)
+              : greatgreatgranddaughter[greatgranddaughterIndex].relationShip,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter relationTextPainter = TextPainter(
+          text: relationTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        relationTextPainter.layout();
+        relationTextPainter.paint(
+          canvas,
+          Offset(horizontalLineLength - 20,
+              greatgranddaughterY + verticalLineHeight + 77),
+        );
+      }
+      //great great grandfather
+
+      if (greatgreatgrandfather.contains(familyTreeDataList[i])) {
+        final paint = Paint()..strokeWidth = 2.5;
+        final centerX = size.width * 0.5;
+        final centerY = size.height * 0.200;
+        final greatgreatgrandfatherIndex =
+            greatgreatgrandfather.indexOf(familyTreeDataList[i]);
+
+        final horizontalLineX =
+            size.width * 0.36 - greatgreatgrandfatherIndex * 70.0;
+// vertical line
+        canvas.drawLine(
+          Offset(centerX, centerY),
+          Offset(horizontalLineX, centerY),
+          paint,
+        );
+        // horizontal line
+        canvas.drawLine(
+          Offset(size.width * 0.5, size.height * 0.58),
+          Offset(centerX, centerY),
+          paint,
+        );
+        final greatgreatgrandfatherY = centerY;
+        final greatgreatgrandfatherX = horizontalLineX;
+        canvas.drawLine(Offset(greatgreatgrandfatherX, greatgreatgrandfatherY),
+            Offset(greatgreatgrandfatherX, greatgreatgrandfatherY + 30), paint);
+        paint
+          ..color = Colors.purple
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
+        canvas.drawCircle(
+          Offset(greatgreatgrandfatherX, greatgreatgrandfatherY + 59),
+          29,
+          paint,
+        );
+        final Paint glowPaint = Paint()
+          ..color = Colors.purple.withOpacity(0.3)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, 12);
+        canvas.drawCircle(
+          Offset(horizontalLineX, centerY + 59),
+          32,
+          glowPaint,
+        );
+        final image =
+            imageCache[greatgreatgrandfather[greatgreatgrandfatherIndex].image];
+        if (image == null) {
+          loadImage(greatgreatgrandfather[greatgreatgrandfatherIndex].image.toString())
+              .then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[greatgreatgrandfather[greatgreatgrandfatherIndex]
+                  .image
+                  .toString()] = loadedImage;
+              _drawImage(
+                  canvas, size, loadedImage, i, horizontalLineX, centerY + 59);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, horizontalLineX, centerY + 59);
+        }
+        TextSpan greatgreatgrandfatherTextSpan = TextSpan(
+          text: greatgreatgrandfather[greatgreatgrandfatherIndex].name!.length > 6
+              ? greatgreatgrandfather[greatgreatgrandfatherIndex].name!.substring(0, 6)
+              : greatgreatgrandfather[greatgreatgrandfatherIndex].name,
+          style: TextStyle(
+              fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter greatgreatgrandfatherTextPainter = TextPainter(
+          text: greatgreatgrandfatherTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        greatgreatgrandfatherTextPainter.layout();
+        greatgreatgrandfatherTextPainter.paint(
+          canvas,
+          Offset(horizontalLineX - 14, centerY + 95),
+        );
+
+        TextSpan relationTextSpan = TextSpan(
+          text:
+              greatgreatgrandfather[greatgreatgrandfatherIndex].relationShip!.length > 6
+                  ? greatgreatgrandfather[greatgreatgrandfatherIndex]
+                      .relationShip!
+                      .substring(0, 12)
+                  : greatgreatgrandfather[greatgreatgrandfatherIndex].relationShip,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter relationTextPainter = TextPainter(
+          text: relationTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        relationTextPainter.layout();
+        relationTextPainter.paint(
+          canvas,
+          Offset(horizontalLineX - 14, centerY + 105),
+        );
+      }
+
+      // great great grand mother
+      if (greatgreatgrandmother.contains(familyTreeDataList[i])) {
+        final paint = Paint()..strokeWidth = 2.5;
+        final centerX = size.width * 0.5;
+        final centerY = size.height * 0.200;
+        final greatgreatgrandmotherIndex =
+            greatgreatgrandmother.indexOf(familyTreeDataList[i]);
+
+        // left to right from center
+        canvas.drawLine(
+          Offset(centerX, centerY),
+          Offset(size.width * 0.65, centerY),
+          paint,
+        );
+
+        final horizontalLineX = size.width * 0.65 + greatgreatgrandmotherIndex * 70;
+
+        canvas.drawLine(
+          Offset(size.width * 0.6, centerY),
+          Offset(horizontalLineX, centerY),
+          paint,
+        );
+        // line to circle
+        canvas.drawLine(
+          Offset(size.width * 0.5, size.height * 0.58),
+          Offset(centerX, centerY),
+          paint,
+        );
+
+        final greatgreatgrandmotherX = horizontalLineX;
+        final greatgreatgrandmotherY = centerY;
+        canvas.drawLine(
+          Offset(greatgreatgrandmotherX, greatgreatgrandmotherY),
+          Offset(greatgreatgrandmotherX, greatgreatgrandmotherY + 30),
+          paint,
+        );
+        paint
+          ..color = Colors.pinkAccent
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
+
+        canvas.drawCircle(
+          Offset(greatgreatgrandmotherX, greatgreatgrandmotherY + 59),
+          29,
+          paint,
+        );
+        final Paint glowPaint = Paint()
+          ..color = Colors.pink.withOpacity(0.3)
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, 12);
+
+        canvas.drawCircle(
+          Offset(greatgreatgrandmotherX, greatgreatgrandmotherY + 59),
+          32,
+          glowPaint,
+        );
+        final image =
+            imageCache[greatgreatgrandmother[greatgreatgrandmotherIndex].image];
+        if (image == null) {
+          loadImage(greatgreatgrandmother[greatgreatgrandmotherIndex].image.toString())
+              .then((loadedImage) {
+            if (loadedImage != null) {
+              imageCache[greatgreatgrandmother[greatgreatgrandmotherIndex]
+                  .image
+                  .toString()] = loadedImage;
+              _drawImage(canvas, size, loadedImage, i, greatgreatgrandmotherX,
+                  greatgreatgrandmotherY + 59);
+            }
+          });
+        } else {
+          _drawImage(canvas, size, image, i, greatgreatgrandmotherX,
+              greatgreatgrandmotherY + 59);
+        }
+
+        TextSpan sisterTextSpan = TextSpan(
+          text: greatgreatgrandmother[greatgreatgrandmotherIndex].name!.length > 6
+              ? greatgreatgrandmother[greatgreatgrandmotherIndex].name!.substring(0, 6)
+              : greatgreatgrandmother[greatgreatgrandmotherIndex].name,
+          style: TextStyle(
+              fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter sisterTextPainter = TextPainter(
+          text: sisterTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        sisterTextPainter.layout();
+        sisterTextPainter.paint(
+          canvas,
+          Offset(greatgreatgrandmotherX - 14, centerY + 95),
+        );
+        TextSpan relationTextSpan = TextSpan(
+          text:
+              greatgreatgrandmother[greatgreatgrandmotherIndex].relationShip!.length > 6
+                  ? greatgreatgrandmother[greatgreatgrandmotherIndex]
+                      .relationShip!
+                      .substring(0, 12)
+                  : greatgreatgrandmother[greatgreatgrandmotherIndex].relationShip,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
+        );
+        TextPainter relationTextPainter = TextPainter(
+          text: relationTextSpan,
+          textDirection: TextDirection.ltr,
+        );
+        relationTextPainter.layout();
+        relationTextPainter.paint(
+          canvas,
+          Offset(greatgreatgrandmotherX - 14, centerY + 105),
         );
       }
     }
@@ -873,3 +1207,5 @@ class FamlynkPainter extends CustomPainter {
   @override
   bool shouldRepaint(FamlynkPainter oldDelegate) => false;
 }
+
+
