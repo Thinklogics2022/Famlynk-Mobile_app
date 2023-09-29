@@ -261,7 +261,7 @@ class FamilyTreePainter extends CustomPainter {
               ? user[0].name!.substring(0, 6)
               : user[0].name,
           style: TextStyle(
-              fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),
         );
         TextPainter userTextPainter = TextPainter(
           text: userTextSpan,
@@ -270,12 +270,12 @@ class FamilyTreePainter extends CustomPainter {
         userTextPainter.layout();
         userTextPainter.paint(
           canvas,
-          Offset(centerX - 40, centerY + 35), // Adjust the position as needed
+          Offset(centerX - 89, centerY-6 ), // Adjust the position as needed
         );
         TextSpan relationTextSpan = TextSpan(
           text: user[0].relationShip,
           style: TextStyle(
-              fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
         );
         TextPainter relationTextPainter = TextPainter(
           text: relationTextSpan,
@@ -284,7 +284,7 @@ class FamilyTreePainter extends CustomPainter {
         relationTextPainter.layout();
         relationTextPainter.paint(
           canvas,
-          Offset(centerX - 30, centerY + 46),
+          Offset(centerX - 85, centerY + 10),
         );
       }
 
@@ -350,7 +350,7 @@ class FamilyTreePainter extends CustomPainter {
         fatherTextPainter.layout();
         fatherTextPainter.paint(
           canvas,
-          Offset(fatherX - 49, centerY + 45),
+          Offset(fatherX - 55, centerY + 45),
         );
         TextSpan relationTextSpan = TextSpan(
           text: fathers[fatherIndex].relationShip,
@@ -460,7 +460,7 @@ class FamilyTreePainter extends CustomPainter {
         final centerY = size.height * 0.150;
         final fathersfatherIndex = fathersfather.indexOf(familyTreeDataList[i]);
         final fathersfatherX = centerX - 34;
-        final fathersfatherY = centerY - 150;
+        final fathersfatherY = centerY - 130;
 
         // Draw fathersfather's vertical line
         canvas.drawLine(
@@ -543,12 +543,12 @@ class FamilyTreePainter extends CustomPainter {
         fathersfatherTextPainter.paint(
           canvas,
           Offset(
-              fathersfatherX - 20 - horizontalLineLength, fathersfatherY - 55),
+              fathersfatherX - 20 - horizontalLineLength, fathersfatherY + 40),
         );
         relationTextPainter.paint(
           canvas,
           Offset(
-              fathersfatherX - 20 - horizontalLineLength, fathersfatherY - 46),
+              fathersfatherX - 20 - horizontalLineLength, fathersfatherY + 52),
         );
       }
 
@@ -561,7 +561,7 @@ class FamilyTreePainter extends CustomPainter {
         final centerY = size.height * 0.150;
         final fathersmotherIndex = fathersmother.indexOf(familyTreeDataList[i]);
         final fathersmotherX = centerX - 34;
-        final fathersmotherY = centerY - 150;
+        final fathersmotherY = centerY - 130;
         // Draw fathersmother's lines and circle
         canvas.drawLine(
           Offset(centerX - 10, fathersmotherY),
@@ -640,12 +640,12 @@ class FamilyTreePainter extends CustomPainter {
         fathersmotherTextPainter.paint(
           canvas,
           Offset(
-              fathersmotherX + 20 + horizontalLineLength, fathersmotherY - 58),
+              fathersmotherX + 20 + horizontalLineLength, fathersmotherY + 40),
         );
         relationTextPainter.paint(
           canvas,
           Offset(
-              fathersmotherX + 20 + horizontalLineLength, fathersmotherY - 48),
+              fathersmotherX + 20 + horizontalLineLength, fathersmotherY +52),
         );
       }
 
@@ -989,8 +989,6 @@ class FamilyTreePainter extends CustomPainter {
         final sisterY = centerY;
         final sisterX = horizontalLineX;
 
-        
-
         // Draw the bottom line of the Γ shape
         canvas.drawLine(
           Offset(sisterX, sisterY),
@@ -1144,7 +1142,7 @@ class FamilyTreePainter extends CustomPainter {
       // wife
       if (wife.contains(familyTreeDataList[i])) {
         final paint = Paint()..strokeWidth = 2.5;
-        final centerX = size.width * 0.5; 
+        final centerX = size.width * 0.5;
         final centerY = size.height * 0.665;
         final wifeIndex = wife.indexOf(familyTreeDataList[i]);
 
