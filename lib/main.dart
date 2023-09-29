@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field
 
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/view/famlynkLogin/splashScree/splashScreen.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/utils/default_option.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -80,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor : Colors.grey.shade100,
         primarySwatch: Colors.grey,
       ),
-      home: LoginPage(),
+      home: SplashScreen(),
       // home: FutureBuilder<bool>(
       //   future: isLoggedIn(),
       //   builder: (context, snapshot) {
