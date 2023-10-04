@@ -317,7 +317,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _isLoading = false;
     });
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar(index: 0,)));
   }
 
  Widget buildTextField(

@@ -13,7 +13,8 @@ import 'package:hexcolor/hexcolor.dart';
 import '../familyList/famList.dart';
 
 class NavBar extends StatefulWidget {
-  const NavBar({Key? key}) : super(key: key);
+  const NavBar({Key? key, required this.index}) : super(key: key);
+  final int index;
 
   @override
   State<NavBar> createState() => _NavBarState();
@@ -24,11 +25,12 @@ class _NavBarState extends State<NavBar> {
   NotificationService notificationService = NotificationService();
   var isLoading = false;
 
-  int _selectedIndex = 0;
+  late int _selectedIndex;
   MyProperties myProperties = MyProperties();
   @override
   void initState() {
     super.initState();
+     _selectedIndex = widget.index;
     fetchAPI();
   }
 
@@ -40,6 +42,9 @@ class _NavBarState extends State<NavBar> {
   ];
 
   void _onTabSelected(int index) {
+    print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq');
+    print(index);
+    print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
     setState(() {
       _selectedIndex = index;
     });

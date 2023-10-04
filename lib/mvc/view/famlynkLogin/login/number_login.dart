@@ -300,7 +300,7 @@ class _FamLoginState extends State<FamLogin> {
     ).whenComplete(
       () async {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => NavBar())
+            context, MaterialPageRoute(builder: (context) => NavBar(index: 0,))
             // uuid: user!.uid,
             );
         if (user != null) {
@@ -323,7 +323,7 @@ class _FamLoginState extends State<FamLogin> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NavBar(
+                  builder: (context) => NavBar(index: 0,
                       // uuid: user!.uid,
                       ),
                 ),

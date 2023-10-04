@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/suggestion_model.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:famlynk_version1/mvc/view/suggestion/personal_detials.dart';
 import 'package:famlynk_version1/services/familySevice/suggestion_services.dart';
 import 'package:flutter/material.dart';
@@ -67,135 +68,166 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromARGB(255, 223, 228, 237),
-      appBar: AppBar(
-       
-        backgroundColor: HexColor('#0175C8'),
-        iconTheme: IconThemeData(color: Colors.white),
-        centerTitle: true,
-        title: Text(
-          'Suggestions',
-          style: TextStyle(
-            color: Colors.white,
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 223, 228, 237),
+        appBar: AppBar(
+          backgroundColor: HexColor('#0175C8'),
+          iconTheme: IconThemeData(color: Colors.white),
+          centerTitle: true,
+          title: Text(
+            'Suggestions',
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(10.0),
-            child: TypeAheadFormField<Suggestion>(
-              textFieldConfiguration: TextFieldConfiguration(
-                onChanged: (value) {
-                  setState(() {
-                    currentQuery = value;
-                    filteredSuggestions = suggestionlist
-                        .where((suggestion) => suggestion.name
-                            .toString()
-                            .toLowerCase()
-                            .contains(value.toLowerCase()))
-                        .toList();
-                  });
-                },
-                decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                  hintText: "Search",
-                  suffixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                    borderSide: BorderSide(),
-                  ),
-                ),
-              ),
-              suggestionsCallback: (pattern) async {
-                return suggestionlist
-                    .where((suggestion) => suggestion.name
-                        .toString()
-                        .toLowerCase()
-                        .contains(pattern.toLowerCase()))
-                    .toList();
-              },
-              itemBuilder: (context, suggestion) {
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: getProfileImageWithFallback(suggestion),
-                    backgroundColor: Colors.transparent,
-                  ),
-                  title: Text(suggestion.name.toString()),
-                );
-              },
-              onSuggestionSelected: (suggestion) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserDetails(
-                      name: suggestion.name.toString(),
-                      gender: suggestion.gender.toString(),
-                      address: suggestion.address.toString(),
-                      dateOfBirth: suggestion.dateOfBirth.toString(),
-                      email: suggestion.email.toString(),
-                      hometown: suggestion.hometown.toString(),
-                      maritalStatus: suggestion.maritalStatus.toString(),
-                      profileImage: suggestion.profileImage.toString(),
-                      uniqueUserID: suggestion.uniqueUserID.toString(),
-                      mobileNo: suggestion.mobileNo.toString(),
+        body: isLoaded
+            ? suggestionlist!.isEmpty
+                ? Center(
+                    child: Text(
+                      'No FamilyNews are available.',
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: currentQuery.isEmpty
-                  ? suggestionlist.length
-                  : filteredSuggestions.length,
-              itemBuilder: (context, index) {
-                final suggestion = currentQuery.isEmpty
-                    ? suggestionlist[index]
-                    : filteredSuggestions[index];
-                if (index == suggestionlist.length - 1 &&
-                    currentQuery.isEmpty) {}
-
-                return InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UserDetails(
-                          name: suggestion.name.toString(),
-                          gender: suggestion.gender.toString(),
-                          address: suggestion.address.toString(),
-                          dateOfBirth: suggestion.dateOfBirth.toString(),
-                          email: suggestion.email.toString(),
-                          hometown: suggestion.hometown.toString(),
-                          maritalStatus: suggestion.maritalStatus.toString(),
-                          profileImage: suggestion.profileImage.toString(),
-                          uniqueUserID: suggestion.uniqueUserID.toString(),
-                          mobileNo: suggestion.mobileNo.toString(),
+                  )
+                : Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: TypeAheadFormField<Suggestion>(
+                          textFieldConfiguration: TextFieldConfiguration(
+                            onChanged: (value) {
+                              setState(() {
+                                currentQuery = value;
+                                filteredSuggestions = suggestionlist
+                                    .where((suggestion) => suggestion.name
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(value.toLowerCase()))
+                                    .toList();
+                              });
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 10.0, vertical: 10.0),
+                              hintText: "Search",
+                              suffixIcon: Icon(Icons.search),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide(),
+                              ),
+                            ),
+                          ),
+                          suggestionsCallback: (pattern) async {
+                            return suggestionlist
+                                .where((suggestion) => suggestion.name
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(pattern.toLowerCase()))
+                                .toList();
+                          },
+                          itemBuilder: (context, suggestion) {
+                            return ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage:
+                                    getProfileImageWithFallback(suggestion),
+                                backgroundColor: Colors.transparent,
+                              ),
+                              title: Text(suggestion.name.toString()),
+                            );
+                          },
+                          onSuggestionSelected: (suggestion) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UserDetails(
+                                  name: suggestion.name.toString(),
+                                  gender: suggestion.gender.toString(),
+                                  address: suggestion.address.toString(),
+                                  dateOfBirth:
+                                      suggestion.dateOfBirth.toString(),
+                                  email: suggestion.email.toString(),
+                                  hometown: suggestion.hometown.toString(),
+                                  maritalStatus:
+                                      suggestion.maritalStatus.toString(),
+                                  profileImage:
+                                      suggestion.profileImage.toString(),
+                                  uniqueUserID:
+                                      suggestion.uniqueUserID.toString(),
+                                  mobileNo: suggestion.mobileNo.toString(),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    );
-                  },
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: getProfileImageWithFallback(suggestion),
-                      backgroundColor: Colors.transparent,
-                      child: suggestion.profileImage == null ||
-                              suggestion.profileImage!.isEmpty
-                          ? NameAvatar(name: suggestion.name.toString())
-                          : null,
-                    ),
-                    title: Text(suggestion.name.toString()),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: currentQuery.isEmpty
+                              ? suggestionlist.length
+                              : filteredSuggestions.length,
+                          itemBuilder: (context, index) {
+                            final suggestion = currentQuery.isEmpty
+                                ? suggestionlist[index]
+                                : filteredSuggestions[index];
+                            if (index == suggestionlist.length - 1 &&
+                                currentQuery.isEmpty) {}
+
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UserDetails(
+                                      name: suggestion.name.toString(),
+                                      gender: suggestion.gender.toString(),
+                                      address: suggestion.address.toString(),
+                                      dateOfBirth:
+                                          suggestion.dateOfBirth.toString(),
+                                      email: suggestion.email.toString(),
+                                      hometown: suggestion.hometown.toString(),
+                                      maritalStatus:
+                                          suggestion.maritalStatus.toString(),
+                                      profileImage:
+                                          suggestion.profileImage.toString(),
+                                      uniqueUserID:
+                                          suggestion.uniqueUserID.toString(),
+                                      mobileNo: suggestion.mobileNo.toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundImage:
+                                      getProfileImageWithFallback(suggestion),
+                                  backgroundColor: Colors.transparent,
+                                  child: suggestion.profileImage == null ||
+                                          suggestion.profileImage!.isEmpty
+                                      ? NameAvatar(
+                                          name: suggestion.name.toString())
+                                      : null,
+                                ),
+                                title: Text(suggestion.name.toString()),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
     );
+  }
+
+  Future<bool> _onBackPressed() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => NavBar(index: 0,)),
+    );
+    return Future.value(false);
   }
 }

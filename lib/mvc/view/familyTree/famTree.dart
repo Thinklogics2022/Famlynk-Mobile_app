@@ -61,7 +61,7 @@ class _FamilyTreeState extends State<FamilyTree>
   Future<bool> _onBackPressed() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => NavBar()),
+      MaterialPageRoute(builder: (context) => NavBar(index: 0,)),
     );
     return Future.value(false);
   }
