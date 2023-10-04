@@ -360,7 +360,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
     UpdateFamListService updateFamListService = UpdateFamListService();
     updateFamListService.updateFamMember(updateFamMemberModel);
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => NavBar()));
+        context, MaterialPageRoute(builder: (context) => NavBar(index: 1,)));
   }
 Widget imageprofile() {
     return Center(

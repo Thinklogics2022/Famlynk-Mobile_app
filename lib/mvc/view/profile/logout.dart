@@ -106,7 +106,7 @@ class LogOutPage extends StatelessWidget {
                                           Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => NavBar(),
+                                              builder: (context) => NavBar(index: 0,),
                                             ),
                                           );
                                         },

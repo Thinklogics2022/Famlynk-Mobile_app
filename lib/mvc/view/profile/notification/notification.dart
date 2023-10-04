@@ -131,7 +131,7 @@ class _NotificationsState extends State<Notifications> {
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => NavBar(),
+                                                builder: (context) => NavBar(index: 0,),
                                               ),
                                             );
                                             notificationService
@@ -159,7 +159,7 @@ class _NotificationsState extends State<Notifications> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      NavBar(),
+                                                      NavBar(index: 0,),
                                                 ));
                                             notificationService
                                                 .declineNotificationService(

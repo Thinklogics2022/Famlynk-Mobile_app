@@ -31,20 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    checkForToken();
   }
-
-  Future<void> checkForToken() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? token = prefs.getString('token'); 
-
-  if (token != null && token.isNotEmpty) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => NavBar()),
-    );
-  }
-}
 
 
   void _submitForm() async {
@@ -62,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
         await mailLoginServices.authenticate(userLogin);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NavBar()),
+          MaterialPageRoute(builder: (context) => NavBar(index: 0,)),
         );
         _showSnackbar("Login successful");
       } catch (e) {

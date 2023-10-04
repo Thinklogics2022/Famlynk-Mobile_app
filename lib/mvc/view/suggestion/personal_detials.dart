@@ -1,5 +1,6 @@
 import 'package:famlynk_version1/mvc/model/addmember_model/searchAddMember_model.dart';
 import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
+import 'package:famlynk_version1/mvc/view/suggestion/suggestion.dart';
 import 'package:famlynk_version1/services/familySevice/searchAddMumber_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
@@ -111,22 +112,28 @@ class _UserDetailsState extends State<UserDetails> {
         // userId: userId,
         // image: widget.profileImage,
         // mobileNo: widget.mobileNo,
-        uniqueUserID: widget.uniqueUserID,
         // relation: '',
+        uniqueUserID: widget.uniqueUserID,
         firstLevelRelation: selectedFirstLevelRelation,
         secondLevelRelation: selectedSecondLevelRelation,
         thirdLevelRelation: selectedThirdLevelRelation,
       );
-      searchAddMemberService.searchAddMemberPost(searchAddMemberModel);
+      searchAddMemberService
+          .searchAddMemberPost(searchAddMemberModel)
+          .then((value) => {
+                if (value.isNotEmpty)
+                  {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SuggestionScreen()))
+                  }
+              });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Added to Family successfully.'),
           duration: Duration(seconds: 2),
         ),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => NavBar()),
       );
     } catch (e) {
       print(e.toString());
@@ -242,8 +249,8 @@ class _UserDetailsState extends State<UserDetails> {
                       SizedBox(height: 20),
                       Text(
                         widget.name,
-                        style:
-                            TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 20),
                       Column(
@@ -348,16 +355,16 @@ class _UserDetailsState extends State<UserDetails> {
                           int startIndex =
                               relation.indexOf("secondLevelRelation:") +
                                   "secondLevelRelation:".length;
-      
+
                           String restOfData = relation.substring(startIndex);
-      
+
                           int endIndex = restOfData.indexOf(",") != -1
                               ? restOfData.indexOf(",")
                               : restOfData.indexOf("}");
-      
+
                           String secondLevelRelationn =
                               restOfData.substring(0, endIndex).trim();
-      
+
                           return DropdownMenuItem(
                             value: secondLevelRelationn,
                             child: Text(secondLevelRelationn),
@@ -405,7 +412,7 @@ class _UserDetailsState extends State<UserDetails> {
                           padding: const EdgeInsets.all(12),
                           child: Text(
                             "Add to Family",
-                            style: TextStyle(fontSize: 18 , color: Colors.white),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),

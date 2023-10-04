@@ -1,6 +1,8 @@
 
 import 'package:famlynk_version1/mvc/view/famlynkLogin/login/EmailLogin.dart';
+import 'package:famlynk_version1/mvc/view/navigationBar/navBar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,8 +20,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   _navigatetologin() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('token'); 
+
+  if (token != null && token.isNotEmpty) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => NavBar(index: 0,)),
+    );
+  }else{
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
   }
 
   @override
