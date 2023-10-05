@@ -133,7 +133,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                           Row(
                             children: [
                               Radio(
-                                value: 'Male',
+                                value: 'male',
                                 groupValue: _selectedGender,
                                 onChanged: (value) {
                                   setState(() {
@@ -148,7 +148,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                           Row(
                             children: [
                               Radio(
-                                value: 'Female',
+                                value: 'female',
                                 groupValue: _selectedGender,
                                 onChanged: (value) {
                                   setState(() {
@@ -163,7 +163,7 @@ class _UpdateFamListState extends State<UpdateFamList> {
                           Row(
                             children: [
                               Radio(
-                                value: 'Others',
+                                value: 'others',
                                 groupValue: _selectedGender,
                                 onChanged: (value) {
                                   setState(() {
