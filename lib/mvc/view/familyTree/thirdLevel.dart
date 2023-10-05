@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:famlynk_version1/mvc/model/familyTree_model/familyTree_model.dart';
 import 'package:famlynk_version1/services/familyTreeService/familyTree_service.dart';
 import 'package:flutter/material.dart';
@@ -225,7 +224,7 @@ class FamlynkPainter extends CustomPainter {
               ? user[0].name!.substring(0, 6)
               : user[0].name,
           style: TextStyle(
-              fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),
         );
         TextPainter userTextPainter = TextPainter(
           text: userTextSpan,
@@ -234,12 +233,12 @@ class FamlynkPainter extends CustomPainter {
         userTextPainter.layout();
         userTextPainter.paint(
           canvas,
-          Offset(centerX - 40, centerY + 35),
+          Offset(centerX - 40, centerY + 34),
         );
         TextSpan relationTextSpan = TextSpan(
           text: user[0].relationShip,
           style: TextStyle(
-              fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
+              fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black),
         );
         TextPainter relationTextPainter = TextPainter(
           text: relationTextSpan,
@@ -248,7 +247,7 @@ class FamlynkPainter extends CustomPainter {
         relationTextPainter.layout();
         relationTextPainter.paint(
           canvas,
-          Offset(centerX - 30, centerY + 46),
+          Offset(centerX - 30, centerY + 47),
         );
       }
       print("greatgrandfather");
@@ -752,8 +751,8 @@ class FamlynkPainter extends CustomPainter {
         final verticalLineHeight = 30;
         canvas.drawLine(
           Offset(horizontalLineLength, greatgreatgrandsonIndexY),
-          Offset(
-              horizontalLineLength, greatgreatgrandsonIndexY + verticalLineHeight),
+          Offset(horizontalLineLength,
+              greatgreatgrandsonIndexY + verticalLineHeight),
           paint,
         );
 
@@ -782,8 +781,9 @@ class FamlynkPainter extends CustomPainter {
           loadImage(greatgrandson[greatgreatgrandsonIndex].image.toString())
               .then((loadedImage) {
             if (loadedImage != null) {
-              imageCache[greatgrandson[greatgreatgrandsonIndex].image.toString()] =
-                  loadedImage;
+              imageCache[greatgrandson[greatgreatgrandsonIndex]
+                  .image
+                  .toString()] = loadedImage;
               _drawImage(canvas, size, loadedImage, i, horizontalLineLength,
                   greatgreatgrandsonIndexY + verticalLineHeight + 29);
             }
@@ -832,7 +832,7 @@ class FamlynkPainter extends CustomPainter {
         );
       }
 
-      // great great granddaughter 
+      // great great granddaughter
 
       // if(greatgreatgranddaughter.contains(familyTreeDataList[i])) {
       //   final centerX = size.width * 0.5;
@@ -842,7 +842,7 @@ class FamlynkPainter extends CustomPainter {
       //     ..isAntiAlias = true;
       //   final greatgreatgranddaughterIndex = greatgreatgranddaughter.indexOf(familyTreeDataList[i]);
       //   final sonX = centerX;
-      //   final sonY = centerY + 80; 
+      //   final sonY = centerY + 80;
       //    canvas.drawLine(
       //     Offset(centerX, centerY),
       //     Offset(sonX, sonY),
@@ -909,11 +909,12 @@ class FamlynkPainter extends CustomPainter {
         }
 
         TextSpan greatgreatgranddaughterTextSpan = TextSpan(
-          text: greatgreatgranddaughter[greatgranddaughterIndex].name!.length > 6
-              ? greatgreatgranddaughter[greatgranddaughterIndex]
-                  .name!
-                  .substring(0, 6)
-              : greatgreatgranddaughter[greatgranddaughterIndex].name,
+          text:
+              greatgreatgranddaughter[greatgranddaughterIndex].name!.length > 6
+                  ? greatgreatgranddaughter[greatgranddaughterIndex]
+                      .name!
+                      .substring(0, 6)
+                  : greatgreatgranddaughter[greatgranddaughterIndex].name,
           style: TextStyle(
               fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -1000,7 +1001,9 @@ class FamlynkPainter extends CustomPainter {
         final image =
             imageCache[greatgreatgrandfather[greatgreatgrandfatherIndex].image];
         if (image == null) {
-          loadImage(greatgreatgrandfather[greatgreatgrandfatherIndex].image.toString())
+          loadImage(greatgreatgrandfather[greatgreatgrandfatherIndex]
+                  .image
+                  .toString())
               .then((loadedImage) {
             if (loadedImage != null) {
               imageCache[greatgreatgrandfather[greatgreatgrandfatherIndex]
@@ -1014,9 +1017,12 @@ class FamlynkPainter extends CustomPainter {
           _drawImage(canvas, size, image, i, horizontalLineX, centerY + 59);
         }
         TextSpan greatgreatgrandfatherTextSpan = TextSpan(
-          text: greatgreatgrandfather[greatgreatgrandfatherIndex].name!.length > 6
-              ? greatgreatgrandfather[greatgreatgrandfatherIndex].name!.substring(0, 6)
-              : greatgreatgrandfather[greatgreatgrandfatherIndex].name,
+          text:
+              greatgreatgrandfather[greatgreatgrandfatherIndex].name!.length > 6
+                  ? greatgreatgrandfather[greatgreatgrandfatherIndex]
+                      .name!
+                      .substring(0, 6)
+                  : greatgreatgrandfather[greatgreatgrandfatherIndex].name,
           style: TextStyle(
               fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -1031,12 +1037,14 @@ class FamlynkPainter extends CustomPainter {
         );
 
         TextSpan relationTextSpan = TextSpan(
-          text:
-              greatgreatgrandfather[greatgreatgrandfatherIndex].relationShip!.length > 6
-                  ? greatgreatgrandfather[greatgreatgrandfatherIndex]
+          text: greatgreatgrandfather[greatgreatgrandfatherIndex]
                       .relationShip!
-                      .substring(0, 12)
-                  : greatgreatgrandfather[greatgreatgrandfatherIndex].relationShip,
+                      .length >
+                  6
+              ? greatgreatgrandfather[greatgreatgrandfatherIndex]
+                  .relationShip!
+                  .substring(0, 12)
+              : greatgreatgrandfather[greatgreatgrandfatherIndex].relationShip,
           style: TextStyle(
               fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -1066,7 +1074,8 @@ class FamlynkPainter extends CustomPainter {
           paint,
         );
 
-        final horizontalLineX = size.width * 0.65 + greatgreatgrandmotherIndex * 70;
+        final horizontalLineX =
+            size.width * 0.65 + greatgreatgrandmotherIndex * 70;
 
         canvas.drawLine(
           Offset(size.width * 0.6, centerY),
@@ -1109,7 +1118,9 @@ class FamlynkPainter extends CustomPainter {
         final image =
             imageCache[greatgreatgrandmother[greatgreatgrandmotherIndex].image];
         if (image == null) {
-          loadImage(greatgreatgrandmother[greatgreatgrandmotherIndex].image.toString())
+          loadImage(greatgreatgrandmother[greatgreatgrandmotherIndex]
+                  .image
+                  .toString())
               .then((loadedImage) {
             if (loadedImage != null) {
               imageCache[greatgreatgrandmother[greatgreatgrandmotherIndex]
@@ -1125,9 +1136,12 @@ class FamlynkPainter extends CustomPainter {
         }
 
         TextSpan sisterTextSpan = TextSpan(
-          text: greatgreatgrandmother[greatgreatgrandmotherIndex].name!.length > 6
-              ? greatgreatgrandmother[greatgreatgrandmotherIndex].name!.substring(0, 6)
-              : greatgreatgrandmother[greatgreatgrandmotherIndex].name,
+          text:
+              greatgreatgrandmother[greatgreatgrandmotherIndex].name!.length > 6
+                  ? greatgreatgrandmother[greatgreatgrandmotherIndex]
+                      .name!
+                      .substring(0, 6)
+                  : greatgreatgrandmother[greatgreatgrandmotherIndex].name,
           style: TextStyle(
               fontSize: 11, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -1141,12 +1155,14 @@ class FamlynkPainter extends CustomPainter {
           Offset(greatgreatgrandmotherX - 14, centerY + 95),
         );
         TextSpan relationTextSpan = TextSpan(
-          text:
-              greatgreatgrandmother[greatgreatgrandmotherIndex].relationShip!.length > 6
-                  ? greatgreatgrandmother[greatgreatgrandmotherIndex]
+          text: greatgreatgrandmother[greatgreatgrandmotherIndex]
                       .relationShip!
-                      .substring(0, 12)
-                  : greatgreatgrandmother[greatgreatgrandmotherIndex].relationShip,
+                      .length >
+                  6
+              ? greatgreatgrandmother[greatgreatgrandmotherIndex]
+                  .relationShip!
+                  .substring(0, 12)
+              : greatgreatgrandmother[greatgreatgrandmotherIndex].relationShip,
           style: TextStyle(
               fontSize: 10, fontWeight: FontWeight.bold, color: Colors.black),
         );
@@ -1207,5 +1223,3 @@ class FamlynkPainter extends CustomPainter {
   @override
   bool shouldRepaint(FamlynkPainter oldDelegate) => false;
 }
-
-

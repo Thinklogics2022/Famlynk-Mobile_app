@@ -86,9 +86,9 @@ class _AddMemberState extends State<AddMember> {
                     SizedBox(height: 15),
                     Row(
                       children: [
-                        buildGenderRow('Male'),
-                        buildGenderRow('Female'),
-                        buildGenderRow('Others'),
+                        buildGenderRow('male'),
+                        buildGenderRow('female'),
+                        buildGenderRow('others'),
                       ],
                     ),
                     SizedBox(height: 15),
@@ -206,20 +206,21 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 
-  void _selectDateOfBirth() async {
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime(2500),
-    );
-    if (pickedDate != null) {
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      setState(() {
-        _dateinput.text = formattedDate;
-      });
-    }
+ void _selectDateOfBirth() async {
+  DateTime currentDate = DateTime.now();
+  DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: currentDate,
+    firstDate: DateTime(1900),
+    lastDate: currentDate,
+  );
+  if (pickedDate != null) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+    setState(() {
+      _dateinput.text = formattedDate;
+    });
   }
+}
 
   Widget buildPhoneNumberField() {
     _phNumber.addListener(() {
