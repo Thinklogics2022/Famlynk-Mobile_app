@@ -33,7 +33,6 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-
   void _submitForm() async {
     setState(() {
       _isLoading = true;
@@ -49,7 +48,10 @@ class _LoginPageState extends State<LoginPage> {
         await mailLoginServices.authenticate(userLogin);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => NavBar(index: 0,)),
+          MaterialPageRoute(
+              builder: (context) => NavBar(
+                    index: 0,
+                  )),
         );
         _showSnackbar("Login successful");
       } catch (e) {
@@ -143,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
-                                labelText: 'Email / MobileNumber',
+                                labelText: 'Email',
                                 border: OutlineInputBorder(),
                               ),
                             ),

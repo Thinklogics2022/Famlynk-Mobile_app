@@ -244,17 +244,16 @@ class _PublicNewsState extends State<PublicNews> {
                                                     })));
                                   },
                                   child: Container(
-                                    height: 250,
-                                    width: 550,
-                                    child: CachedNetworkImage(
-                                      imageUrl: newsFeed.photo!,
-                                      // width: MediaQuery.of(context).size.width * 1,
-                                      // height: MediaQuery.of(context).size.height * .4,
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(),
-                                      errorWidget: null,
-                                    ),
-                                  ),
+                                      height: 250,
+                                      width: 550,
+                                      child: CachedNetworkImage(
+                                        imageUrl: newsFeed.photo!,
+                                        placeholder: (context, url) => Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      )),
                                 ),
                               ),
                             Divider(),

@@ -233,15 +233,16 @@ class _FamilyNewsState extends State<FamilyNews> {
                                     );
                                   },
                                   child: Container(
-                                    height: 250,
-                                    width: 500,
-                                    child: CachedNetworkImage(
-                                      imageUrl: newsFeed.photo!,
-                                      placeholder: (context, url) =>
-                                          CircularProgressIndicator(),
-                                      errorWidget: null,
-                                    ),
-                                  ),
+                                      height: 250,
+                                      width: 500,
+                                      child: CachedNetworkImage(
+                                        imageUrl: newsFeed.photo!,
+                                        placeholder: (context, url) => Center(
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            Icon(Icons.error),
+                                      )),
                                 ),
                               ),
                             Divider(),
