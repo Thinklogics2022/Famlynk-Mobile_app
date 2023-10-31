@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/controller/dropDown.dart';
 import 'package:flutter/material.dart';
 import 'package:famlynk_version1/mvc/model/familyMembers/individualUserModel.dart';
 import 'package:famlynk_version1/services/familySevice/individulaUserService.dart';
@@ -95,32 +96,33 @@ class _AboutState extends State<About> with SingleTickerProviderStateMixin {
                           return Transform.scale(
                             scale: _animation.value,
                             child: CircleAvatar(
-                              radius: 65,
+                              radius: 45,
                               backgroundImage: widget.image.isNotEmpty
                                   ? NetworkImage(widget.image.toString())
                                   : null,
                               child: widget.image.isNotEmpty
                                   ? null
-                                  : Container(
-                                      width: 130,
-                                      height: 130,
-                                      decoration: BoxDecoration(
-                                        color: Color.fromARGB(255, 140, 170, 195), 
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          widget.name.isNotEmpty
-                                              ? widget.name[0].toUpperCase()
-                                              : "?",
-                                          style: TextStyle(
-                                            fontSize: 50,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
+                                  : Center(
+                                    child: Container(
+                                      // width: 40,
+                                    child: defaultImage(
+                                
+                                  widget.image.toString(),
+                                  widget.name.toString(),
+                                  // index,
                                     ),
+                                  ),
+                                    // child: Text(
+                                    //   widget.name.isNotEmpty
+                                    //       ? widget.name[0].toUpperCase()
+                                    //       : "?",
+                                    //   style: TextStyle(
+                                    //     fontSize: 50,
+                                    //     fontWeight: FontWeight.bold,
+                                    //     color: Colors.white,
+                                    //   ),
+                                    // ),
+                                  ),
                             ),
                           );
                         },

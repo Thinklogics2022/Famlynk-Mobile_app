@@ -217,16 +217,6 @@ class _UserDetailsState extends State<UserDetails> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          // decoration: BoxDecoration(
-          //   gradient: LinearGradient(
-          //     colors: [
-          //       Colors.lightBlue,
-          //       Color.fromARGB(255, 223, 228, 237),
-          //     ],
-          //     begin: Alignment.topCenter,
-          //     end: Alignment.bottomCenter,
-          //   ),
-          // ),
           child: Center(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
@@ -240,12 +230,7 @@ class _UserDetailsState extends State<UserDetails> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // CircleAvatar(
-                      //   radius: 60,
-                      //   backgroundImage: NetworkImage(
-                      //     widget.profileImage ?? '',
-                      //   ),
-                      // ),
+                    
                       SizedBox(height: 20),
                       Text(
                         widget.name,

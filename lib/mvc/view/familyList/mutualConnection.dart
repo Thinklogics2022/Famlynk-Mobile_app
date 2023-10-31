@@ -66,7 +66,7 @@ class _MutualConnectionState extends State<MutualConnection> {
                                 child: defaultImage(
                                   famList.image.toString(),
                                   famList.name.toString(),
-                                  index,
+                                  // index,
                                 ),
                               ),
                               SizedBox(height: 10),

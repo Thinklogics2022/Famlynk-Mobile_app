@@ -45,7 +45,7 @@ class _NotificationsState extends State<Notifications> {
     if (image.isEmpty || image == "null") {
       return CircleAvatar(
         radius: 40,
-        backgroundColor: backgroundColors[index % backgroundColors.length],
+        backgroundColor: _getLetterColor(name),
         child: Text(
           name.isNotEmpty ? name[0].toUpperCase() : "?",
           style: TextStyle(
@@ -192,5 +192,12 @@ class _NotificationsState extends State<Notifications> {
               child: CircularProgressIndicator(),
             ),
     );
+  }
+   Color _getLetterColor(String name) {
+    String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : "?";
+    Color color = ColorMapping.letterToColor[firstLetter] ??
+        Colors
+            .grey; 
+    return color;
   }
 }

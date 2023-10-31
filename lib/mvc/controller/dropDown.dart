@@ -16,15 +16,6 @@ const List<String> relation = <String>[
 
 const List<String> maritalStatus = <String>["Single", "Marrried"];
 
-List<Color> backgroundColors = [
-  Color.fromARGB(255, 207, 70, 70),
-  Color.fromARGB(255, 96, 183, 100),
-  Color.fromARGB(255, 74, 121, 159),
-  Color.fromARGB(255, 59, 148, 62),
-  Color.fromARGB(255, 210, 155, 72),
-  Color.fromARGB(255, 114, 77, 179),
-];
-
 class NameAvatar extends StatelessWidget {
   final String? name;
   final double radius;
@@ -32,18 +23,18 @@ class NameAvatar extends StatelessWidget {
 
   NameAvatar({this.name, this.radius = 30, this.img});
 
-  Color _getRandomColor() {
-    final colors = [
-      Colors.red,
-      Colors.green,
-      Colors.blue,
-      Colors.orange,
-      Colors.purple,
-      Colors.pink,
-      Colors.teal,
-    ];
-    return colors[name.hashCode % colors.length];
-  }
+  // Color _getRandomColor() {
+  //   final colors = [
+  //     Colors.red,
+  //     Colors.green,
+  //     Colors.blue,
+  //     Colors.orange,
+  //     Colors.purple,
+  //     Colors.pink,
+  //     Colors.teal,
+  //   ];
+  //   return colors[name.hashCode % colors.length];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +42,7 @@ class NameAvatar extends StatelessWidget {
 
     return CircleAvatar(
       radius: radius,
-      backgroundColor: _getRandomColor(),
+      // backgroundColor: _getRandomColor(),
       child: Text(
         initials,
         style: TextStyle(
@@ -63,25 +54,61 @@ class NameAvatar extends StatelessWidget {
   }
 }
 
+class ColorMapping {
+  static Map<String, Color> letterToColor = {
+    'A': Colors.blue,
+    'B': Color.fromARGB(255, 222, 45, 33),
+    'C': Colors.green,
+    "D": Colors.blue,
+    "E": Colors.lightGreen,
+    "F": Colors.amber,
+    "G": Colors.blueAccent,
+    "H": Colors.blueGrey,
+    "I": Colors.brown,
+    "J": Colors.indigo,
+    "K": Colors.pinkAccent,
+    "L": Colors.deepOrange,
+    "M": Colors.deepOrangeAccent,
+    "N": Colors.deepPurple,
+    "O": Colors.deepPurpleAccent,
+    "P": Colors.green,
+    "Q": Colors.greenAccent,
+    'R': Colors.red,
+    'S': Colors.green,
+    "T": Colors.orangeAccent,
+    "U": Colors.blueGrey,
+    "V": Colors.blue,
+    "W": Colors.blueAccent,
+    "X": Colors.blueGrey,
+    'Y': Colors.orangeAccent,
+    'Z': Colors.yellow,
+  };
 
- Widget defaultImage(String image, String name, int index) {
-    if (image.isEmpty || image == "null") {
-      return CircleAvatar(
-        radius: 40,
-        backgroundColor: backgroundColors[index % backgroundColors.length],
-        child: Text(
-          name.isNotEmpty ? name[0].toUpperCase() : "?",
-          style: TextStyle(
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
-      );
-    } else {
-      return CircleAvatar(
-        radius: 40,
-        backgroundImage: NetworkImage(image),
-      );
-    }
+  static Color getColorForLetter(String letter) {
+    return letterToColor[letter] ?? Colors.grey;
   }
+}
+
+Widget defaultImage(String image, String name) {
+  if (image.isEmpty || image == "null") {
+    String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : "?";
+    Color letterColor = ColorMapping.getColorForLetter(firstLetter);
+    return CircleAvatar(
+      radius: 40,
+      backgroundColor: letterColor,
+      child: Text(
+        firstLetter,
+        style: TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    );
+  } else {
+    return CircleAvatar(
+      radius: 40,
+      backgroundImage: NetworkImage(image),
+    );
+  }
+}

@@ -166,9 +166,9 @@ class _FamilyNewsState extends State<FamilyNews> {
                               },
                               child: ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: backgroundColors[
-                                      index % backgroundColors.length],
+                                  
                                   backgroundImage: _getProfileImage(newsFeed),
+                                  backgroundColor: _getLetterColor(newsFeed.name),
                                   child: _getProfileImage(newsFeed) == null
                                       ? Text(
                                           newsFeed.name.isNotEmpty
@@ -347,4 +347,10 @@ class _FamilyNewsState extends State<FamilyNews> {
       ),
     );
   }
+
+   Color _getLetterColor(String name) {
+  String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : "?";
+  Color color = ColorMapping.letterToColor[firstLetter] ?? Colors.grey; 
+  return color;
+}
 }
