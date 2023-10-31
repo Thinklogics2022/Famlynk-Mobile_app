@@ -83,7 +83,7 @@ class _FamilyListState extends State<FamilyList> {
                                     child: defaultImage(
                                       familyList[index].image.toString(),
                                       familyList[index].name.toString(),
-                                      index,
+                                      // index,
                                     ),
                                   ),
                                   SizedBox(width: 20),

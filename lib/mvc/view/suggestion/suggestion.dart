@@ -57,12 +57,12 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
     }
   }
 
-  ImageProvider<Object> getProfileImageWithFallback(Suggestion suggestion) {
+  ImageProvider<Object>? getProfileImageWithFallback(Suggestion suggestion) {
     final String? profileImage = suggestion.profileImage;
-    if (profileImage == null || profileImage.isEmpty) {
-      return AssetImage('assets/images/FL01.png');
-    } else {
+    if (profileImage != null && !profileImage.isEmpty) {
       return CachedNetworkImageProvider(profileImage);
+    } else {
+      return null;
     }
   }
 
@@ -201,11 +201,19 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
                                 leading: CircleAvatar(
                                   backgroundImage:
                                       getProfileImageWithFallback(suggestion),
-                                  backgroundColor: Colors.transparent,
+                                  backgroundColor:
+                                      _getLetterColor(suggestion.name),
                                   child: suggestion.profileImage == null ||
                                           suggestion.profileImage!.isEmpty
-                                      ? NameAvatar(
-                                          name: suggestion.name.toString())
+                                      ? Text(
+                                          suggestion.name.isNotEmpty
+                                              ? suggestion.name[0].toUpperCase()
+                                              : "",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          ),
+                                        )
                                       : null,
                                 ),
                                 title: Text(suggestion.name.toString()),
@@ -226,8 +234,19 @@ class _SuggestionScreenState extends State<SuggestionScreen> {
   Future<bool> _onBackPressed() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => NavBar(index: 0,)),
+      MaterialPageRoute(
+          builder: (context) => NavBar(
+                index: 0,
+              )),
     );
     return Future.value(false);
+  }
+
+  Color _getLetterColor(String name) {
+    String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : "?";
+    Color color = ColorMapping.letterToColor[firstLetter] ??
+        Colors
+            .grey;
+    return color;
   }
 }

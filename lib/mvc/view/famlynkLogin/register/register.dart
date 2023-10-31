@@ -245,33 +245,32 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       SizedBox(height: 15),
                       TextFormField(
-                          controller: _phnController,
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.phone),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey.shade400),
-                              ),
-                              fillColor: myProperties.fillColor,
-                              filled: true,
-                              hintText: 'Mobile Number',
-                              hintStyle: TextStyle(color: Colors.grey[500])),
-                          keyboardType: TextInputType.phone,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return "*mobile number is required";
-                            }
-                            if (value.length < 10) {
-                              return "*mobile number must be 10";
-                            }
-                            if (value.length > 10) {
-                              return "*mobile number must be 10";
-                            }
-                            return null;
-                          }),
+                        controller: _phnController,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.phone),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey.shade400),
+                          ),
+                          fillColor: myProperties.fillColor,
+                          filled: true,
+                          hintText: 'Mobile Number',
+                          hintStyle: TextStyle(color: Colors.grey[500]),
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return "*Mobile number is required";
+                          }
+                          if (value.length != 10) {
+                            return "*Mobile number must be 10 characters";
+                          }
+                          return null;
+                        },
+                        maxLength: 10,
+                      ),
                       SizedBox(height: 15),
                       TextFormField(
                         controller: _emailController,
@@ -419,7 +418,6 @@ class _RegisterPageState extends State<RegisterPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            
             content: Text("Otp send to your mail"),
           );
         });

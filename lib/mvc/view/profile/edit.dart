@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:famlynk_version1/constants/constVariables.dart';
 import 'package:famlynk_version1/mvc/controller/dropDown.dart';
@@ -62,7 +61,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void _snackBar() {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       backgroundColor: Colors.blue,
-      content: Text("Profile Updated", style: TextStyle(fontSize: 15),),
+      content: Text(
+        "Profile Updated",
+        style: TextStyle(fontSize: 15),
+      ),
       duration: Duration(seconds: 2),
     ));
   }
@@ -115,6 +117,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       enabled: false),
                   buildTextField(
                       "Mobile Number", mobileNumberController, Icons.phone),
+                  SizedBox(width: 109),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +208,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ),
                   SizedBox(height: 25),
                   buildTextField("Home Town", homeTownController, Icons.home),
-                  buildTextField("Address", addressController, Icons.location_city),
+                  buildTextField(
+                      "Address", addressController, Icons.location_city),
                   Container(
                     child: DropdownButtonFormField(
                       decoration: InputDecoration(
@@ -215,8 +219,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         ),
                         contentPadding: EdgeInsets.only(bottom: 1),
                         labelText: "Marital Status",
-                        labelStyle:
-                            TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        labelStyle: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                         hintText:
                             "${widget.profileUserModel!.maritalStatus.toString()}",
                         hintStyle: TextStyle(color: Colors.black),
@@ -317,10 +321,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _isLoading = false;
     });
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => NavBar(index: 0,)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => NavBar(
+                  index: 0,
+                )));
   }
 
- Widget buildTextField(
+  Widget buildTextField(
       String labelText, TextEditingController controller, IconData? prefixIcon,
       {bool enabled = true}) {
     return Padding(

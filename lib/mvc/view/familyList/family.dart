@@ -68,9 +68,10 @@ class _FamilyState extends State<Family> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: defaultImage(
+                                  
                                   familyList[index].image.toString(),
                                   familyList[index].name.toString(),
-                                  index,
+                                  // index,
                                 ),
                               ),
                               SizedBox(width: 20),
