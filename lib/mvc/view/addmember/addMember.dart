@@ -22,7 +22,7 @@ class _AddMemberState extends State<AddMember> {
       firebase_storage.FirebaseStorage.instance.ref();
   File? imageFile;
   bool isLoading = false;
-  // MyProperties myProperties = new MyProperties();
+  MyProperties myProperties = new MyProperties();
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController _name = TextEditingController();
@@ -36,6 +36,12 @@ class _AddMemberState extends State<AddMember> {
 
   String userId = "";
   bool _isLoading = false;
+ bool validateEmail(String value) {
+  const emailRegex = r"^[a-zA-Z0-9+_.-]+@gmail\.com$";
+  final RegExp regex = RegExp(emailRegex);
+  return !regex.hasMatch(value);
+}
+
 
   Future<void> fetchData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -76,27 +82,21 @@ class _AddMemberState extends State<AddMember> {
                     SizedBox(
                       height: 20,
                     ),
-                    buildNameField(_name),
-                    // SizedBox(height: 15),
+                    buildNameField(),
+                    SizedBox(height: 15),
                     Row(
                       children: [
                         buildGenderRow('male'),
                         buildGenderRow('female'),
                         buildGenderRow('others'),
                       ],
-                    ),Divider(
-                      thickness: 1,
-                      color: Colors.grey,
                     ),
                     SizedBox(height: 15),
-                    buildDateOfBirthField(_dateinput, () {
-            _selectDateOfBirth(context);
-
-                    }),
+                    buildDateOfBirthField(),
                     SizedBox(height: 15),
-                    buildPhoneNumberField(_phNumber),
+                    buildPhoneNumberField(),
                     SizedBox(height: 15),
-                    buildEmailField(_email),
+                    buildEmailField(),
                     SizedBox(height: 15),
                     buildRelationDropdown(),
                     SizedBox(height: 35),
@@ -129,69 +129,169 @@ class _AddMemberState extends State<AddMember> {
   void _showSnackbar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Colors.deepOrange,
-        content: Text(
-          message,
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
+        backgroundColor:Colors.deepOrange,
+        content: Text(message, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),),
         duration: Duration(seconds: 2),
       ),
     );
   }
 
- Widget buildGenderRow(String value) {
-  return Row(
-    children: [
-      Radio(
-        value: value,
-        
-        groupValue: _selectedGender,
-        onChanged: (value) {
-          setState(() {
-            _selectedGender = value as String;
-          });
-        },activeColor: Colors.orange,
-      ),
-      SizedBox(width: 6),
-      Text(value),
-    ],
+  Widget buildNameField() {
+    return TextFormField(
+      controller: _name,
+      decoration: InputDecoration(
+          icon: Icon(Icons.person),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade400),
+          ),
+          fillColor: myProperties.fillColor,
+          filled: true,
+          hintText: 'Enter Name',
+          hintStyle: TextStyle(color: Colors.grey[500])),
+      validator: (value) {
+        if (value!.isEmpty) {
+          return '*name is required';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget buildGenderRow(String value) {
+    return Row(
+      children: [
+        Radio(
+          value: value,
+          groupValue: _selectedGender,
+          onChanged: (value) {
+            setState(() {
+              _selectedGender = value as String;
+            });
+          },
+        ),
+        SizedBox(width: 6),
+        Text(value),
+      ],
+    );
+  }
+
+  Widget buildDateOfBirthField() {
+    return TextFormField(
+      controller: _dateinput,
+      keyboardType: TextInputType.datetime,
+      decoration: InputDecoration(
+          icon: Icon(Icons.calendar_month),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade400),
+          ),
+          fillColor: myProperties.fillColor,
+          filled: true,
+          hintText: 'Date Of Birth',
+          hintStyle: TextStyle(color: Colors.grey[500])),
+      onTap: _selectDateOfBirth,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return '*dob is required';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+ void _selectDateOfBirth() async {
+  DateTime currentDate = DateTime.now();
+  DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: currentDate,
+    firstDate: DateTime(1900),
+    lastDate: currentDate,
   );
+  if (pickedDate != null) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+    setState(() {
+      _dateinput.text = formattedDate;
+    });
+  }
 }
 
-  void _selectDateOfBirth(BuildContext context) async {
-    DateTime currentDate = DateTime.now();
-    DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: currentDate,
-      firstDate: DateTime(1999),
-      lastDate: currentDate,
-    );
-    if (pickedDate != null) {
-      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
-      setState(() {
-        _dateinput.text = formattedDate;
-      });
-    }
+  Widget buildPhoneNumberField() {
+    _phNumber.addListener(() {
+      if (_phNumber.text.length > 10) {
+        _phNumber.text = _phNumber.text.substring(0, 10);
+        _phNumber.selection = TextSelection.fromPosition(
+            TextPosition(offset: _phNumber.text.length));
+      }
+    });
+    return TextFormField(
+        controller: _phNumber,
+        decoration: InputDecoration(
+            icon: Icon(Icons.phone),
+            enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+            fillColor: Colors.grey.shade200,
+            filled: true,
+            hintText: 'Enter Mobile Number',
+            hintStyle: TextStyle(color: Colors.grey[500])),
+        keyboardType: TextInputType.phone,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "*mobile number is required";
+          }
+        });
   }
+
+  Widget buildEmailField() {
+    return TextFormField(
+        controller: _email,
+        decoration: InputDecoration(
+            icon: Icon(Icons.email),
+            enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey.shade400),
+            ),
+            fillColor: Colors.grey.shade200,
+            filled: true,
+            hintText: 'Enter Email',
+            hintStyle: TextStyle(color: Colors.grey[500])),
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return "*email is required";
+          }
+          if (validateEmail(value)) {
+            return "*valid email is required";
+          }
+        });
+  }
+
   Widget buildRelationDropdown() {
     return Container(
       child: DropdownButtonFormField<String>(
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(bottom: 1),
-          labelText: "Select Relation",
-          
-          prefixIcon: Icon(Icons.people),
-          labelStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          icon: Icon(Icons.people),
+          enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
           ),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          hintStyle: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade400),
           ),
+          fillColor: Colors.grey.shade200,
+          filled: true,
+          hintStyle: TextStyle(color: Colors.grey[500]),
         ),
         value: dropdownValue1,
         onChanged: (String? newValue) {
@@ -213,6 +313,7 @@ class _AddMemberState extends State<AddMember> {
   }
 
   void _submitForm() async {
+   
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -237,6 +338,7 @@ class _AddMemberState extends State<AddMember> {
         email: _email.text,
         mobileNo: _phNumber.text,
         image: imageUrl,
+       
       );
 
       addMemberService.addMemberPost(addMemberModel);
@@ -244,9 +346,7 @@ class _AddMemberState extends State<AddMember> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => NavBar(
-            index: 3,
-          ),
+          builder: (context) => NavBar(index: 3,),
         ),
       );
     }
@@ -342,8 +442,6 @@ class _AddMemberState extends State<AddMember> {
             "Choose profile photo",
             style: TextStyle(
               fontSize: 20.0,
-              color: Colors.deepOrange,
-              fontStyle: FontStyle.italic
             ),
           ),
           SizedBox(
@@ -363,7 +461,7 @@ class _AddMemberState extends State<AddMember> {
                     });
                   }
                 },
-                icon: Icon(Icons.image, color: Colors.deepOrange,),
+                icon: Icon(Icons.image),
               ),
             ],
           ),
@@ -372,4 +470,3 @@ class _AddMemberState extends State<AddMember> {
     );
   }
 }
-
