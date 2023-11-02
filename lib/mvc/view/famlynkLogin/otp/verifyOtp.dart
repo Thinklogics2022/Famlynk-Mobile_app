@@ -53,49 +53,42 @@ class _OTPPageState extends State<OTPPage> {
   }
 
   void _verifyOTP() async {
-    OTP otp = OTP(otp: _otpController.text);
-    bool isVerified = await _otpService.verifyOTP(otp);
-    if (isVerified) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Success'),
-            content: Text('OTP verified successfully!'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
-                  );
-                },
-              ),
-            ],
-          );
-        },
+  // Display the loading indicator
+  setState(() {
+    _isLoading = true;
+  });
+
+  await Future.delayed(Duration(seconds: 2)); // Simulate a 2-second loading delay
+
+  // Hide the loading indicator
+  setState(() {
+    _isLoading = false;
+  });
+
+  OTP otp = OTP(otp: _otpController.text);
+  bool isVerified = await _otpService.verifyOTP(otp);
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(isVerified ? 'Success' : 'Error'),
+        content: Text(isVerified ? 'OTP verified successfully!' : 'OTP verification failed.'),
+        actions: <Widget>[
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => isVerified ? LoginPage() : OTPPage(userId: widget.userId)),
+              );
+            },
+          ),
+        ],
       );
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('OTP verification failed.'),
-            actions: <Widget>[
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
+    },
+  );
+}
 
   void _resendOTP(String userId) async {
     bool isResent = await _otpService.resendOTP(userId);

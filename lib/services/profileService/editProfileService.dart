@@ -45,7 +45,7 @@ class EditProfileService {
         },
       );
       if (response.statusCode == 200) {
-        print(response.body);
+        print("profile : ${response.body}");
         return response.body;
       } else {
         print("Update request failed with : ${response.statusCode}");
