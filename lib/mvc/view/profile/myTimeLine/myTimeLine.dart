@@ -1,5 +1,5 @@
-import 'package:famlynk_version1/mvc/view/myTimeLine/photo.dart';
-import 'package:famlynk_version1/mvc/view/myTimeLine/myNewsFeed.dart';
+import 'package:famlynk_version1/mvc/view/profile/myTimeLine/myNewsFeed.dart';
+import 'package:famlynk_version1/mvc/view/profile/myTimeLine/photo.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 

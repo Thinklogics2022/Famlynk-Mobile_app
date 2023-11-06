@@ -1,6 +1,6 @@
 import 'package:famlynk_version1/mvc/view/newsFeed/addNewsFeed.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/public_private/familyNewsFeed.dart';
-import 'package:famlynk_version1/mvc/view/newsFeed/public_private/public.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/public_private_family/familyNewsFeed.dart';
+import 'package:famlynk_version1/mvc/view/newsFeed/public_private_family/public.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

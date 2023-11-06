@@ -1,6 +1,6 @@
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/custom.dart';
 import 'package:famlynk_version1/mvc/view/famlynkLogin/Password/password.dart';
-import 'package:famlynk_version1/services/forgetPswdService.dart';
+import 'package:famlynk_version1/services/password/forgetPswdService.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:pinput/pinput.dart';
