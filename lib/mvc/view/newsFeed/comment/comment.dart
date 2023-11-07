@@ -104,40 +104,38 @@ class _CommentScreenState extends State<CommentScreen> {
           Expanded(
             child: CommentCard(newsFeedId: widget.newsFeedId),
           ),
-          SafeArea(
-            child: Container(
-              height: kTextTabBarHeight,
-              margin: EdgeInsets.only(
-                  bottom: MediaQuery.of(context).viewInsets.bottom),
-              padding: EdgeInsets.only(left: 16, right: 8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16, right: 8),
-                      child: TextField(
-                        controller: commentEditController,
-                        decoration: InputDecoration(
-                          hintText: 'Comment as anything',
-                          border: InputBorder.none,
-                        ),
+          Container(
+            height: kTextTabBarHeight,
+            margin: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            padding: EdgeInsets.only(left: 16, right: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, right: 8),
+                    child: TextField(
+                      controller: commentEditController,
+                      decoration: InputDecoration(
+                        hintText: 'Comment as anything',
+                        border: InputBorder.none,
                       ),
                     ),
                   ),
-                  InkWell(
-                    onTap: isPostingComment ? null : postComment,
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical : 8, horizontal : 8),
-                      child: isPostingComment
-                          ? CircularProgressIndicator()
-                          : Text('Post',
-                              style: TextStyle(
-                                color: HexColor('#0175C8'),
-                              )),
-                    ),
-                  )
-                ],
-              ),
+                ),
+                InkWell(
+                  onTap: isPostingComment ? null : postComment,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical : 8, horizontal : 8),
+                    child: isPostingComment
+                        ? CircularProgressIndicator()
+                        : Text('Post',
+                            style: TextStyle(
+                              color: HexColor('#0175C8'),
+                            )),
+                  ),
+                )
+              ],
             ),
           ),
         ],

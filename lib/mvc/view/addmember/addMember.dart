@@ -58,66 +58,64 @@ class _AddMemberState extends State<AddMember> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 223, 231, 237),
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
-          backgroundColor: HexColor('#0175C8'),
-          title: Text(
-            'Add Member',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 223, 231, 237),
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: HexColor('#0175C8'),
+        title: Text(
+          'Add Member',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Container(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    imageprofile(),
-                    SizedBox(
-                      height: 20,
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Container(
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  imageprofile(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  buildNameField(),
+                  SizedBox(height: 15),
+                  Row(
+                    children: [
+                      buildGenderRow('male'),
+                      buildGenderRow('female'),
+                      buildGenderRow('others'),
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  buildDateOfBirthField(),
+                  SizedBox(height: 15),
+                  buildPhoneNumberField(),
+                  SizedBox(height: 15),
+                  buildEmailField(),
+                  SizedBox(height: 15),
+                  buildRelationDropdown(),
+                  SizedBox(height: 35),
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _submitForm,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: HexColor('#0175C8'),
                     ),
-                    buildNameField(),
-                    SizedBox(height: 15),
-                    Row(
-                      children: [
-                        buildGenderRow('male'),
-                        buildGenderRow('female'),
-                        buildGenderRow('others'),
-                      ],
-                    ),
-                    SizedBox(height: 15),
-                    buildDateOfBirthField(),
-                    SizedBox(height: 15),
-                    buildPhoneNumberField(),
-                    SizedBox(height: 15),
-                    buildEmailField(),
-                    SizedBox(height: 15),
-                    buildRelationDropdown(),
-                    SizedBox(height: 35),
-                    ElevatedButton(
-                      onPressed: _isLoading ? null : _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: HexColor('#0175C8'),
-                      ),
-                      child: _isLoading
-                          ? CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.blue),
-                            )
-                          : Text(
-                              'Submit',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                    ),
-                  ],
-                ),
+                    child: _isLoading
+                        ? CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.blue),
+                          )
+                        : Text(
+                            'Submit',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                  ),
+                ],
               ),
             ),
           ),

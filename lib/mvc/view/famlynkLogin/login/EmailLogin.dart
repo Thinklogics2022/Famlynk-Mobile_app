@@ -103,162 +103,160 @@ class _LoginPageState extends State<LoginPage> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         body: SingleChildScrollView(
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(15.0, 80.0, 15.0, 8.0),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 30),
-                    Container(
-                      width: 150,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: const Color.fromARGB(255, 61, 60, 60),
-                            width: .02),
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          "assets/images/FL01.png",
-                          fit: BoxFit.fitWidth,
-                        ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15.0, 80.0, 15.0, 8.0),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 30),
+                  Container(
+                    width: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                          color: const Color.fromARGB(255, 61, 60, 60),
+                          width: .02),
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        "assets/images/FL01.png",
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
-                    SizedBox(height: 30),
-                    Text(
-                      'A family bond is priceless !!!',
-                      style: TextStyle(
-                          color: myProperties.textColor,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 25),
-                    Container(
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            TextFormField(
-                              controller: _emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                labelText: 'Email',
-                                border: OutlineInputBorder(),
-                              ),
+                  ),
+                  SizedBox(height: 30),
+                  Text(
+                    'A family bond is priceless !!!',
+                    style: TextStyle(
+                        color: myProperties.textColor,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 25),
+                  Container(
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              border: OutlineInputBorder(),
                             ),
-                            SizedBox(height: 16.0),
-                            TextFormField(
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                labelText: 'Password',
-                                border: OutlineInputBorder(),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _passwordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _passwordVisible = !_passwordVisible;
-                                    });
-                                  },
+                          ),
+                          SizedBox(height: 16.0),
+                          TextFormField(
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              border: OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _passwordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
                                 ),
+                                onPressed: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
                               ),
-                              obscureText: !_passwordVisible,
                             ),
-                            SizedBox(height: 32.0),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ForgetPasswordScreen()));
-                                    },
-                                    child: Text(
-                                      'Forgot Password?',
-                                      style: TextStyle(
-                                        color: HexColor('#FF6F20'),
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17,
-                                      ),
+                            obscureText: !_passwordVisible,
+                          ),
+                          SizedBox(height: 32.0),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 25.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgetPasswordScreen()));
+                                  },
+                                  child: Text(
+                                    'Forgot Password?',
+                                    style: TextStyle(
+                                      color: HexColor('#FF6F20'),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: HexColor('#0175C8'),
                                 ),
-                                onPressed: _isLoading ? null : _submitForm,
-                                child: _isLoading
-                                    ? CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.blue),
-                                      )
-                                    : Text(
-                                        'Login',
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 22),
-                                      ),
-                              ),
+                              ],
                             ),
-                            const SizedBox(height: 25),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Not a member?',
-                                        style:
-                                            TextStyle(color: Colors.grey[700]),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RegisterPage()));
-                                        },
-                                        child: Text(
-                                          'Register now',
-                                          style: TextStyle(
-                                            color: HexColor('#FF6F20'),
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: HexColor('#0175C8'),
+                              ),
+                              onPressed: _isLoading ? null : _submitForm,
+                              child: _isLoading
+                                  ? CircularProgressIndicator(
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
+                                              Colors.blue),
+                                    )
+                                  : Text(
+                                      'Login',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 22),
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(height: 25),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 25.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Not a member?',
+                                      style:
+                                          TextStyle(color: Colors.grey[700]),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RegisterPage()));
+                                      },
+                                      child: Text(
+                                        'Register now',
+                                        style: TextStyle(
+                                          color: HexColor('#FF6F20'),
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    ],
-                                  )
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                )
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
