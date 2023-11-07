@@ -176,26 +176,22 @@ class _PublicNewsState extends State<PublicNews> {
                                                 newsFeed.uniqueUserID)));
                               },
                               child: ListTile(
-                             leading: CircleAvatar(
-  backgroundImage: _getProfileImage(newsFeed),
-  backgroundColor: _getLetterColor(newsFeed.name),
-  child: _getProfileImage(newsFeed) == null
-      ? Text(
-          newsFeed.name.isNotEmpty
-              ? newsFeed.name[0].toUpperCase()
-              : "?",
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        )
-      : null,
-
-
-// Function to get color based on the first letter of the name
-
-
+                                leading: CircleAvatar(
+                                  backgroundImage: _getProfileImage(newsFeed),
+                                  backgroundColor:
+                                      _getLetterColor(newsFeed.name),
+                                  child: _getProfileImage(newsFeed) == null
+                                      ? Text(
+                                          newsFeed.name.isNotEmpty
+                                              ? newsFeed.name[0].toUpperCase()
+                                              : "?",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : null,
                                 ),
                                 title: Text(newsFeed.name),
                                 subtitle: Text(formattedDate),
@@ -362,8 +358,10 @@ class _PublicNewsState extends State<PublicNews> {
   }
 
   Color _getLetterColor(String name) {
-  String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : "?";
-  Color color = ColorMapping.letterToColor[firstLetter] ?? Colors.grey; // Use gray as the default color if the letter is not in the map
-  return color;
-}
+    String firstLetter = name.isNotEmpty ? name[0].toUpperCase() : "?";
+    Color color = ColorMapping.letterToColor[firstLetter] ??
+        Colors
+            .grey; // Use gray as the default color if the letter is not in the map
+    return color;
+  }
 }

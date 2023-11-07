@@ -1,3 +1,4 @@
+import 'package:famlynk_version1/mvc/view/profile/myTimeLine/myComment.dart';
 import 'package:famlynk_version1/mvc/view/profile/myTimeLine/myNewsFeed.dart';
 import 'package:famlynk_version1/mvc/view/profile/myTimeLine/photo.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class _MyTimeLineState extends State<MyTimeLine> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -37,6 +38,8 @@ class _MyTimeLineState extends State<MyTimeLine> with SingleTickerProviderStateM
           tabs: [
             Tab(icon: Icon(Icons.newspaper), text: "MyTimeLine"),
             Tab(icon: Icon(Icons.photo), text: "Photo"),
+            Tab(icon: Icon(Icons.comment), text: "Photo"),
+            Tab(icon: Icon(Icons.favorite), text: "Photo"),
           ],
           unselectedLabelColor: Colors.white,
           labelColor: HexColor('#FF6F20'),
@@ -47,6 +50,7 @@ class _MyTimeLineState extends State<MyTimeLine> with SingleTickerProviderStateM
         children: [
           MyNewsFeed(),
           PhotoPage(),
+          MyComment(),
         ],
       ),
     );
